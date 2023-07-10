@@ -232,7 +232,7 @@ actor DRPGTimeSphere : CustomInventory
 // Regeneration Sphere
 actor DRPGRegenSphere : CustomInventory
 {
-    Tag "Regeneration sphere (regenerates health and energy rapidly)"
+    Tag "Regeneration sphere (regenerates HP and EP rapidly)"
     
     Inventory.DefMaxAmount
     Inventory.InterHubAmount 1000
