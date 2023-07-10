@@ -284,7 +284,7 @@ void CheckLevel()
     if (GetActivatorCVar("drpg_notifications_preview"))
     {
         if (GetActivatorCVar("drpg_notifications_detailed"))
-            HudMessage("You have reached level %d", 0);
+            HudMessage("You have attained level %d", 0);
         else
             HudMessage("Level up!");
         EndHudMessage(HUDMSG_FADEOUT, LEVELUP_ID, "White", X + 0.4, Y, 3.0, 2.0);
@@ -317,7 +317,7 @@ void CheckLevel()
             FadeRange(255, 255, 255, 0.5, 255, 255, 255, 0, 2.0);
 
             if (GetActivatorCVar("drpg_notifications_detailed"))
-                HudMessage("You have reached level %d", Player.Level);
+                HudMessage("You have attained level %d", Player.Level);
             else
                 HudMessage("Level up!");
             EndHudMessage(HUDMSG_FADEOUT, LEVELUP_ID, "White", X + 0.4, Y, 3.0, 2.0);
