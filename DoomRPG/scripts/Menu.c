@@ -516,7 +516,7 @@ void DrawStatsMenu()
                 HudMessage("Defense: %d (+%d)", Player.Defense, (Player.DefenseNat + Player.SoulGreenCount + Player.DefenseBonus));
             else
                 HudMessage("Defense: %d", Player.Defense);
-            EndHudMessage(HUDMSG_PLAIN, 0, MenuCursorColor,   200.1,  25.0,   0.05);
+            EndHudMessage(HUDMSG_PLAIN, 0, MenuCursorColor,   220.1,  25.0,   0.05);
         }
         break;
         case 2:
@@ -534,15 +534,15 @@ void DrawStatsMenu()
                 HudMessage("Energy: %d (+%d)", Player.Energy, (Player.EnergyNat + Player.SoulBlueCount + Player.EnergyBonus));
             else
                 HudMessage("Energy: %d", Player.Energy);
-            EndHudMessage(HUDMSG_PLAIN, 0, MenuCursorColor,   200.1,  75.0,   0.05);
+            EndHudMessage(HUDMSG_PLAIN, 0, MenuCursorColor,   220.1,  75.0,   0.05);
         }
         break;
         case 4:
         {
             if (Player.RegenerationTotal > Player.Regeneration)
-                HudMessage("Regeneration: %d (+%d)", Player.Regeneration, (Player.RegenerationNat + Player.SoulPurpleCount + Player.RegenerationBonus));
+                HudMessage("Regen: %d (+%d)", Player.Regeneration, (Player.RegenerationNat + Player.SoulPurpleCount + Player.RegenerationBonus));
             else
-                HudMessage("Regeneration: %d", Player.Regeneration);
+                HudMessage("Regen: %d", Player.Regeneration);
             EndHudMessage(HUDMSG_PLAIN, 0, MenuCursorColor,   0.1,    125.0,  0.05);
         }
         break;
@@ -552,7 +552,7 @@ void DrawStatsMenu()
                 HudMessage("Agility: %d (+%d)", Player.Agility, (Player.AgilityNat + Player.SoulOrangeCount + Player.AgilityBonus));
             else
                 HudMessage("Agility: %d", Player.Agility);
-            EndHudMessage(HUDMSG_PLAIN, 0, MenuCursorColor,   200.1,  125.0,  0.05);
+            EndHudMessage(HUDMSG_PLAIN, 0, MenuCursorColor,   220.1,  125.0,  0.05);
         }
         break;
         case 6:
@@ -577,7 +577,7 @@ void DrawStatsMenu()
             }
             else
                 HudMessage("Luck: %d", Player.Luck);
-            EndHudMessage(HUDMSG_PLAIN, 0, MenuCursorColor,   200.1,  175.0,  0.05);
+            EndHudMessage(HUDMSG_PLAIN, 0, MenuCursorColor,   220.1,  175.0,  0.05);
         }
         break;
         }
@@ -593,7 +593,7 @@ void DrawStatsMenu()
             HudMessage("Defense: %d (+%d)", Player.Defense, (Player.DefenseNat + Player.SoulGreenCount + Player.DefenseBonus));
         else
             HudMessage("Defense: %d", Player.Defense);
-        EndHudMessage(HUDMSG_PLAIN, 0, "Green",      200.1,  25.0,   0.05);
+        EndHudMessage(HUDMSG_PLAIN, 0, "Green",      220.1,  25.0,   0.05);
         if (Player.VitalityTotal > Player.Vitality)
             HudMessage("Vitality: %d (+%d)", Player.Vitality, (Player.VitalityNat + Player.SoulPinkCount + Player.VitalityBonus));
         else
@@ -603,17 +603,17 @@ void DrawStatsMenu()
             HudMessage("Energy: %d (+%d)", Player.Energy, (Player.EnergyNat + Player.SoulBlueCount + Player.EnergyBonus));
         else
             HudMessage("Energy: %d", Player.Energy);
-        EndHudMessage(HUDMSG_PLAIN, 0, "LightBlue",  200.1,  75.0,   0.05);
+        EndHudMessage(HUDMSG_PLAIN, 0, "LightBlue",  220.1,  75.0,   0.05);
         if (Player.RegenerationTotal > Player.Regeneration)
-            HudMessage("Regeneration: %d (+%d)", Player.Regeneration, (Player.RegenerationNat + Player.SoulPurpleCount + Player.RegenerationBonus));
+            HudMessage("Regen: %d (+%d)", Player.Regeneration, (Player.RegenerationNat + Player.SoulPurpleCount + Player.RegenerationBonus));
         else
-            HudMessage("Regeneration: %d", Player.Regeneration);
+            HudMessage("Regen: %d", Player.Regeneration);
         EndHudMessage(HUDMSG_PLAIN, 0, "Purple",     0.1,    125.0,  0.05);
         if (Player.AgilityTotal > Player.Agility)
             HudMessage("Agility: %d (+%d)", Player.Agility, (Player.AgilityNat + Player.SoulOrangeCount + Player.AgilityBonus));
         else
             HudMessage("Agility: %d", Player.Agility);
-        EndHudMessage(HUDMSG_PLAIN, 0, "Orange",     200.1,  125.0,  0.05);
+        EndHudMessage(HUDMSG_PLAIN, 0, "Orange",     220.1,  125.0,  0.05);
         if (Player.CapacityTotal > Player.Capacity)
             HudMessage("Capacity: %d (+%d)", Player.Capacity, (Player.CapacityNat + Player.SoulDarkBlueCount + Player.CapacityBonus));
         else
@@ -630,7 +630,7 @@ void DrawStatsMenu()
         }
         else
             HudMessage("Luck: %d", Player.Luck);
-        EndHudMessage(HUDMSG_PLAIN, 0, "Gold",       200.1,  175.0,  0.05);
+        EndHudMessage(HUDMSG_PLAIN, 0, "Gold",       220.1,  175.0,  0.05);
 
         // Ammo Amounts
         int Bullets = CheckInventory("Clip");
@@ -679,15 +679,15 @@ void DrawStatsMenu()
         if (Player.DefenseTotal > 0)
         {
             HudMessage("%.2k%% Damage Reduction", (Player.DefenseTotal > 0 ? (1.0 - Player.DamageFactor) : 0) * 100.0);
-            EndHudMessage(HUDMSG_PLAIN, 0, "Green",              230.1,  36.0,   0.05);
+            EndHudMessage(HUDMSG_PLAIN, 0, "Green",              250.1,  36.0,   0.05);
         }
         else
         {
             HudMessage("%.2k%% Damage Reduction", ((1.0 - Player.DamageFactor) * 100.0));
-            EndHudMessage(HUDMSG_PLAIN, 0, "Green",              230.1,  36.0,   0.05);
+            EndHudMessage(HUDMSG_PLAIN, 0, "Green",              250.1,  36.0,   0.05);
         }
         HudMessage("%d Mass", Player.Mass);
-        EndHudMessage(HUDMSG_PLAIN, 0, "Green",              230.1,  44.0,   0.05);
+        EndHudMessage(HUDMSG_PLAIN, 0, "Green",              250.1,  44.0,   0.05);
         HudMessage("%d Max HP", Player.HealthMax);
         EndHudMessage(HUDMSG_PLAIN, 0, "Brick",              30.1,   86.0,   0.05);
         HudMessage("%d HP Regen.", Player.HPAmount);
@@ -695,13 +695,13 @@ void DrawStatsMenu()
         HudMessage("%.2k%% Status Resist", Player.StatusEffectResist);
         EndHudMessage(HUDMSG_PLAIN, 0, "Brick",              30.1,   102.0,  0.05);
         HudMessage("%d Max EP", Player.EPMax);
-        EndHudMessage(HUDMSG_PLAIN, 0, "LightBlue",          230.1,  86.0,   0.05);
+        EndHudMessage(HUDMSG_PLAIN, 0, "LightBlue",          250.1,  86.0,   0.05);
         HudMessage("%d EP Regen.", Player.EPAmount);
-        EndHudMessage(HUDMSG_PLAIN, 0, "LightBlue",          230.1,  94.0,   0.05);
+        EndHudMessage(HUDMSG_PLAIN, 0, "LightBlue",          250.1,  94.0,   0.05);
         HudMessage("%S Sec Aura Time", FormatTime(AURA_CALCTIME));
-        EndHudMessage(HUDMSG_PLAIN, 0, "LightBlue",          230.1,  102.0,  0.05);
+        EndHudMessage(HUDMSG_PLAIN, 0, "LightBlue",          250.1,  102.0,  0.05);
         HudMessage("%d Aura Range", (int)Player.Aura.Range);
-        EndHudMessage(HUDMSG_PLAIN, 0, "LightBlue",          230.1,  110.0,  0.05);
+        EndHudMessage(HUDMSG_PLAIN, 0, "LightBlue",          250.1,  110.0,  0.05);
         HudMessage("HP Timer: %.2k Sec", (fixed)(Player.HPTime / 35.0K));
         EndHudMessage(HUDMSG_PLAIN, 0, "Brick",              30.1,   136.0,  0.05);
         HudMessage("EP Timer: %.2k Sec", (fixed)(Player.EPTime / 35.0K));
@@ -719,13 +719,13 @@ void DrawStatsMenu()
         HudMessage("Toxicity Timer: %d Sec", 30 - Player.ToxicityRegenBonus);
         EndHudMessage(HUDMSG_PLAIN, 0, "Green",              30.1,   160.0,  0.05);
         HudMessage("Speed: %.2k", Player.Speed);
-        EndHudMessage(HUDMSG_PLAIN, 0, "Orange",             230.1,  136.0,  0.05);
+        EndHudMessage(HUDMSG_PLAIN, 0, "Orange",             250.1,  136.0,  0.05);
         HudMessage("Jump Height: %.2k", Player.JumpHeight);
-        EndHudMessage(HUDMSG_PLAIN, 0, "Orange",             230.1,  144.0,  0.05);
+        EndHudMessage(HUDMSG_PLAIN, 0, "Orange",             250.1,  144.0,  0.05);
         HudMessage("+%d%% Weapon Speed", Player.WeaponSpeed);
-        EndHudMessage(HUDMSG_PLAIN, 0, "Orange",             230.1,  152.0,  0.05);
+        EndHudMessage(HUDMSG_PLAIN, 0, "Orange",             250.1,  152.0,  0.05);
         HudMessage("%d%% Survival Bonus", Player.SurvivalBonus);
-        EndHudMessage(HUDMSG_PLAIN, 0, "Orange",             230.1,  160.0,  0.05);
+        EndHudMessage(HUDMSG_PLAIN, 0, "Orange",             250.1,  160.0,  0.05);
         HudMessage("Bullets: %d/%d", Bullets, MaxBullets);
         EndHudMessage(HUDMSG_PLAIN, 0, "Brick",              30.1,   186.0,  0.05);
         HudMessage("Shells: %d/%d", Shells, MaxShells);
@@ -765,82 +765,82 @@ void DrawStatsMenu()
         // Luck
         SetFont("BIGFONT");
         HudMessage("%d", LUCK_HEALTHDROP);
-        EndHudMessage(HUDMSG_PLAIN, 0, (Player.HealthDrop ? "Gold" : "Gray"), 246.0, 204.0, 0.05);
+        EndHudMessage(HUDMSG_PLAIN, 0, (Player.HealthDrop ? "Gold" : "Gray"), 266.0, 204.0, 0.05);
         HudMessage("%d", LUCK_EPDROP);
-        EndHudMessage(HUDMSG_PLAIN, 0, (Player.EPDrop ? "Gold" : "Gray"), 284.0, 204.0, 0.05);
+        EndHudMessage(HUDMSG_PLAIN, 0, (Player.EPDrop ? "Gold" : "Gray"), 304.0, 204.0, 0.05);
         HudMessage("%d", LUCK_AMMODROP);
-        EndHudMessage(HUDMSG_PLAIN, 0, (Player.AmmoDrop ? "Gold" : "Gray"), 322.0, 204.0, 0.05);
+        EndHudMessage(HUDMSG_PLAIN, 0, (Player.AmmoDrop ? "Gold" : "Gray"), 342.0, 204.0, 0.05);
         HudMessage("%d", LUCK_TURRETDROP);
-        EndHudMessage(HUDMSG_PLAIN, 0, (Player.TurretDrop ? "Gold" : "Gray"), 246.0, 240.0, 0.05);
+        EndHudMessage(HUDMSG_PLAIN, 0, (Player.TurretDrop ? "Gold" : "Gray"), 266.0, 240.0, 0.05);
         HudMessage("%d", LUCK_MODULEDROP);
-        EndHudMessage(HUDMSG_PLAIN, 0, (Player.ModuleDrop ? "Gold" : "Gray"), 284.0, 240.0, 0.05);
+        EndHudMessage(HUDMSG_PLAIN, 0, (Player.ModuleDrop ? "Gold" : "Gray"), 304.0, 240.0, 0.05);
         HudMessage("%d", LUCK_ARMORDROP);
-        EndHudMessage(HUDMSG_PLAIN, 0, (Player.ArmorDrop ? "Gold" : "Gray"), 322.0, 240.0, 0.05);
+        EndHudMessage(HUDMSG_PLAIN, 0, (Player.ArmorDrop ? "Gold" : "Gray"), 342.0, 240.0, 0.05);
         HudMessage("%d", LUCK_WEAPONDROP);
-        EndHudMessage(HUDMSG_PLAIN, 0, (Player.WeaponDrop ? "Gold" : "Gray"), 246.0, 275.0, 0.05);
+        EndHudMessage(HUDMSG_PLAIN, 0, (Player.WeaponDrop ? "Gold" : "Gray"), 266.0, 275.0, 0.05);
         HudMessage("%d", LUCK_SHIELDDROP);
-        EndHudMessage(HUDMSG_PLAIN, 0, (Player.ShieldDrop ? "Gold" : "Gray"), 284.0, 276.0, 0.05);
+        EndHudMessage(HUDMSG_PLAIN, 0, (Player.ShieldDrop ? "Gold" : "Gray"), 304.0, 276.0, 0.05);
         HudMessage("%d", LUCK_AUGDROP);
-        EndHudMessage(HUDMSG_PLAIN, 0, (Player.AugDrop ? "Gold" : "Gray"), 322.0, 276.0, 0.05);
-        PrintSprite("MEDIA0", 0, 260.0, 212.0, 0.05);
-        PrintSprite("EPUPA0", 0, 301.0, 218.0, 0.05);
-        PrintSprite("AMMOA0", 0, 334.0, 210.0, 0.05);
-        PrintSprite("PTURA2A8", 0, 258.0, 234.0, 0.05);
-        PrintSprite("UMODA0", 0, 294.0, 245.0, 0.05);
-        PrintSprite("ARM1A0", 0, 336.0, 238.0, 0.05);
-        PrintSprite("PISTA0", 0, 257.0, 272.0, 0.05);
-        PrintSprite("SHPAA0", 0, 302.0, 293.0, 0.05);
-        PrintSprite("AUGCA0", 0, 334.0, 282.0, 0.05);
+        EndHudMessage(HUDMSG_PLAIN, 0, (Player.AugDrop ? "Gold" : "Gray"), 342.0, 276.0, 0.05);
+        PrintSprite("MEDIA0", 0, 280.0, 212.0, 0.05);
+        PrintSprite("EPUPA0", 0, 320.0, 213.0, 0.05);
+        PrintSprite("AMMOA0", 0, 354.0, 208.0, 0.05);
+        PrintSprite("PTURA2A8", 0, 278.0, 234.0, 0.05);
+        PrintSprite("UMODA0", 0, 314.0, 245.0, 0.05);
+        PrintSprite("ARM1A0", 0, 356.0, 238.0, 0.05);
+        PrintSprite("PISTA0", 0, 277.0, 272.0, 0.05);
+        PrintSprite("SHPAA0", 0, 322.0, 293.0, 0.05);
+        PrintSprite("AUGCA0", 0, 354.0, 282.0, 0.05);
         SetFont("SMALLFONT");
         if (Player.LuckTotal > 0)
         {
             HudMessage("\CfCredit\C- Drop Rate: \Cf+%d%%", (GetCVar("drpg_levelup_natural") ? Player.LuckTotal / 2 : Player.LuckTotal));
-            EndHudMessage(HUDMSG_PLAIN, 0, "White", 230.1, 292.0, 0.05);
+            EndHudMessage(HUDMSG_PLAIN, 0, "White", 250.1, 292.0, 0.05);
         }
         if (Player.HealthDrop)
         {
             HudMessage("\CaHP\C- Drop Rate: \Cf%.3k%%", Player.HealthChance);
-            EndHudMessage(HUDMSG_PLAIN, 0, "White", 230.1, 300.0, 0.05);
+            EndHudMessage(HUDMSG_PLAIN, 0, "White", 250.1, 300.0, 0.05);
         }
         if (Player.EPDrop)
         {
             HudMessage("\CnEP\C- Drop Rate: \Cf%.3k%%", Player.EPChance);
-            EndHudMessage(HUDMSG_PLAIN, 0, "White", 230.1, 308.0, 0.05);
+            EndHudMessage(HUDMSG_PLAIN, 0, "White", 250.1, 308.0, 0.05);
         }
         if (Player.AmmoDrop)
         {
             HudMessage("\CdAmmo\C- Drop Rate: \Cf%.3k%%", Player.AmmoChance);
-            EndHudMessage(HUDMSG_PLAIN, 0, "White", 230.1, 316.0, 0.05);
+            EndHudMessage(HUDMSG_PLAIN, 0, "White", 250.1, 316.0, 0.05);
         }
         if (Player.TurretDrop)
         {
             HudMessage("\CgTurret\C- Drop Rate: \Cf%.3k%%", Player.TurretChance);
-            EndHudMessage(HUDMSG_PLAIN, 0, "White", 230.1, 324.0, 0.05);
+            EndHudMessage(HUDMSG_PLAIN, 0, "White", 250.1, 324.0, 0.05);
         }
         if (Player.ModuleDrop)
         {
             HudMessage("\CdModule\C- Drop Rate: \Cf%.3k%%", Player.ModuleChance);
-            EndHudMessage(HUDMSG_PLAIN, 0, "White", 230.1, 332.0, 0.05);
+            EndHudMessage(HUDMSG_PLAIN, 0, "White", 250.1, 332.0, 0.05);
         }
         if (Player.ArmorDrop)
         {
             HudMessage("\CrArmor\C- Drop Rate: \Cf%.3k%%", Player.ArmorChance);
-            EndHudMessage(HUDMSG_PLAIN, 0, "White", 230.1, 340.0, 0.05);
+            EndHudMessage(HUDMSG_PLAIN, 0, "White", 250.1, 340.0, 0.05);
         }
         if (Player.WeaponDrop)
         {
             HudMessage("\CqWeapon\C- Drop Rate: \Cf%.3k%%", Player.WeaponChance);
-            EndHudMessage(HUDMSG_PLAIN, 0, "White", 230.1, 348.0, 0.05);
+            EndHudMessage(HUDMSG_PLAIN, 0, "White", 250.1, 348.0, 0.05);
         }
         if (Player.ShieldDrop)
         {
             HudMessage("\CvShield\C- Drop Rate: \Cf%.3k%%", Player.ShieldChance);
-            EndHudMessage(HUDMSG_PLAIN, 0, "White", 230.1, 356.0, 0.05);
+            EndHudMessage(HUDMSG_PLAIN, 0, "White", 250.1, 356.0, 0.05);
         }
         if (Player.AugDrop)
         {
             HudMessage("\CkAug.\C- Drop Rate: \Cf%.3k%%", Player.AugChance);
-            EndHudMessage(HUDMSG_PLAIN, 0, "White", 230.1, 364.0, 0.05);
+            EndHudMessage(HUDMSG_PLAIN, 0, "White", 250.1, 364.0, 0.05);
         }
 
         // Perk Icons
@@ -855,13 +855,13 @@ void DrawStatsMenu()
 
         // Icons
         PrintSprite("STAT1", 0, 16.1, 60.1, 0.05);
-        PrintSprite("STAT2", 0, 214.1, 56.1, 0.05);
+        PrintSprite("STAT2", 0, 234.1, 56.1, 0.05);
         PrintSprite("STAT3", 0, 16.1, 110.1, 0.05);
-        PrintSprite("STAT4", 0, 214.1, 112.1, 0.05);
+        PrintSprite("STAT4", 0, 234.1, 112.1, 0.05);
         PrintSprite("STAT5", 0, 16.1, 162.1, 0.05);
-        PrintSprite("STAT6", 0, 214.1, 160.1, 0.05);
+        PrintSprite("STAT6", 0, 234.1, 160.1, 0.05);
         PrintSprite("STAT7", 0, 16.1, 210.1, 0.05);
-        PrintSprite("STAT8", 0, 216.1, 210.1, 0.05);
+        PrintSprite("STAT8", 0, 236.1, 210.1, 0.05);
     };
     break;
     // Stats XP Page
