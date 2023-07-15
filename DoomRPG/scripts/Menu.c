@@ -406,7 +406,7 @@ void DrawMainMenu()
         break;
         case 4:
         {
-            HudMessage("Extra-Large Stim: %d/%d", Player.Stim.Amount, Player.Stim.Capacity);
+            HudMessage("Extra Large Stim: %d/%d", Player.Stim.Amount, Player.Stim.Capacity);
             EndHudMessage(HUDMSG_PLAIN, 0, "Green", 180.1, 310.0, 0.05);
         }
         break;
@@ -540,9 +540,9 @@ void DrawStatsMenu()
         case 4:
         {
             if (Player.RegenerationTotal > Player.Regeneration)
-                HudMessage("Regen: %d (+%d)", Player.Regeneration, (Player.RegenerationNat + Player.SoulPurpleCount + Player.RegenerationBonus));
+                HudMessage("Regeneration: %d (+%d)", Player.Regeneration, (Player.RegenerationNat + Player.SoulPurpleCount + Player.RegenerationBonus));
             else
-                HudMessage("Regen: %d", Player.Regeneration);
+                HudMessage("Regeneration: %d", Player.Regeneration);
             EndHudMessage(HUDMSG_PLAIN, 0, MenuCursorColor,   0.1,    125.0,  0.05);
         }
         break;
@@ -605,9 +605,9 @@ void DrawStatsMenu()
             HudMessage("Energy: %d", Player.Energy);
         EndHudMessage(HUDMSG_PLAIN, 0, "LightBlue",  200.1,  75.0,   0.05);
         if (Player.RegenerationTotal > Player.Regeneration)
-            HudMessage("Regen: %d (+%d)", Player.Regeneration, (Player.RegenerationNat + Player.SoulPurpleCount + Player.RegenerationBonus));
+            HudMessage("Regeneration: %d (+%d)", Player.Regeneration, (Player.RegenerationNat + Player.SoulPurpleCount + Player.RegenerationBonus));
         else
-            HudMessage("Regen: %d", Player.Regeneration);
+            HudMessage("Regeneration: %d", Player.Regeneration);
         EndHudMessage(HUDMSG_PLAIN, 0, "Purple",     0.1,    125.0,  0.05);
         if (Player.AgilityTotal > Player.Agility)
             HudMessage("Agility: %d (+%d)", Player.Agility, (Player.AgilityNat + Player.SoulOrangeCount + Player.AgilityBonus));
@@ -690,13 +690,13 @@ void DrawStatsMenu()
         EndHudMessage(HUDMSG_PLAIN, 0, "Green",              230.1,  44.0,   0.05);
         HudMessage("%d Max HP", Player.HealthMax);
         EndHudMessage(HUDMSG_PLAIN, 0, "Brick",              30.1,   86.0,   0.05);
-        HudMessage("%d HP Regen", Player.HPAmount);
+        HudMessage("%d HP Regen.", Player.HPAmount);
         EndHudMessage(HUDMSG_PLAIN, 0, "Brick",              30.1,   94.0,   0.05);
         HudMessage("%.2k%% Status Resist", Player.StatusEffectResist);
         EndHudMessage(HUDMSG_PLAIN, 0, "Brick",              30.1,   102.0,  0.05);
         HudMessage("%d Max EP", Player.EPMax);
         EndHudMessage(HUDMSG_PLAIN, 0, "LightBlue",          230.1,  86.0,   0.05);
-        HudMessage("%d EP Regen", Player.EPAmount);
+        HudMessage("%d EP Regen.", Player.EPAmount);
         EndHudMessage(HUDMSG_PLAIN, 0, "LightBlue",          230.1,  94.0,   0.05);
         HudMessage("%S Sec Aura Time", FormatTime(AURA_CALCTIME));
         EndHudMessage(HUDMSG_PLAIN, 0, "LightBlue",          230.1,  102.0,  0.05);
@@ -708,15 +708,15 @@ void DrawStatsMenu()
         EndHudMessage(HUDMSG_PLAIN, 0, "LightBlue",          30.1,   144.0,  0.05);
         if (GetCVar("drpg_levelup_natural"))
         {
-            HudMessage("Regen Sphere: %d Sec", (int)(40 + Player.RegenerationTotal));
+            HudMessage("Regen. Sphere: %d Sec", (int)(40 + Player.RegenerationTotal));
             EndHudMessage(HUDMSG_PLAIN, 0, "Purple",             30.1,   152.0,  0.05);
         }
         else
         {
-            HudMessage("Regen Sphere: %d Sec", (int)(40 + Player.RegenerationTotal * 2));
+            HudMessage("Regen. Sphere: %d Sec", (int)(40 + Player.RegenerationTotal * 2));
             EndHudMessage(HUDMSG_PLAIN, 0, "Purple",             30.1,   152.0,  0.05);
         }
-        HudMessage("Toxicity Regen: %d Sec", 30 - Player.ToxicityRegenBonus);
+        HudMessage("Toxicity Timer: %d Sec", 30 - Player.ToxicityRegenBonus);
         EndHudMessage(HUDMSG_PLAIN, 0, "Green",              30.1,   160.0,  0.05);
         HudMessage("Speed: %.2k", Player.Speed);
         EndHudMessage(HUDMSG_PLAIN, 0, "Orange",             230.1,  136.0,  0.05);
@@ -734,7 +734,7 @@ void DrawStatsMenu()
         EndHudMessage(HUDMSG_PLAIN, 0, "DarkGray",           30.1,   202.0,  0.05);
         HudMessage("Cells: %d/%d", Cells, MaxCells);
         EndHudMessage(HUDMSG_PLAIN, 0, "Green",              30.1,   210.0,  0.05);
-        HudMessage("Aug Battery Max: %d%%", (int)Player.Augs.BatteryMax);
+        HudMessage("Aug. Battery Max: %d%%", (int)Player.Augs.BatteryMax);
         EndHudMessage(HUDMSG_PLAIN, 0, "Yellow",             30.1,   218.0,  0.05);
         HudMessage("Stim Vial Max: %d", Player.Stim.VialMax);
         EndHudMessage(HUDMSG_PLAIN, 0, "Cyan",               30.1,   226.0,  0.05);
@@ -742,7 +742,7 @@ void DrawStatsMenu()
         EndHudMessage(HUDMSG_PLAIN, 0, "Brick",              30.1,   234.0,  0.05);
         if (GetCVar("drpg_inv_capacity"))
         {
-            HudMessage("Inventory: %d/%d", Player.InvItems, CheckInventoryMax());
+            HudMessage("Inv. Items: %d/%d", Player.InvItems, CheckInventoryMax());
             EndHudMessage(HUDMSG_PLAIN, 0, "White",          30.1,   242.0,  0.05);
         }
         if (CompatMode == COMPAT_DRLA)
@@ -799,7 +799,7 @@ void DrawStatsMenu()
         }
         if (Player.HealthDrop)
         {
-            HudMessage("\CaHealth\C- Drop Rate: \Cf%.3k%%", Player.HealthChance);
+            HudMessage("\CaHP\C- Drop Rate: \Cf%.3k%%", Player.HealthChance);
             EndHudMessage(HUDMSG_PLAIN, 0, "White", 230.1, 300.0, 0.05);
         }
         if (Player.EPDrop)
@@ -839,7 +839,7 @@ void DrawStatsMenu()
         }
         if (Player.AugDrop)
         {
-            HudMessage("\CkAug\C- Drop Rate: \Cf%.3k%%", Player.AugChance);
+            HudMessage("\CkAug.\C- Drop Rate: \Cf%.3k%%", Player.AugChance);
             EndHudMessage(HUDMSG_PLAIN, 0, "White", 230.1, 364.0, 0.05);
         }
 
@@ -950,37 +950,37 @@ void DrawStatsMenu()
             // Strength
             {
                 StrParam("Strength level - %d:", (naturalStats ? 150 : 75)),
-                "Damage exponentially increases as health lowers",
+                "Total damage dealt exponentially increases as HP gets lower",
                 NULL
             },
 
             // Defense
             {
                 StrParam("Defense level - %d:", (naturalStats ? 150 : 75)),
-                "Damage taken exponentially decreases as health lowers",
+                "Total damage taken exponentially decreases as HP gets lower",
                 NULL
             },
 
             // Vitality
             {
                 StrParam("Vitality level - %d:", (naturalStats ? 150 : 75)),
-                "No movement penalties at low health",
-                "2x HP regeneration rate below 20% health",
+                "No movement penalties at a HP critical level",
+                "200% HP regeneration rate when below 20% max HP",
                 NULL
             },
 
             // Energy
             {
                 StrParam("Energy level - %d:", (naturalStats ? 100 : 50)),
-                "2x EP regeneration rate when burned out",
+                "200% EP regeneration rate when burned out",
                 (naturalStats ? "Can stack an extra Aura every 50 Energy invested" : "Can stack an extra Aura every 25 Energy invested"),
                 NULL
             },
 
             // Regeneration
             {
-                StrParam("Regen level - %d:", (naturalStats ? 150 : 75)),
-                "Regeneration speeds increase as your HP/EP gets lower",
+                StrParam("Regeneration level - %d:", (naturalStats ? 150 : 75)),
+                "Regeneration rate increase as HP/EP gets lower",
                 NULL
             },
 
@@ -988,21 +988,21 @@ void DrawStatsMenu()
             {
                 StrParam("Agility level - %d:", (naturalStats ? 150 : 75)),
                 "+15% Survival Bonus",
-                "Movement increases Regeneration speed",
+                "Movement increases HP/EP regeneration rate",
                 NULL
             },
 
             // Capacity
             {
                 StrParam("Capacity level - %d:", (naturalStats ? 200 : 100)),
-                "Ammo regeneration",
+                "Ammo replenishment",
                 NULL
             },
 
             // Luck
             {
                 StrParam("Luck level - %d:", (naturalStats ? 200 : 100)),
-                "Always have full automap",
+                "Always have full auto map",
                 NULL
             }
         };
@@ -1806,7 +1806,7 @@ void DrawStimsMenu()
         StimString = StrParam("Large Stim: %d/%d (\Cq+%d%% Toxicity\C-)", Player.Stim.Amount, Player.Stim.Capacity, Player.Stim.Toxicity);
         break;
     case 4:
-        StimString = StrParam("Extra-Large Stim: %d/%d (\Cq+%d%% Toxicity\C-)", Player.Stim.Amount, Player.Stim.Capacity, Player.Stim.Toxicity);
+        StimString = StrParam("Extra Large Stim: %d/%d (\Cq+%d%% Toxicity\C-)", Player.Stim.Amount, Player.Stim.Capacity, Player.Stim.Toxicity);
         break;
     default:
     {
@@ -1822,7 +1822,7 @@ void DrawStimsMenu()
             StimString = StrParam("Large Stim: %d", CheckInventory("DRPGStimLarge"));
             break;
         case 3:
-            StimString = StrParam("Extra-Large Stim: %d", CheckInventory("DRPGStimXL"));
+            StimString = StrParam("Extra Large Stim: %d", CheckInventory("DRPGStimXL"));
             break;
         }
     }
