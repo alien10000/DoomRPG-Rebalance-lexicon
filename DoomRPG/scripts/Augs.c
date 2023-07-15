@@ -128,14 +128,14 @@ AugInfo RPGMap AugData[AUG_MAX] =
         .MaxLevel = 8,
         .Description =
         {
-            "Capacity +25%, Self Recharge Rate +0.05/s",
-            "Capacity +50%, Self Recharge Rate +0.1/s",
-            "Capacity +75%, Self Recharge Rate +0.2/s",
-            "Capacity +100%, Self Recharge Rate +0.3/s",
-            "Capacity +125%, Self Recharge Rate +0.4/s",
-            "Capacity +150%, Self Recharge Rate +0.5/s",
-            "Capacity +175%, Self Recharge Rate +0.75/s",
-            "Capacity +200%, Self Recharge Rate +1/s"
+            "Capacity +25%, Self Recharge Rate +0.05/sec",
+            "Capacity +50%, Self Recharge Rate +0.1/sec",
+            "Capacity +75%, Self Recharge Rate +0.2/sec",
+            "Capacity +100%, Self Recharge Rate +0.3/sec",
+            "Capacity +125%, Self Recharge Rate +0.4/sec",
+            "Capacity +150%, Self Recharge Rate +0.5/sec",
+            "Capacity +175%, Self Recharge Rate +0.75/sec",
+            "Capacity +200%, Self Recharge Rate +1/sec"
         },
         .TokenActor = "DRPGAugTokenBattery"
     },
