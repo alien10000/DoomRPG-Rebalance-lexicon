@@ -1210,6 +1210,26 @@ void DrawStatsMenu()
     }
 }
 
+ItemInfoPtr GetIncreaseAugAddItem(int AugIndex, int AugLevel)
+{
+    // Get additional item for Enhanced Battery Augmentation
+    if (AugIndex == 8)
+    {
+        if (AugLevel <= 3) return FindItem("DRPGBatterySmall");
+        if (AugLevel > 3) return FindItem("DRPGBatteryLarge");
+    }
+}
+
+int GetIncreaseAugAddCost(int AugIndex, int AugLevel)
+{
+    // Get ammount additional items for Enhanced Battery Augmentation
+    if (AugIndex == 8)
+    {
+        if (AugLevel <= 3) return 1 + AugLevel;
+        if (AugLevel > 3) return AugLevel - 3;
+    }
+}
+
 void DrawAugsMenu()
 {
     // Titles
@@ -1222,14 +1242,20 @@ void DrawAugsMenu()
     AugInfoPtr SelectedAug = &AugData[SelectedIndex];
     str UpgradeCanisterAmount = "";
     str UpgradeComponentAmount = "";
+    ItemInfoPtr  AdditionalItem;
+    int AdditionalItemAmount;
     if (Player.Augs.Level[SelectedIndex] == 0)
     {
         UpgradeCanisterAmount = " \Cg(-1)";
+        AdditionalItem = GetIncreaseAugAddItem(SelectedIndex, Player.Augs.Level[SelectedIndex]);
+        AdditionalItemAmount = GetIncreaseAugAddCost(SelectedIndex, Player.Augs.Level[SelectedIndex]);
     }
     else if (Player.Augs.Level[SelectedIndex] < SelectedAug->MaxLevel)
     {
         UpgradeCanisterAmount = " \Cg(-1)";
         UpgradeComponentAmount = StrParam(" \Cg(%d)", -(Player.Augs.Level[SelectedIndex] + 1));
+        AdditionalItem = GetIncreaseAugAddItem(SelectedIndex, Player.Augs.Level[SelectedIndex]);
+        AdditionalItemAmount = GetIncreaseAugAddCost(SelectedIndex, Player.Augs.Level[SelectedIndex]);
     };
 
     // Aug Canisters
@@ -1255,6 +1281,30 @@ void DrawAugsMenu()
     SetFont("BIGFONT");
     HudMessage("%d%%", (int)Player.Augs.Battery);
     EndHudMessage(HUDMSG_PLAIN, 0, "Yellow", 208.1, 99.0, 0.05);
+
+    // Additional items
+    if (AdditionalItemAmount > 0)
+    {
+        fixed SpriteYOffset;
+        str TextColor;
+
+        // Set sprite offsets and colors
+        if (AdditionalItem->Actor == "DRPGBatterySmall")
+        {
+            SpriteYOffset = 40.0;
+            TextColor = "Yellow";
+        }
+        else if (AdditionalItem->Actor == "DRPGBatteryLarge")
+        {
+            SpriteYOffset = 49.0;
+            TextColor = "Yellow";
+        }
+
+        PrintSprite(AdditionalItem->Sprite.Name, 0, 300.0, SpriteYOffset, 0.05);
+        SetFont("BIGFONT");
+        HudMessage("%d \Cg(-%d)", CheckInventory(AdditionalItem->Actor), AdditionalItemAmount);
+        EndHudMessage(HUDMSG_PLAIN, 0, TextColor, 308.1, 30.0, 0.05);
+    }
 
     // Draw Aug slots
     for (int i = 0; i < 2; i++)
@@ -2359,7 +2409,7 @@ void MenuInput()
         if (CheckInput(BT_USE, KEY_PRESSED, false, PlayerNumber()))
         {
             if (CheckInput(BT_SPEED, KEY_HELD, false, PlayerNumber()))
-                LevelUpAug(Player.MenuIndex);
+                IncreaseAug(Player.MenuIndex);
             else
             {
                 EquipAug(Player.MenuIndex);
@@ -2683,6 +2733,56 @@ void IncreaseStat(int Stat)
         ActivatorSound("menu/move", 127);
 
     TakeInventory("DRPGModule", Cost);
+}
+
+void IncreaseAug(int AugIndex)
+{
+    if (Player.Augs.Level[AugIndex] < AugData[AugIndex].MaxLevel)
+    {
+        bool CanLevel = true;
+
+        // Get information about additional items
+        ItemInfoPtr  AdditionalItem = GetIncreaseAugAddItem(AugIndex, Player.Augs.Level[AugIndex]);
+        int AdditionalItemAmount = GetIncreaseAugAddCost(AugIndex, Player.Augs.Level[AugIndex]);
+
+        if (AdditionalItemAmount > 0 && CheckInventory(AdditionalItem->Actor) < AdditionalItemAmount)
+        {
+            CanLevel = false;
+        }
+        else if (Player.Augs.Level[AugIndex] == 0)
+        {
+            if (CheckInventory("DRPGAugCanister"))
+            {
+                ActivatorSound("aug/levelup", 127);
+                TakeInventory("DRPGAugCanister", 1);
+                TakeInventory(AdditionalItem->Actor, AdditionalItemAmount);
+            }
+            else
+                CanLevel = false;
+        }
+        else
+        {
+            if (CheckInventory("DRPGAugCanister") && CheckInventory("DRPGAugUpgradeCanister") >= Player.Augs.Level[AugIndex] + 1)
+            {
+                ActivatorSound("aug/levelup", 127);
+                TakeInventory("DRPGAugCanister", 1);
+                TakeInventory("DRPGAugUpgradeCanister", Player.Augs.Level[AugIndex] + 1);
+                TakeInventory(AdditionalItem->Actor, AdditionalItemAmount);
+            }
+            else
+                CanLevel = false;
+        }
+
+        if (!CanLevel)
+        {
+            PrintError("You cannot upgrade\nthis augmentation");
+            ActivatorSound("menu/error", 127);
+            return;
+        }
+
+        Player.Augs.Level[AugIndex]++;
+        Player.Augs.CurrentLevel[AugIndex]++;
+    }
 }
 
 void IncreaseSkill(int Category, int Index, bool UsingOverdrive)
