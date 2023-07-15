@@ -26,6 +26,7 @@ void DrawTurretTimers(fixed, fixed);
 void MenuInput();
 
 void IncreaseStat(int);
+void IncreaseAug(int);
 void IncreaseSkill(int, int, bool);
 void UpgradeTurret(int);
 void PrintStatError();
