@@ -340,7 +340,7 @@ void CheckLevel()
                         GiveInventory("DRPGAugSlotUpgrade", 1);
                         GiveInventory("DRPGAugUpgradeCanister", i / 2);
                         if (GetActivatorCVar("drpg_notifications_detailed"))
-                            HudMessage("\CfBonus:\C-\n\Cn1 Augmentation Canister\C-\n\Cd%d Augmentation Upgrade Canister(s)\C-\n\Cy1 Augmentation Slot Upgrade\C-", i / 2);
+                            HudMessage("\CfBonus:\C-\n\Cn1 Augmentation Canister\C-\n\Cd%d Augmentation Upgrade Canisters\C-\n\Cy1 Augmentation Slot Upgrade\C-", i / 2);
                         EndHudMessage(HUDMSG_FADEOUT, LEVELUP_ID + 1, "White", X + 0.4, Y + 48, 3.0, 2.0);
                     }
                     else if (Player.Level == i / 2 * 10)
@@ -348,7 +348,7 @@ void CheckLevel()
                         GiveInventory("DRPGAugCanister", 1);
                         GiveInventory("DRPGAugUpgradeCanister", i / 2);
                         if (GetActivatorCVar("drpg_notifications_detailed"))
-                            HudMessage("\CfBonus:\C-\n\Cn1 Augmentation Canister\C-\n\Cd%d Augmentation Upgrade Canister\C-", i / 2);
+                            HudMessage("\CfBonus:\C-\n\Cn1 Augmentation Canister\C-\n\Cd%d Augmentation Upgrade Canisters\C-", i / 2);
                         EndHudMessage(HUDMSG_FADEOUT, LEVELUP_ID + 1, "White", X + 0.4, Y + 32, 3.0, 2.0);
                     }
                     else if (Player.Level == i * 5)
