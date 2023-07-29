@@ -238,17 +238,17 @@ void DrawMainMenu()
     EndHudMessage(HUDMSG_PLAIN, 0, "Grey",          0.1, 10.0, 0.05);
     HudMessage("CLASS");
     EndHudMessage(HUDMSG_PLAIN, 0, "Grey",          95.1, 10.0, 0.05);
-    HudMessage("- PLAYER STATS -");
+    HudMessage("- CHAR. STATS -");
     EndHudMessage(HUDMSG_PLAIN, 0, "Grey",          180.1, 10.0, 0.05);
     HudMessage("- LEVEL STATS -");
     EndHudMessage(HUDMSG_PLAIN, 0, "Grey",          180.1, 100.0, 0.05);
-    HudMessage("- AUG ITEMS -");
+    HudMessage("- AUG. ITEMS -");
     EndHudMessage(HUDMSG_PLAIN, 0, "Grey",          0.1, 175.0, 0.05);
     HudMessage("- SHIELD -");
     EndHudMessage(HUDMSG_PLAIN, 0, "Grey",          180.1, 175.0, 0.05);
     HudMessage("- STIM ITEMS -");
     EndHudMessage(HUDMSG_PLAIN, 0, "Grey",          0.1, 290.0, 0.05);
-    HudMessage("- STIM 'N TOXICITY -");
+    HudMessage("- TOXICITY -");
     EndHudMessage(HUDMSG_PLAIN, 0, "Grey",          180.1, 290.0, 0.05);
 
     // Draw Menu
@@ -718,7 +718,7 @@ void DrawStatsMenu()
         }
         HudMessage("Toxicity Timer: %d Sec", 30 - Player.ToxicityRegenBonus);
         EndHudMessage(HUDMSG_PLAIN, 0, "Green",              30.1,   160.0,  0.05);
-        HudMessage("Speed: %.2k", Player.Speed);
+        HudMessage("Movement Speed: %.2k", Player.Speed);
         EndHudMessage(HUDMSG_PLAIN, 0, "Orange",             250.1,  136.0,  0.05);
         HudMessage("Jump Height: %.2k", Player.JumpHeight);
         EndHudMessage(HUDMSG_PLAIN, 0, "Orange",             250.1,  144.0,  0.05);
@@ -980,7 +980,7 @@ void DrawStatsMenu()
             // Regeneration
             {
                 StrParam("Regeneration level - %d:", (naturalStats ? 150 : 75)),
-                "Regeneration rate increase as HP/EP gets lower",
+                "Regeneration rate increases as HP/EP gets lower",
                 NULL
             },
 
