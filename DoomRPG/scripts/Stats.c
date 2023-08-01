@@ -331,7 +331,8 @@ void CheckLevel()
                     {
                         GiveInventory("DRPGAugCanister", 1);
                         if (GetActivatorCVar("drpg_notifications_detailed"))
-                            HudMessage("\CfBonus:\C- \Cn1 Aug Canister\C-");
+                            HudMessage("\CfBonus:\C-\n\Cn1 Augmentation Canister\C-");
+                        EndHudMessage(HUDMSG_FADEOUT, LEVELUP_ID + 1, "White", X + 0.4, Y + 32, 3.0, 2.0);
                     }
                     else if (Player.Level == 30 || Player.Level == 60)
                     {
@@ -339,24 +340,25 @@ void CheckLevel()
                         GiveInventory("DRPGAugSlotUpgrade", 1);
                         GiveInventory("DRPGAugUpgradeCanister", i / 2);
                         if (GetActivatorCVar("drpg_notifications_detailed"))
-                            HudMessage("\CfBonus:\C- \Cn1 Aug Canister\C-, \Cd%d Aug Upgrade Canister\C- and \Cy1 Aug Slot\C-", i / 2);
+                            HudMessage("\CfBonus:\C-\n\Cn1 Augmentation Canister\C-\n\Cd%d Augmentation Upgrade Canisters\C-\n\Cy1 Augmentation Slot Upgrade\C-", i / 2);
+                        EndHudMessage(HUDMSG_FADEOUT, LEVELUP_ID + 1, "White", X + 0.4, Y + 48, 3.0, 2.0);
                     }
                     else if (Player.Level == i / 2 * 10)
                     {
                         GiveInventory("DRPGAugCanister", 1);
                         GiveInventory("DRPGAugUpgradeCanister", i / 2);
                         if (GetActivatorCVar("drpg_notifications_detailed"))
-                            HudMessage("\CfBonus:\C- \Cn1 Aug Canister\C- and \Cd%d Aug Upgrade Canister\C-", i / 2);
+                            HudMessage("\CfBonus:\C-\n\Cn1 Augmentation Canister\C-\n\Cd%d Augmentation Upgrade Canisters\C-", i / 2);
+                        EndHudMessage(HUDMSG_FADEOUT, LEVELUP_ID + 1, "White", X + 0.4, Y + 32, 3.0, 2.0);
                     }
                     else if (Player.Level == i * 5)
                     {
                         int Credits = Random(i * 100 + 500, i * 200 + 1000) / 250 * 250;;
                         GiveActorInventory(Player.TID, "DRPGCredits", i * Credits);
                         if (GetActivatorCVar("drpg_notifications_detailed"))
-                            HudMessage("\CfBonus:\C- \Cf%d Credits\C-", i * Credits);
+                            HudMessage("\CfBonus:\C-\n\Cf%d Credits\C-", i * Credits);
+                        EndHudMessage(HUDMSG_FADEOUT, LEVELUP_ID + 1, "White", X + 0.4, Y + 32, 3.0, 2.0);
                     }
-
-                    EndHudMessage(HUDMSG_FADEOUT, LEVELUP_ID + 1, "White", X + 0.4, Y + 32, 3.0, 2.0);
                 }
             }
 

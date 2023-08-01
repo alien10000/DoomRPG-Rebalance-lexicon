@@ -128,14 +128,14 @@ AugInfo RPGMap AugData[AUG_MAX] =
         .MaxLevel = 8,
         .Description =
         {
-            "Capacity +25%, Self Recharge Rate +0.05/s",
-            "Capacity +50%, Self Recharge Rate +0.1/s",
-            "Capacity +75%, Self Recharge Rate +0.2/s",
-            "Capacity +100%, Self Recharge Rate +0.3/s",
-            "Capacity +125%, Self Recharge Rate +0.4/s",
-            "Capacity +150%, Self Recharge Rate +0.5/s",
-            "Capacity +175%, Self Recharge Rate +0.75/s",
-            "Capacity +200%, Self Recharge Rate +1/s"
+            "Capacity +25%, Self Recharge Rate +0.05/sec",
+            "Capacity +50%, Self Recharge Rate +0.1/sec",
+            "Capacity +75%, Self Recharge Rate +0.2/sec",
+            "Capacity +100%, Self Recharge Rate +0.3/sec",
+            "Capacity +125%, Self Recharge Rate +0.4/sec",
+            "Capacity +150%, Self Recharge Rate +0.5/sec",
+            "Capacity +175%, Self Recharge Rate +0.75/sec",
+            "Capacity +200%, Self Recharge Rate +1/sec"
         },
         .TokenActor = "DRPGAugTokenBattery"
     },
@@ -589,45 +589,5 @@ void EquipAug(int Aug)
                 Player.Augs.Active[Aug] = true;
             }
         }
-    }
-}
-
-void LevelUpAug(int AugIndex)
-{
-    if (Player.Augs.Level[AugIndex] < AugData[AugIndex].MaxLevel)
-    {
-        bool CanLevel = true;
-
-        if (Player.Augs.Level[AugIndex] == 0)
-        {
-            if (CheckInventory("DRPGAugCanister"))
-            {
-                ActivatorSound("aug/levelup", 127);
-                TakeInventory("DRPGAugCanister", 1);
-            }
-            else
-                CanLevel = false;
-        }
-        else
-        {
-            if (CheckInventory("DRPGAugCanister") && CheckInventory("DRPGAugUpgradeCanister") >= Player.Augs.Level[AugIndex] + 1)
-            {
-                ActivatorSound("aug/levelup", 127);
-                TakeInventory("DRPGAugCanister", 1);
-                TakeInventory("DRPGAugUpgradeCanister", Player.Augs.Level[AugIndex] + 1);
-            }
-            else
-                CanLevel = false;
-        }
-
-        if (!CanLevel)
-        {
-            PrintError("You cannot upgrade\nthis augmentation");
-            ActivatorSound("menu/error", 127);
-            return;
-        }
-
-        Player.Augs.Level[AugIndex]++;
-        Player.Augs.CurrentLevel[AugIndex]++;
     }
 }

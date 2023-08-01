@@ -981,6 +981,8 @@ NamedScript void CalculateMonsterStats(MonsterStatsPtr Stats)
         Stats->Level += (int)((fixed)AveragePlayerLevel() * LevelWeight);
     if (LevelType == 2 || LevelType == 3) // Map Number
         Stats->Level += (int)((fixed)LevelNum * MapWeight);
+    if (CurrentLevel->UACBase || CurrentLevel->UACArena) // Outpost or Arena
+        Stats->Level = AveragePlayerLevel();
     if (AveragePlayerLuck() < 0)
         Stats->Level += -AveragePlayerLuck();
 
@@ -991,7 +993,7 @@ NamedScript void CalculateMonsterStats(MonsterStatsPtr Stats)
         Stats->Level = (int)(Stats->Level * RandomFixed(RandomMinWeight, RandomMaxWeight));
 
     // If the monster is friendly, it has the average level of all players in the game
-    if (GetActorProperty(0, APROP_Friendly))
+    if (!CurrentLevel->UACBase && GetActorProperty(0, APROP_Friendly))
         Stats->Level = (int)(((fixed)AveragePlayerLevel() * LevelWeight + (fixed)LevelNum * MapWeight) * RandomFixed(0.9, 1.1));
 
     // Special case for Powersuit Mk. II
@@ -3277,7 +3279,7 @@ NamedScript void MonsterDeath()
             DropMonsterItem(Killer, 0, "DRPGCredits500", 170 * DropBossModifier);
             DropMonsterItem(Killer, 0, "DRPGCredits1000", 256 * DropBossModifier);
             DropMonsterItem(Killer, 0, "DRPGSoulsphereRandomizer", 256 * DropBossModifier);
-            DropMonsterItem(Killer, 0, "DRPGLifeDropper", 96 * DropBossModifier);
+            DropMonsterItem(Killer, 0, "DRPGLifeDropper", 80 * DropBossModifier);
             DropMonsterItem(Killer, 0, "DRPGModulePickup", 256 * DropBossModifier);
             DropMonsterItem(Killer, 0, "DRPGAugDropper", 96 * DropBossModifier);
             DropMonsterItem(Killer, 0, "DRPGUACCard", (40 / (Players(Killer).ShopCard + 1)) * DropBossModifier);
