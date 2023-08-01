@@ -921,7 +921,7 @@ NamedScript KeyBind void SetSkill(int NewSkill)
         return;
     }
 
-    FadeRange(255, 255, 255, 0.5, 255, 255, 255, 0.0, 0.5);
+    FadeRangeFlash(255, 255, 255, 0.5, 255, 255, 255, 0.0, 0.5);
     ChangeSkill(NewSkill);
     CurrentSkill = NewSkill;
     ActivatorSound("misc/skillchange", 127);
@@ -1030,7 +1030,7 @@ NamedScript KeyBind void Respec(bool DoStats, bool DoSkills)
     TakeInventory("DRPGCredits", Player.Level * 750);
 
     // FX
-    FadeRange(255, 255, 255, 0.75, 0, 0, 0, 0.0, 2.5);
+    FadeRangeFlash(255, 255, 255, 0.75, 0, 0, 0, 0.0, 2.5);
     SetFont("BIGFONT");
     HudMessage("Respec Complete");
     EndHudMessage(HUDMSG_FADEOUT, 0, "White", 0.5, 0.5, 2.5, 2.5);
@@ -1597,7 +1597,7 @@ NamedScript DECORATE void AddEP(int Amount, bool NoFlash)
         FlashDuration = 3.0;
 
     if (!NoFlash)
-        FadeRange(0, 255, 255, FlashStrength, 0, 255, 255, 0, FlashDuration);
+        FadeRangeFlash(0, 255, 255, FlashStrength, 0, 255, 255, 0, FlashDuration);
 
     Player.EP += Amount;
 }
@@ -2051,6 +2051,16 @@ str PlayerName(int n)
     return EndStrParam();
 }
 
+// [YuNoGuy123]: For flashing screen effects, we use this to check if we should actually flash or not. Is this okay to do? I'm unsure...
+NamedScript void FadeRangeFlash(int red1, int green1, int blue1, fixed amount1, int red2, int green2, int blue2, fixed amount2, fixed seconds)
+{
+    if (!GetCVar("drpg_screen_flash_disable"))
+    {
+        FadeRange(red1, green1, blue1, amount1, red2, green2, blue2, amount2, seconds);
+    }
+
+}
+
 NamedScript void PrintTextWiggle(char *Text, int ID, int Color, int X, int Y, fixed HoldTime, fixed Speed, fixed Spacing, fixed Radius)
 {
     int Time = (int)(HoldTime * 35.0);
@@ -2109,28 +2119,28 @@ NamedScript void DrawStatUp(int Stat)
     switch (Stat)
     {
     case STAT_STRENGTH:
-        FadeRange(255, 0, 0, 0.25, 255, 0, 0, 0.0, 0.5);
+        FadeRangeFlash(255, 0, 0, 0.25, 255, 0, 0, 0.0, 0.5);
         break;
     case STAT_DEFENSE:
-        FadeRange(0, 255, 0, 0.25, 0, 255, 0, 0.0, 0.5);
+        FadeRangeFlash(0, 255, 0, 0.25, 0, 255, 0, 0.0, 0.5);
         break;
     case STAT_VITALITY:
-        FadeRange(255, 0, 255, 0.25, 255, 0, 255, 0.0, 0.5);
+        FadeRangeFlash(255, 0, 255, 0.25, 255, 0, 255, 0.0, 0.5);
         break;
     case STAT_ENERGY:
-        FadeRange(0, 255, 255, 0.25, 0, 255, 255, 0.0, 0.5);
+        FadeRangeFlash(0, 255, 255, 0.25, 0, 255, 255, 0.0, 0.5);
         break;
     case STAT_REGENERATION:
-        FadeRange(128, 0, 128, 0.25, 128, 0, 128, 0.0, 0.5);
+        FadeRangeFlash(128, 0, 128, 0.25, 128, 0, 128, 0.0, 0.5);
         break;
     case STAT_AGILITY:
-        FadeRange(255, 128, 0, 0.25, 255, 128, 0, 0.0, 0.5);
+        FadeRangeFlash(255, 128, 0, 0.25, 255, 128, 0, 0.0, 0.5);
         break;
     case STAT_CAPACITY:
-        FadeRange(0, 0, 255, 0.25, 0, 0, 255, 0.0, 0.5);
+        FadeRangeFlash(0, 0, 255, 0.25, 0, 0, 255, 0.0, 0.5);
         break;
     case STAT_LUCK:
-        FadeRange(255, 255, 0, 0.25, 255, 255, 0, 0.0, 0.5);
+        FadeRangeFlash(255, 255, 0, 0.25, 255, 255, 0, 0.0, 0.5);
         break;
     }
 

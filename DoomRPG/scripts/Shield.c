@@ -682,7 +682,7 @@ NamedScript bool CellFastCharge()
     if (CheckInventory("Cell") < 1) return true;
 
     TakeInventory("Cell", 1);
-    FadeRange(0, 255, 255, 0.1, 0, 255, 255, 0.0, 0.5);
+    FadeRangeFlash(0, 255, 255, 0.1, 0, 255, 255, 0.0, 0.5);
     ActivatorSound("regen/shield", 64);
     AddShield(10);
 
@@ -773,7 +773,7 @@ NamedScript void TeleportBreak()
 {
     if (Player.Shield.AccessoryBattery)
     {
-        FadeRange(118, 255, 112, 0.5, 118, 255, 112, 0, 1.0);
+        FadeRangeFlash(118, 255, 112, 0.5, 118, 255, 112, 0, 1.0);
         SetActorPosition(0, Player.Shield.AccessoryPosition.X, Player.Shield.AccessoryPosition.Y, Player.Shield.AccessoryPosition.Z, true);
         SetActorAngle(0, Player.Shield.AccessoryPosition.Angle);
         SetActorPitch(0, Player.Shield.AccessoryPosition.Pitch);
@@ -832,7 +832,7 @@ NamedScript void FlanExplosion() // This gets called on full charge too
             GiveActorInventory(Players(i).Turret.TID, "DRPGShieldRadialExplosionResist", 1);
     }
 
-    FadeRange(255, 128, 0, 0.5, 255, 128, 0, 0.0, 0.5);
+    FadeRangeFlash(255, 128, 0, 0.5, 255, 128, 0, 0.0, 0.5);
     GiveInventory("DRPGShieldRadialExplosionMaker", 1);
     SayItOhYeahOhBaby();
 
@@ -846,7 +846,7 @@ NamedScript void SpaghettiShieldBreak()
     if (CheckInventory("Armor") == 0 || CheckInventory("Armor") >= GetArmorInfo(ARMORINFO_SAVEAMOUNT) || !Player.Shield.AccessoryBattery)
         return;
 
-    FadeRange(0, 255, 0, 0.5, 0, 255, 0, 0, 1.0);
+    FadeRangeFlash(0, 255, 0, 0.5, 0, 255, 0, 0, 1.0);
     GiveInventory(GetArmorInfoString(ARMORINFO_CLASSNAME), 1);
     ActivatorSound("skills/repair", 127);
     Player.Shield.AccessoryBattery = 0;
@@ -891,7 +891,7 @@ NamedScript void AmpShieldMod()
             if (CheckInput(BT_ATTACK, KEY_HELD, false, PlayerNumber()) && !Player.InMenu && !Player.InShop && !Player.OutpostMenu)
             {
                 PlaySound(0, "shield/amp", 5, 1.0, false, 1.0);
-                FadeRange(255, 255, 255, 0.25, 255, 255, 255, 0.0, 0.5);
+                FadeRangeFlash(255, 255, 255, 0.25, 255, 255, 255, 0.0, 0.5);
                 Player.Shield.Charge /= 2;
                 Player.Shield.AccessoryBattery = 70;
             }
@@ -1147,7 +1147,7 @@ NamedScript void OhYeahMod()
                 GiveActorInventory(Players(i).Turret.TID, "DRPGShieldRadialExplosionResist", 1);
         }
 
-        FadeRange(255, 128, 0, 0.5, 255, 128, 0, 0.0, 0.5);
+        FadeRangeFlash(255, 128, 0, 0.5, 255, 128, 0, 0.0, 0.5);
         GiveInventory("DRPGShieldRadialExplosionMaker", 1);
         SayItOhYeahOhBaby();
     }
@@ -1333,7 +1333,7 @@ NamedScript bool ActivateShield()
         return false;
     }
 
-    FadeRange(255, 255, 255, 0.25, 255, 255, 255, 0.0, 0.25);
+    FadeRangeFlash(255, 255, 255, 0.25, 255, 255, 255, 0.0, 0.25);
 
     if (Player.Shield.Accessory && Player.Shield.Accessory->Equip)
         Player.Shield.Accessory->Equip();
@@ -1351,7 +1351,7 @@ NamedScript bool DeactivateShield()
     if (!Player.Shield.Active)
         return true;
 
-    FadeRange(255, 255, 255, 0.25, 255, 255, 255, 0.0, 0.25);
+    FadeRangeFlash(255, 255, 255, 0.25, 255, 255, 255, 0.0, 0.25);
 
     if (Player.Shield.Accessory && Player.Shield.Accessory->Unequip)
         Player.Shield.Accessory->Unequip(Player.StatusType[SE_EMP]);
@@ -1407,7 +1407,7 @@ NamedScript DECORATE void AddShield(int Amount)
         else
             PlaySound(0, "shield/charge", 5, 0.25, false, 2.0);
     };
-    FadeRange(0, 255, 255, 0.25, 0, 255, 255, 0, 0.25);
+    FadeRangeFlash(0, 255, 255, 0.25, 0, 255, 255, 0, 0.25);
     if (Player.Shield.Charge + Amount > Player.Shield.Capacity)
         Amount = Player.Shield.Capacity - Player.Shield.Charge;
 
@@ -1443,7 +1443,7 @@ void CheckShields()
 
         if (!SkipEPCharge && Player.EP > 0)
         {
-            FadeRange(0, 255, 255, 0.1, 0, 255, 255, 0.0, 0.5);
+            FadeRangeFlash(0, 255, 255, 0.1, 0, 255, 255, 0.0, 0.5);
             ActivatorSound("regen/shield", 64);
             Player.EP--;
             Player.Shield.Charge++;

@@ -1095,7 +1095,7 @@ NamedScript Console bool Heal(SkillLevelInfo *SkillLevel, void *Data)
 
             SetActivator(Players(i).TID);
 
-            FadeRange(255, 0, 255, 0.5, 255, 0, 255, 0, 1.0);
+            FadeRangeFlash(255, 0, 255, 0.5, 255, 0, 255, 0, 1.0);
             ActivatorSound("skills/heal", (Players(i).TID == PlayerTID ? 127 : 64));
         }
 
@@ -1103,7 +1103,7 @@ NamedScript Console bool Heal(SkillLevelInfo *SkillLevel, void *Data)
     }
     else
     {
-        FadeRange(255, 0, 255, 0.5, 255, 0, 255, 0, 1.0);
+        FadeRangeFlash(255, 0, 255, 0.5, 255, 0, 255, 0, 1.0);
         ActivatorSound("skills/heal", 127);
     }
 
@@ -1120,7 +1120,7 @@ NamedScript Console bool HealSummons(SkillLevelInfo *SkillLevel, void *Data)
         return false;
     }
 
-    FadeRange(255, 0, 255, 0.5, 255, 0, 255, 0, 1.0);
+    FadeRangeFlash(255, 0, 255, 0.5, 255, 0, 255, 0, 1.0);
 
     for (int i = 0; i < MAX_SUMMONS; i++)
         if (Player.SummonTID[i] > 0)
@@ -1147,7 +1147,7 @@ NamedScript Console bool Decontaminate(SkillLevelInfo *SkillLevel, void *Data)
     ClearToxicityMeter();
 
     ActivatorSound("skills/decontaminate", 127);
-    FadeRange(0, 255, 0, 0.5, 0, 255, 0, 0.0, 1.0);
+    FadeRangeFlash(0, 255, 0, 0.5, 0, 255, 0, 0.0, 1.0);
 
     Player.SkillCostMult += 25;
 
@@ -1173,7 +1173,7 @@ NamedScript Console bool Repair(SkillLevelInfo *SkillLevel, void *Data)
         }
     }
 
-    FadeRange(0, 255, 0, 0.5, 0, 255, 0, 0, 1.0);
+    FadeRangeFlash(0, 255, 0, 0.5, 0, 255, 0, 0, 1.0);
     GiveInventory(GetArmorInfoString(ARMORINFO_CLASSNAME), 1);
 
     ActivatorSound("skills/repair", 127);
@@ -1548,7 +1548,7 @@ NamedScript Console bool Weaken(SkillLevelInfo *SkillLevel, void *Data)
     // Reset Activator
     SetActivator(Players(PlayerNum).TID);
 
-    FadeRange(0, 0, 0, 0.25, 0, 0, 0, 0.0, 1.0);
+    FadeRangeFlash(0, 0, 0, 0.25, 0, 0, 0, 0.0, 1.0);
     ActivatorSound("skills/weaken", 127);
     return true;
 }
@@ -1571,7 +1571,7 @@ NamedScript Console bool Repulse(SkillLevelInfo *SkillLevel, void *Data)
     SetInventory(StrParam("DRPGSkillBlast%d", SkillLevel->CurrentLevel), 1);
     UseInventory(StrParam("DRPGSkillBlast%d", SkillLevel->CurrentLevel));
 
-    FadeRange(255, 255, 0, 0.1, 255, 255, 0, 0.0, 0.5 + (0.25 * SkillLevel->CurrentLevel));
+    FadeRangeFlash(255, 255, 0, 0.1, 255, 255, 0, 0.0, 0.5 + (0.25 * SkillLevel->CurrentLevel));
 
     return true;
 }
@@ -1770,7 +1770,7 @@ NamedScript Console bool SoulSteal(SkillLevelInfo *SkillLevel, void *Data)
     // Heal the user
     AddHealthDirect(LeechAmount, 100);
 
-    FadeRange(0, 0, 0, 0.5, 0, 0, 0, 0.0, 0.25);
+    FadeRangeFlash(0, 0, 0, 0.5, 0, 0, 0, 0.0, 0.25);
     ActivatorSound("skills/soulsteal", 127);
     return true;
 }
@@ -1791,7 +1791,7 @@ NamedScript Console bool Disruption(SkillLevelInfo *SkillLevel, void *Data)
         else
             GiveInventory("DRPGAreaDisruptionSmall", 1);
 
-        FadeRange(0, 64, 255, 0.5, 0, 64, 255, 0.0, 0.25);
+        FadeRangeFlash(0, 64, 255, 0.5, 0, 64, 255, 0.0, 0.25);
         ActivatorSound("skills/disruption", 127);
 
         return true;
@@ -1871,7 +1871,7 @@ NamedScript Console bool Disruption(SkillLevelInfo *SkillLevel, void *Data)
     // Reset the temporary TID
     Thing_ChangeTID(UniqueMonsterTID, RealMonsterTID);
 
-    FadeRange(0, 64, 255, 0.5, 0, 64, 255, 0.0, 0.25);
+    FadeRangeFlash(0, 64, 255, 0.5, 0, 64, 255, 0.0, 0.25);
     ActivatorSound("skills/disruption", 127);
     return true;
 }
@@ -2483,7 +2483,7 @@ NamedScript Console bool Unsummon(SkillLevelInfo *SkillLevel, void *Data)
 
         Player.Familiars = false;
 
-        FadeRange(192, 0, 0, 0.5, 192, 0, 0, 0.0, 1.0);
+        FadeRangeFlash(192, 0, 0, 0.5, 192, 0, 0, 0.0, 1.0);
         ActivatorSound("skills/unsummon", 127);
         return true;
     }
@@ -2525,7 +2525,7 @@ NamedScript Console bool Unsummon(SkillLevelInfo *SkillLevel, void *Data)
 
     Player.Summons = 0;
 
-    FadeRange(192, 0, 0, 0.5, 192, 0, 0, 0.0, 1.0);
+    FadeRangeFlash(192, 0, 0, 0.5, 192, 0, 0, 0.0, 1.0);
     ActivatorSound("skills/unsummon", 127);
     return true;
 }
@@ -2794,7 +2794,7 @@ NamedScript Console bool Magnetize(SkillLevelInfo *SkillLevel, void *Data)
             Angle += AngleAdd;
         }
     }
-    FadeRange(0, 0, 0, 0.5, 0, 0, 0, 0.0, 1.0);
+    FadeRangeFlash(0, 0, 0, 0.5, 0, 0, 0, 0.0, 1.0);
     ActivatorSound("skills/magnet", 127);
     return true;
 }
