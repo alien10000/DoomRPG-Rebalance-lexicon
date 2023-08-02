@@ -127,6 +127,7 @@ OptionalArgs(3) void EndHudMessageSelect(bool bold, int flags, int id, str color
 #define EndHudMessage(...) EndHudMessageSelect(false, __VA_ARGS__)
 #define EndHudMessageBold(...) EndHudMessageSelect(true, __VA_ARGS__)
 str StrParam(str Format, ...);
+NamedScript void FadeRangeFlash(int, int, int, fixed, int, int, int, fixed, fixed);
 
 NamedScript void PrintTextWiggle(char *, int, int, int, int, fixed, fixed, fixed, fixed);
 NamedScript void DrawStatUp(int);

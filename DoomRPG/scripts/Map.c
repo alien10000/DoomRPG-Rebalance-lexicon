@@ -535,7 +535,7 @@ Start:
             if (!PlayerInGame(i))
                 continue;
 
-            FadeRange(255, 255, 0, 0.25, 255, 255, 0, 0, 1.0);
+            FadeRangeFlash(255, 255, 0, 0.25, 255, 255, 0, 0, 1.0);
 
             RankBonus = (((long int)(RankTable[Players(i).RankLevel]) / (long)(100 + RoundInt(100.0 * (Player.RankLevel / 24.0)))) + 250l) / 250l * 250l;
             Players(i).Rank += RankBonus;
@@ -578,7 +578,7 @@ Start:
 
             SetActivator(Players(i).TID);
 
-            FadeRange(255, 0, 0, 0.25, 255, 0, 0, 0, 1.0);
+            FadeRangeFlash(255, 0, 0, 0.25, 255, 0, 0, 0, 1.0);
 
             if (Players(i).Level < MAX_LEVEL)
             {
@@ -612,7 +612,7 @@ Start:
 
             SetActivator(Players(i).TID);
 
-            FadeRange(0, 255, 255, 0.25, 0, 255, 255, 0, 1.0);
+            FadeRangeFlash(0, 255, 255, 0.25, 0, 255, 255, 0, 1.0);
 
             HealThing(MAX_HEALTH);
             Players(i).EP = Players(i).EPMax;
@@ -635,7 +635,7 @@ Start:
 
             SetActivator(Players(i).TID);
 
-            FadeRange(255, 255, 0, 0.25, 255, 255, 0, 0, 1.0);
+            FadeRangeFlash(255, 255, 0, 0.25, 255, 255, 0, 0, 1.0);
 
             if (Players(i).RankLevel < MAX_RANK)
             {
@@ -669,7 +669,7 @@ Start:
 
             SetActivator(Players(i).TID);
 
-            FadeRange(255, 255, 255, 0.25, 255, 255, 255, 0, 1.0);
+            FadeRangeFlash(255, 255, 255, 0.25, 255, 255, 255, 0, 1.0);
 
             HealThing(MAX_HEALTH);
             Players(i).EP = Players(i).EPMax;
@@ -913,7 +913,7 @@ NumberedScript(MAP_EXIT_SCRIPTNUM) MapSpecial void MapExit(bool Secret, bool Tel
             SetActivator(Players(i).TID);
 
             SetFont("SMALLFONT");
-            FadeRange(255, 255, 0, 0.25, 255, 255, 0, 0.0, 1.0);
+            FadeRangeFlash(255, 255, 0, 0.25, 255, 255, 0, 0.0, 1.0);
 
             if (Players(i).RankLevel < MAX_RANK)
             {
@@ -2803,7 +2803,7 @@ NamedScript void DoomsdayEvent()
             continue;
 
         SetActorProperty(Players(i).TID, APROP_Health, -1000000);
-        FadeRange(255, 255, 255, 1.0, 255, 255, 255, 0.0, 2.0);
+        FadeRangeFlash(255, 255, 255, 1.0, 255, 255, 255, 0.0, 2.0);
         ActivatorSound("nuke/detonate", 127);
         Radius_Quake2(0, 9, 70, 0, 512, "None");
     }
@@ -2827,7 +2827,7 @@ NamedScript void DoomsdayFirebomb(int PlayerTID)
         Delay(Random(35 * 30, 35 * 90));
         SpawnSpotFacing("DRPGDoomsdayMortarBlast", 0, 0);
         Radius_Quake2(0, 6, 16, 0, 512, "None");
-        FadeRange(255, 128, 64, 0.33, 255, 128, 64, 0.0, 0.5);
+        FadeRangeFlash(255, 128, 64, 0.33, 255, 128, 64, 0.0, 0.5);
         ActivatorSound("drpgmarines/bulletexp", 127);
         if (CurrentLevel->DoomTime < (GetLevelInfo(LEVELINFO_PAR_TIME) ? GetLevelInfo(LEVELINFO_PAR_TIME) * 2 : GetCVar("drpg_default_par_seconds") * 2))
         {

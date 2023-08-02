@@ -314,7 +314,7 @@ void CheckLevel()
                 Player.EP = Player.EPMax;
             }
 
-            FadeRange(255, 255, 255, 0.5, 255, 255, 255, 0, 2.0);
+            FadeRangeFlash(255, 255, 255, 0.5, 255, 255, 255, 0, 2.0);
 
             if (GetActivatorCVar("drpg_notifications_detailed"))
                 HudMessage("You have reached level %d", Player.Level);
@@ -416,7 +416,7 @@ void CheckRank()
             // Take negative Rank
             Player.Rank = RankTable[Player.RankLevel] + Player.Rank;
 
-            FadeRange(255, 0, 64, 0.25, 255, 0, 64, 0, 2.0);
+            FadeRangeFlash(255, 0, 64, 0.25, 255, 0, 64, 0, 2.0);
 
             if (GetActivatorCVar("drpg_notifications_detailed"))
                 HudMessage("\CaYou have been demoted to rank %d: %S", Player.RankLevel, LongRanks[Player.RankLevel]);
@@ -440,7 +440,7 @@ void CheckRank()
             Player.RankLevel++;
 
             ActivatorSound("misc/rankup", 96);
-            FadeRange(255, 255, 0, 0.5, 255, 255, 0, 0, 2.0);
+            FadeRangeFlash(255, 255, 0, 0.5, 255, 255, 0, 0, 2.0);
 
             // Determine how many new items you've unlocked in the shop
             for (int i = 0; i < ItemCategories; i++)
@@ -486,7 +486,7 @@ void CheckHealth()
     if (Player.ActualHealth <= Player.HealthMax / 10 && !Player.Perks[STAT_VITALITY])
     {
         // Fade Effect
-        FadeRange(255, 0, 0, 0.15 + (Sin(Timer() / 64.0) * 0.1), 255, 0, 0, 0.0, 1.0);
+        FadeRangeFlash(255, 0, 0, 0.15 + (Sin(Timer() / 64.0) * 0.1), 255, 0, 0, 0.0, 1.0);
 
         // Heartbeat
         if ((Timer() % 64) == 0 && Player.ActualHealth > 0)
@@ -1077,7 +1077,7 @@ void CheckBurnout()
         if (Intensity > 0.25) Intensity = 0.25;
 
         // Screen Effect
-        FadeRange(0, 128, 255, Intensity + (Sin(Timer() / 256.0) * 0.1), 0, 128, 255, 0, 0.25);
+        FadeRangeFlash(0, 128, 255, Intensity + (Sin(Timer() / 256.0) * 0.1), 0, 128, 255, 0, 0.25);
 
         // Penalties
         Player.TotalDamage /= 2;
@@ -1243,7 +1243,7 @@ void ToxicityDamage()
 void CheckStatusEffects()
 {
     if (Player.StatusType[SE_BLIND]) // Blind
-        FadeRange(0, 0, 0, (0.5 + (Player.StatusIntensity[SE_BLIND] * 0.1)) - (Sin(Timer() / 128.0) * 0.25), 0, 0, 0, 0.0, 0.5);
+        FadeRangeFlash(0, 0, 0, (0.5 + (Player.StatusIntensity[SE_BLIND] * 0.1)) - (Sin(Timer() / 128.0) * 0.25), 0, 0, 0, 0.0, 0.5);
 
     if (Player.StatusType[SE_CONFUSION]) // Confusion
     {
@@ -1280,7 +1280,7 @@ void CheckStatusEffects()
             if (Player.ActualHealth - Player.StatusIntensity[SE_POISON] > 0)
             {
                 Player.ActualHealth -= Player.StatusIntensity[SE_POISON];
-                FadeRange(0, 255, 0, 0.25, 0, 255, 0, 0.0, Player.StatusIntensity[SE_POISON] * 0.25);
+                FadeRangeFlash(0, 255, 0, 0.25, 0, 255, 0, 0.0, Player.StatusIntensity[SE_POISON] * 0.25);
             }
 
     if (Player.StatusType[SE_CORROSION]) // Corrosion
@@ -1288,7 +1288,7 @@ void CheckStatusEffects()
             if (CheckInventory("Armor") - Player.StatusIntensity[SE_CORROSION] > 0)
             {
                 TakeInventory("BasicArmor", Player.StatusIntensity[SE_CORROSION]);
-                FadeRange(0, 255, 0, 0.25, 0, 255, 0, 0.0, Player.StatusIntensity[SE_CORROSION] * 0.25);
+                FadeRangeFlash(0, 255, 0, 0.25, 0, 255, 0, 0.0, Player.StatusIntensity[SE_CORROSION] * 0.25);
             }
 
     if (Player.StatusType[SE_VIRUS]) // Virus
@@ -1332,7 +1332,7 @@ void CheckStatusEffects()
                 if (Player.Toxicity + i > 85)
                     i = 85 - Player.Toxicity;
                 AddToxicity(i);
-                FadeRange(0, 255, 0, 0.25, 0, 255, 0, 0.0, i * 0.25);
+                FadeRangeFlash(0, 255, 0, 0.25, 0, 255, 0, 0.0, i * 0.25);
             }
         }
 
