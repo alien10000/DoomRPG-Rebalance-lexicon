@@ -165,7 +165,7 @@ NamedScript KeyBind void UseStim(bool Force)
     ActivatorSound("items/stim", 127);
     if (Random(0, 100) == 0) // DRUGS
         ActivatorSound("misc/drugs", 127);
-    FadeRange(255, 255, 255, 0.25, 255, 255, 255, 0, 1.0);
+    FadeRangeFlash(255, 255, 255, 0.25, 255, 255, 255, 0, 1.0);
 }
 
 NamedScript KeyBind void ThrowAwayStim()

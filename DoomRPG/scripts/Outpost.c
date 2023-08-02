@@ -181,7 +181,7 @@ NamedScript MapSpecial void RegenArea(int ID)
             SetFont("BIGFONT");
             HudMessage("Health restored");
             EndHudMessage(HUDMSG_FADEOUT, 0, "Brick", 0.5, 0.33, 2.0, 0.5);
-            FadeRange(255, 0, 0, 0.5, 255, 0, 0, 0.0, 1.0);
+            FadeRangeFlash(255, 0, 0, 0.5, 255, 0, 0, 0.0, 1.0);
             ActivatorSound("regen/health", 127);
         }
     }
@@ -224,7 +224,7 @@ NamedScript MapSpecial void RegenArea(int ID)
         SetFont("BIGFONT");
         HudMessage("Armor repaired");
         EndHudMessage(HUDMSG_FADEOUT, 0, "Green", 0.5, 0.33, 2.0, 0.5);
-        FadeRange(0, 255, 0, 0.5, 0, 255, 0, 0.0, 1.0);
+        FadeRangeFlash(0, 255, 0, 0.5, 0, 255, 0, 0.0, 1.0);
         ActivatorSound("regen/armor", 127);
     }
 
@@ -254,7 +254,7 @@ NamedScript MapSpecial void RegenArea(int ID)
             SetFont("BIGFONT");
             HudMessage("Shield restored");
             EndHudMessage(HUDMSG_FADEOUT, 0, "Cyan", 0.5, 0.33, 2.0, 0.5);
-            FadeRange(0, 255, 255, 0.5, 0, 255, 255, 0.0, 1.0);
+            FadeRangeFlash(0, 255, 255, 0.5, 0, 255, 255, 0.0, 1.0);
             ActivatorSound("regen/shield", 127);
         }
         else
@@ -304,7 +304,7 @@ NamedScript MapSpecial void RegenArea(int ID)
             SetFont("BIGFONT");
             HudMessage("EP restored");
             EndHudMessage(HUDMSG_FADEOUT, 0, "LightBlue", 0.5, 0.33, 2.0, 0.5);
-            FadeRange(0, 255, 255, 0.5, 0, 255, 255, 0.0, 1.0);
+            FadeRangeFlash(0, 255, 255, 0.5, 0, 255, 255, 0.0, 1.0);
             ActivatorSound("regen/ep", 127);
         }
     }
@@ -327,7 +327,7 @@ NamedScript MapSpecial void RegenArea(int ID)
         SetFont("BIGFONT");
         HudMessage("Augmentation battery recharged");
         EndHudMessage(HUDMSG_FADEOUT, 0, "Yellow", 0.5, 0.33, 2.0, 0.5);
-        FadeRange(255, 255, 0, 0.5, 255, 255, 0, 0.0, 1.0);
+        FadeRangeFlash(255, 255, 0, 0.5, 255, 255, 0, 0.0, 1.0);
         ActivatorSound("regen/battery", 127);
     }
 }

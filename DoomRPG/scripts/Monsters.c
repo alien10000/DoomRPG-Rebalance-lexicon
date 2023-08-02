@@ -2316,7 +2316,7 @@ Start:
                 int NewTID = UniqueTID(0, 0);
                 Thing_ChangeTID(0, NewTID);
                 SetActivator(Players(i).TID);
-                FadeRange(64, 128, 128, 0.5, 64, 128, 128, 0.0, 0.5);
+                FadeRangeFlash(64, 128, 128, 0.5, 64, 128, 128, 0.0, 0.5);
                 ActivatorSound("drain/ep", 32);
                 SetActivator(NewTID);
                 Thing_ChangeTID(0, OrigTID);
@@ -2480,7 +2480,7 @@ Start:
                 int NewTID = UniqueTID(0, 0);
                 Thing_ChangeTID(0, NewTID);
                 SetActivator(Players(i).TID);
-                FadeRange(255, 0, 0, 0.5, 255, 0, 0, 0.0, 0.5);
+                FadeRangeFlash(255, 0, 0, 0.5, 255, 0, 0, 0.0, 0.5);
                 TryStatusEffect(SE_CURSE, Random(30, 90), Intensity);
                 SetActivator(NewTID);
                 Thing_ChangeTID(0, OrigTID);
@@ -2508,7 +2508,7 @@ Start:
                 int NewTID = UniqueTID(0, 0);
                 Thing_ChangeTID(0, NewTID);
                 SetActivator(Players(i).TID);
-                FadeRange(255, 0, 0, 0.5, 255, 0, 0, 0.0, 0.5);
+                FadeRangeFlash(255, 0, 0, 0.5, 255, 0, 0, 0.0, 0.5);
                 TryStatusEffect(SE_SILENCE, Random(30, 90), Intensity);
                 SetActivator(NewTID);
                 Thing_ChangeTID(0, OrigTID);
@@ -2576,7 +2576,7 @@ Start:
             TakeActorInventory(Players(i).TID, "DRPGCredits", (int)(Stats->Luck * GetCVarFixed("drpg_aurasteal_amount")));
             GiveInventory("DRPGCredits", (int)(Stats->Luck * GetCVarFixed("drpg_aurasteal_amount")));
             SetActivator(Players(i).TID);
-            FadeRange(255, 255, 0, 0.5, 255, 255, 0, 0.0, 0.5);
+            FadeRangeFlash(255, 255, 0, 0.5, 255, 255, 0, 0.0, 0.5);
             ActivatorSound("drain/money", 32);
             SetActivator(NewTID);
             Thing_ChangeTID(0, OrigTID);
@@ -2671,7 +2671,7 @@ Start:
             int NewTID = UniqueTID(0, 0);
             Thing_ChangeTID(0, NewTID);
             SetActivator(Players(i).TID);
-            FadeRange(0, 0, 255, 0.5, 0, 0, 255, 0.0, 0.5);
+            FadeRangeFlash(0, 0, 255, 0.5, 0, 0, 255, 0.0, 0.5);
             ActivatorSound("drain/ammo", 32);
             SetActivator(NewTID);
             Thing_ChangeTID(0, OrigTID);

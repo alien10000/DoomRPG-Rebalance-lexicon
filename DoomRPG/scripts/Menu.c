@@ -2820,7 +2820,7 @@ void IncreaseSkill(int Category, int Index, bool UsingOverdrive)
                 ActivatorSound("menu/move", 127);
             else
             {
-                FadeRange(0, 255, 255, 0.5, 0, 255, 255, 0.0, 0.5);
+                FadeRangeFlash(0, 255, 255, 0.5, 0, 255, 255, 0.0, 0.5);
                 ActivatorSound("health/epcapsule", 127);
             }
         }
