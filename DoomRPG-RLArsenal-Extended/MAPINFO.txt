@@ -10,5 +10,7 @@ gameinfo
 					"DoomRLNomadRPG",
 					"DoomRLNanoManiacRPG",
 					"DoomRLPhaseSistersRPG",
-					"DoomRLSargeRPG"
+					"DoomRLSargeRPG",
+					"DoomRLTrespasserRPG",
+					"DoomRLBunkerRPG"
 }

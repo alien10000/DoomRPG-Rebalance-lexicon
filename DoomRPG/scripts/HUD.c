@@ -223,7 +223,7 @@ NamedScript Type_ENTER void OverviewHUD()
     int CreditColor;
 
     // XP Bar
-    str ClassName[11];
+    str ClassName[13];
     bool XpBarAnim;
     int XPBarText;
     int XPBarType;
@@ -280,6 +280,8 @@ NamedScript Type_ENTER void OverviewHUD()
             ClassName[8] = "Nano Maniac";
             ClassName[9] = "Phase Sisters";
             ClassName[10] = "Sarge";
+            ClassName[11] = "Trespasser";
+            ClassName[12] = "Bunker";
         }
     }
     else
@@ -529,12 +531,12 @@ Start:
                                      || (XPBarText + 1) == RankBarText || (XPBarText) == RankBarText + 1))))
             {
                 if (XPBarText == RankBarText || (XPBarText + 1) == RankBarText)
-                    HudMessage("%d LVL %S %d RANK %S", Player.Level, ClassName[CurrentClass], Player.RankLevel, Ranks[Player.RankLevel]);
+                    HudMessage("LVL %d %S RANK %d %S", Player.Level, ClassName[CurrentClass], Player.RankLevel, Ranks[Player.RankLevel]);
                 else if (XPBarText == RankBarText + 1)
-                    HudMessage("%d RANK %S %d LVL %S", Player.RankLevel, Ranks[Player.RankLevel], Player.Level, ClassName[CurrentClass]);
+                    HudMessage("RANK %d %S LVL %d %S", Player.RankLevel, Ranks[Player.RankLevel], Player.Level, ClassName[CurrentClass]);
             }
             else
-                HudMessage("%d LVL %S", Player.Level, ClassName[CurrentClass]);
+                HudMessage("LVL %d %S", Player.Level, ClassName[CurrentClass]);
 
             EndHudMessage(HUDMSG_PLAIN, 0, "White", X1 + XpBarTextXOff, Y1 + XpBarTextYOff, 0.05);
         }

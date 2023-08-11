@@ -127,7 +127,9 @@ class DRPGZEHandler : EventHandler
                 "RLCorruptedPhaseSisters1",
                 "RLCorruptedNomad1",
                 "RLCorruptedSarge1",
-                "RLCorruptedNanoManiac1"
+                "RLCorruptedNanoManiac1",
+                "RLCorruptedTrespasser1",
+                "RLCorruptedBunker1"
             };
             static const string RLMBosses[] =
             {

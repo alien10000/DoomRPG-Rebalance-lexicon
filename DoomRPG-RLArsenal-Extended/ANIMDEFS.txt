@@ -43,3 +43,17 @@ texture SUT1A1
 	pic SUT1B1 tics 6
 	pic SUT1C1 tics 6
 	pic SUT1D1 tics 6
+
+// Trespasser
+texture TRSPA1
+	pic TRSPA1 tics 6
+	pic TRSPB1 tics 6
+	pic TRSPC1 tics 6
+	pic TRSPD1 tics 6
+
+// Bunker
+texture BUNKA1
+	pic BUNKA1 tics 6
+	pic BUNKB1 tics 6
+	pic BUNKC1 tics 6
+	pic BUNKD1 tics 6

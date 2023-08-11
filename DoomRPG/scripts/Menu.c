@@ -3246,6 +3246,10 @@ void DrawPlayerSprite(int PlayerNum, fixed X, fixed Y)
                 PrintSprite("REVYA1", 0, X + 4.0, Y - 2.0, 0.05);
             if (PlayerClass(PlayerNum) == 10) // Sarge
                 PrintSprite("SUT1A1", 0, X + 4.0, Y - 2.0, 0.05);
+            if (PlayerClass(PlayerNum) == 11) // Trespasser
+                PrintSprite("TRSPA1", 0, X + 4.0, Y - 2.0, 0.05);
+            if (PlayerClass(PlayerNum) == 12) // Bunker
+                PrintSprite("BUNKA1", 0, X + 4.0, Y - 2.0, 0.05);
         }
     }
     else
