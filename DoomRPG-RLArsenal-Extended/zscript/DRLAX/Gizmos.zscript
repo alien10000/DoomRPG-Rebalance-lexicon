@@ -925,6 +925,7 @@ Class DRLAX_QuestManager : Thinker
 
         quest = new("DRLAX_QuestManager");
         quest.tomelevel = 1;
+        quest.addamount;
 
         for(int i; i<DRLAX_QuestManager.quests.Size(); i++)
         {

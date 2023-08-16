@@ -338,12 +338,11 @@ Class DRLAX_DeadBody : Actor
 			String s;
 			String n;
 
-			Switch(random(0, 4))
+			Switch(random(0, 6))
 			{
 				Case 0:
 				n = "RLPlayerMechanoidDeadBody";
 				s = "1337";
-				A_SpawnItemEx("RLModPackSpawner", random(4, 8), 0, 0, frandom(1, 4), angle:random(0,360));
 				A_SpawnItemEx("RLModPackSpawner", random(16, 32), 0, 0, frandom(1, 4), angle:random(0,360));
 				break;
 
@@ -416,18 +415,6 @@ Class DRLAX_DeadBody : Actor
 					"RLBattleRiflePickupModded",
 					"RLRocketLauncherPickupModded",
 					"RLPlasmaRiflePickupModded",
-					"RLBFG9000PickupModded",
-					"RLCombatPistolPickupModded,"
-					"RLMarksmanPistolPickupModded",
-					"RLHandcannonPickupModded",
-					"RLBlasterPickupModded",
-					"RLUziPickupModded",
-					"RLAssaultShotgunPickupModded",
-					"RLPlasmaShotgunPickupModded",
-					"RLNapalmLauncherPickupModded",
-					"RLMissileLauncherPickupModded",
-					"RLLaserRiflePickupModded",
-					"RLTristarBlasterPickupModded",
 					"RLBFG9000PickupModded"
 				};
 
