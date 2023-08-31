@@ -97,7 +97,7 @@ class DRLAX_FamiliarEvents : EventHandler
                 }
             }
 
-
+            
             if(e.Thing.bISMONSTER && e.thing.target.CountInv("DRLAX_DukeFamiliarPassive") > 0)
             {
                 let f = DRLAX_DukeFamiliarPassive(e.thing.target.FindInventory("DRLAX_DukeFamiliarPassive"));
@@ -262,7 +262,7 @@ class DRLAX_FamiliarBase : Actor
     }
 
     Vector3 ppos;
-    DRLAX_FamiliarPlatform plat; 
+    DRLAX_FamiliarPlatform plat;
 
     static float GetVolume()
     {
@@ -405,6 +405,11 @@ class DRLAX_FamiliarBase : Actor
             {
                 ppos = tofollow.pos + (0, 0, h);
             }
+        }
+
+        if(plat)
+        {
+            plat.bINVISIBLE = hideplatform;
         }
 
         //Console.Printf("" .. Level.Time * 0.0001);
@@ -847,6 +852,7 @@ class DRLAX_FamiliarManager : Inventory
             if(familiars[slot] == "DRLAX_NanoManiacFamiliar" && Level.Time < 50)
             {
                 fam[slot] = DRLAX_FamiliarBase(owner.Spawn(GetRandomFamiliar(), owner.pos + (0,0,32)));
+                fam[slot].isnanomaniac = true;
             }
             else
             {

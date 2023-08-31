@@ -313,7 +313,7 @@ class DRLAX_RadarDevice : DRLAX_BaseInventory
 {
 	Default
 	{
-		Inventory.Icon "SNRBI";
+		Inventory.Icon "LAXITE5";
 		inventory.maxamount 4;
 		Inventory.InterhubAmount 4;
 		inventory.pickupsound "misc/modpackpickup";
@@ -340,7 +340,6 @@ class DRLAX_RadarDevice : DRLAX_BaseInventory
 	override void UseMessage()
 	{
 		owner.A_Print("Use the Radar again to reveal the full Auto Map. Points of interest will also be highlighted.\n\nPress \caDrop Item (DRLA)\c- to drop it, or switch weapons to cancel.", 8.0);
-		owner.A_PlaySound("hud/generic");
 	}
 
 	override void UseFunction()
@@ -487,7 +486,6 @@ class DRLAX_SoulTrap : DRLAX_BaseInventory
 	override void UseMessage()
 	{
 		owner.A_Print("Use the Soul Trap again to capture the effect of a nearby Sphere Power Up for later use.\n\nPress \caDrop Item (DRLA)\c- to drop it, or switch weapons to cancel.", 8.0);
-		owner.A_PlaySound("hud/generic");
 	}
 
 	override void UseFunction()
@@ -588,7 +586,6 @@ class DRLAX_TrappedSoulBase : DRLAX_BaseInventory
 	override void UseMessage()
 	{
 		owner.A_Print("Use the Trapped Sphere again to invoke its effect.\n\nPress \caDrop Item (DRLA)\c- to drop it, or switch weapons to cancel.", 8.0);
-		owner.A_PlaySound("hud/generic");
 	}
 
 	override void UseFunction()
@@ -1260,24 +1257,26 @@ class DRLAX_NanoTape : DRLAX_BaseInventory
 		owner.A_Print("Press use again to combine two nearby Chainsaws, Uzis or Nuclear Plasma Rifles into a double weapon.\n\nPress \caDrop Item (DRLA)\c- to drop it, or switch weapons to cancel.", 8.0);
 	}
 
+	static const String weps[] = 
+	{
+		"RLChainsawPickup",
+		"RLUziPickup",
+		"RLNuclearPlasmaRiflePickup",
+		"RLHighPowerNuclearPlasmaRiflePickup"
+	};
+
+	static const String newitem[] = 
+	{
+		"RLDoubleChainsawPickup",
+		"RLStormUziPickup",
+		"RLNuclearOnslaughtPickup",
+		"RLNuclearOnslaughtPickup"
+	};
+
 	override void UseFunction()
 	{
 		ThinkerIterator ti = ThinkerIterator.Create("Actor");
         Actor a, b;
-
-		String weps[] = {
-			"RLChainsawPickup",
-			"RLUziPickup",
-			"RLNuclearPlasmaRiflePickup",
-			"RLHighPowerNuclearPlasmaRiflePickup"
-		};
-
-		String newitem[] = {
-			"RLDoubleChainsawPickup",
-			"RLStormUziPickup",
-			"RLNuclearOnslaughtPickup",
-			"RLNuclearOnslaughtPickup"
-		};
 
         while(b = Actor(ti.Next()))
         {
@@ -1285,7 +1284,7 @@ class DRLAX_NanoTape : DRLAX_BaseInventory
 			{
                 for(int i = 0; i<weps.Size(); i++)
 				{
-					if(b.GetClassName() == weps[i])
+					if(b.GetClassName() == weps[i] || b.GetClassName() == weps[i] .. "Modded")
 					{
 						if(!a)
 						{
@@ -1294,7 +1293,7 @@ class DRLAX_NanoTape : DRLAX_BaseInventory
 						}
 						else
 						{
-							if(b.GetClass() == a.GetClass() || a.GetClassName() == weps[2] && b.GetClassName() == weps[3] || a.GetClassName() == weps[3] && b.GetClassName() == weps[2])
+							if(CompareGuns(a.GetClassName(), b.GetClassName()))
 							{
 								let inv = Inventory(Spawn(newitem[i], owner.pos));
 								if(inv)
@@ -1336,6 +1335,38 @@ class DRLAX_NanoTape : DRLAX_BaseInventory
 	override void DropMessage()
 	{
 		owner.A_Print("You dropped the " .. GetTag());
+	}
+
+	bool CompareGuns(String a, String b)
+	{
+		String oa = a;
+
+		if(CompareAltString(a, b))
+		{
+			return true;
+		}
+
+		a = a .. "Modded";
+
+		if(CompareAltString(a, b))
+		{
+			return true;
+		}
+
+		a = oa;
+		b = b .. "Modded";
+
+		if(CompareAltString(a, b))
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	bool CompareAltString(String a, String b)
+	{
+		return (b == a || a == weps[2] && b == weps[3] || a == weps[3] && b == weps[2]);
 	}
 }
 
@@ -1974,6 +2005,20 @@ class DRLAX_WeaponKitBase : DRLAX_BaseInventory
 
 		return true;
 	}
+
+	void AddWeapon(String wep, int slot)
+	{
+		if(slot)
+		{
+			weps1.Push(wep);
+			weps1.Push(wep .. "Modded");	
+		}
+		else
+		{
+			weps2.Push(wep);
+			weps2.Push(wep .. "Modded");	
+		}
+	}
 }
 
 class DRLAX_BarrelCombinerKit : DRLAX_WeaponKitBase
@@ -1987,8 +2032,8 @@ class DRLAX_BarrelCombinerKit : DRLAX_WeaponKitBase
 
 	override void SetupItems()
 	{
-		weps1.Push("RLHeavySuperShotgunPickup");
-		weps2.Push("RLFocusedDoubleShotgunPickup");
+		AddWeapon("RLHeavySuperShotgunPickup", 0);
+		AddWeapon("RLFocusedDoubleShotgunPickup", 1);
 
 		newitem = "RLQuadShotgunPickup";
 		newitemname = "\cdQuad Shotgun";
@@ -2018,9 +2063,9 @@ class DRLAX_ParticleColliderKit : DRLAX_WeaponKitBase
 
 	override void SetupItems()
 	{
-		weps1.Push("RLBurstCannonLaserRiflePickup");
-		weps2.Push("RLAssaultRiflePlasmaRiflePickup");
-		weps2.Push("RLAssaultRifleNuclearPlasmaRiflePickup");
+		AddWeapon("RLBurstCannonLaserRiflePickup", 0);
+		AddWeapon("RLAssaultRiflePlasmaRiflePickup", 1);
+		AddWeapon("RLAssaultRifleNuclearPlasmaRiflePickup", 1);
 
 		newitem = "RLParticleBeamCannonPickup";
 
@@ -2050,8 +2095,8 @@ class DRLAX_MagneticCoilKit : DRLAX_WeaponKitBase
 
 	override void SetupItems()
 	{
-		weps1.Push("RLHyperBlasterPickup");
-		weps2.Push("RLLaserShotgunPickup");
+		AddWeapon("RLHyperBlasterPickup", 0);
+		AddWeapon("RLLaserShotgunPickup", 1);
 
 		newitem = "RLRailgunPickup";
 
@@ -2081,9 +2126,9 @@ class DRLAX_QuantumEngineKit : DRLAX_WeaponKitBase
 
 	override void SetupItems()
 	{
-		weps1.Push("RLHighPowerTristarBlasterPickup");
-		weps2.Push("RLVBFG9000Pickup");
-		weps2.Push("RLNuclearVBFG9000Pickup");
+		AddWeapon("RLHighPowerTristarBlasterPickup", 0);
+		AddWeapon("RLVBFG9000Pickup", 1);
+		AddWeapon("RLNuclearVBFG9000Pickup", 1);
 
 		newitem = "RLBFG10KPickup";
 

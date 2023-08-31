@@ -16,7 +16,7 @@ Class DRLAX_PuzzleEvents : EventHandler
             let gizmo = DRLAX_GizmoHandler.Get();
             Console.Printf(m.questgizmo .. " - questcount: " .. m.quests.Size() .. " gizmosposition: " .. gizmo.position .. "iteration: " .. gizmo.count);
         }
-        
+
         if(e.name == "familiarmenu" && !e.isManual && e.player == consoleplayer)
         {
             ThinkerIterator ti = ThinkerIterator.Create("DRLAX_Familiardeployer");
@@ -176,7 +176,6 @@ Class DRLAX_GizmoHandler : Thinker
     }
 
     uint position;
-    uint levels;
 
     Array<String> gizmos;
     uint count;
@@ -208,7 +207,9 @@ Class DRLAX_GizmoHandler : Thinker
             if(d.CharAt(4) == "X") // has beaten pit lord
             {
                 //Console.Printf("beaten the boy");
-                if(!HasDemonicWep() && random(0,3) == 0)
+                //let u = DRLAX_UnlockEvents.Get();
+
+                if(!HasDemonicWep() && random(0,3) == 0) // add extra chance if 100% kills score good
                 {
                     gizmos.Push("DRLAX_DemonStatueObject");
                     return true;
@@ -451,6 +452,7 @@ Class DRLAX_GizmoHandler : Thinker
 
 		ss.speed = 3;
 	}
+
 }
 
 Class DRLAX_GizmoObject : Actor
@@ -1312,6 +1314,8 @@ Class DRLAX_ModReviser : DRLAX_GizmoObject
 	}   
 }
 
+
+
 Class DRLAX_Familiardeployer : DRLAX_GizmoObject
 {
     Default
@@ -1924,7 +1928,6 @@ Class DRLAX_TomeOfSinsObject : DRLAX_GizmoObject
         A_SpawnItemEx("TeleportFog", 48, 0, 0, 0, 0, 0, flags:SXF_NOCHECKPOSITION);
         if(spawned && act)
         {
-           
             DRLAX_FamiliarBall f = DRLAX_FamiliarBall(act);
             if(f)
             {
@@ -2603,6 +2606,7 @@ class DRLAX_PDAMessageMenu : DRLAX_ZF_GenericMenu
         }
         return;
     }
+
 }
 
 

@@ -98,9 +98,9 @@ class DRLAX_DarkMartyFamiliar : DRLAX_FamiliarBase
         Missile:
         XMRT E 4 A_FaceTracer(0, 0);
         XMRT F 0 A_StartSound(attacksound, volume:GetVolume());
-        XMRT F 6 FamiliarLineAttack(angle, pitch, random(4,8) + extradamage, "Bullet", "RLBulletPuff", 0);//A_CustomBulletAttack(22.5, 0, 1, random(1,5)*3, "RLBulletPuff", 0, CBAF_NORANDOM);
+		XMRT F 6 FamiliarLineAttack(angle, pitch, random(4,8) + extradamage, "Bullet", "RLBulletPuff", 0);//A_CustomBulletAttack(22.5, 0, 1, random(1,5)*3, "RLBulletPuff", 0, CBAF_NORANDOM);
         XMRT E 8 A_FaceTracer;
-        Goto Spawn;
+		Goto Spawn;
     }
 
     override void FamiliarAction()

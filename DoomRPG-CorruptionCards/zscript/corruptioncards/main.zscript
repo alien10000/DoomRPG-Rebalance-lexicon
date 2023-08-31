@@ -67,7 +67,7 @@ Class CCards_Global : Thinker
 		vc.Init();		
 		rules = new ("CCards_Rules");
 		rules.global = self;
-		ccversion = "5.0";
+		ccversion = "5.1c";
 		scoreneeded = random(4, 8);
 		return self;
 	}
@@ -897,6 +897,7 @@ Class CCards_Game : EventHandler
 			return;
 		}
 
+		// Attach thinker
 		if(CCards_Functions.IsLegalMonster(e.Thing))
 		{
 			Let t = new("CCards_MonsterThinker");
@@ -907,41 +908,6 @@ Class CCards_Game : EventHandler
 			//Console.Printf("%s", t.user.GetClassName());
 			return;
 			//e.Thing.ACS_NamedExecuteAlways("CCards_MonsterScript", 0); // Used to thing_deactivate correctly
-		}
-
-		// Check if is a legit projectile and not some weird actor checker
-		if(e.Thing.bMissile && e.Thing.bNoTeleport && e.Thing.target)
-		{		
-			if(e.Thing.target.CountInv("CCards_Actor_HalfProjectileZOff")>0)
-			{
-				int z = e.Thing.pos.z - e.Thing.target.height/2;
-				while(z < e.Thing.floorz + 6)
-				{
-					z++;
-				}
-				e.Thing.SetOrigin((e.Thing.pos.x, e.Thing.pos.y, z), false);
-
-			}
-	
-			// Other stuff
-			if(e.Thing.target.CountInv("CCards_Actor_ProjectileModHitscan")>0)
-			{
-				CCard_MonsterHitscan.ProjectileHitscan(e.Thing);
-				return;
-			}
-			
-			if(e.Thing.target.CountInv("CCards_Actor_ProjectileModTriple")>0)
-			{
-				CCard_MonsterTripleProjectiles.TripleShot(e.Thing);
-			}
-
-			if(e.Thing.target.bIsMonster || e.Thing.target.player)
-			{
-				Let t = new("CCards_ProjectileThinker");
-				t.user = e.Thing;
-				t.game = self;
-				return;
-			}
 		}
 	}
 	
@@ -1250,7 +1216,7 @@ Class CCards_Rules
 	
 	int CvarSetting(String c)
 	{
-		CVar c = CVar.GetCvar(c, Players[0]);
+		CVar c = CVar.GetCvar(c, players[Net_Arbitrator]);
 		return c.GetInt();
 	}
 }

@@ -106,7 +106,7 @@ Class DRLAX_ClassEvents : EventHandler
 				{
 					c = "RLDeVileCopyDelay_Bunker";
 					spawned = true;
-				}
+				}	
 
 				if(spawned)
 				{
@@ -219,7 +219,6 @@ Class DRLAX_ClassEvents : EventHandler
 				player.TakeInventory("RLSargeInvTrigger", 1);
 			}
 		}
-
 	}
 
 	override void WorldUnloaded (WorldEvent e) 
