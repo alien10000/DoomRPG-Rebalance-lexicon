@@ -419,7 +419,7 @@ Class RLNomadEvents : EventHandler
 						AddActorChance("RLUniqueWeaponSpawner", 10, 4);
 					}
 					
-					if(IsRocketLauncher(MapInv[i]) && level.LevelNum != 30)
+					if(IsRocketLauncher(MapInv[i]) && level.LevelNum != CVar.GetCVar("drpg_ws_use_wads").GetInt() * 30)
 					{
 						AddActorChance("RLRocketLauncherPickup", 120, 0);
 						AddActorChance("RLNapalmLauncherPickup", 80, 1);
