@@ -59,7 +59,7 @@ Class RLSargeEvents : StaticEventHandler
         {
             return;
         }
-
+        
         RLSargeInv s = RLSargeInv(players[consoleplayer].mo.FindInventory("RLSargeInv"));
         if(s && s.shoulderweapon)
         {
@@ -143,7 +143,7 @@ Class RLSargeInvBar : CustomInventory
         +INVENTORY.UNDROPPABLE;
 		+INVENTORY.UNTOSSABLE;
         +INVENTORY.HUBPOWER;
-        Inventory.Icon "ACONA0";
+        Inventory.Icon "LAXITE9";
 	    Inventory.Amount 1;
 	    Inventory.MaxAmount 1;
 	    Inventory.UseSound "";
@@ -189,7 +189,7 @@ Class RLSargeInvBar : CustomInventory
             SetTag("Shoulder Arsenal - No Weapon");
             inv.readytodrop = true;
             useready = false;
-            icon = TexMan.CheckForTexture("ACONA0");
+            icon = TexMan.CheckForTexture("LAXITE9");
             owner.A_Print("");
             cooldown = 35;
         }
@@ -211,7 +211,7 @@ Class RLSargeInvBar : CustomInventory
                 
                 SetTag("Shoulder Arsenal \cd(\cj" .. s .. "\cd)");
                 owner.A_Print("");
-                icon = TexMan.CheckForTexture("ACONB0");
+                icon = TexMan.CheckForTexture("LAXITE8");
             }
             else
             {
@@ -425,7 +425,7 @@ Class RLSargeItemChance : Actor
                 {
                     switch(random(0, 6))
                     {
-                        Case 0:
+                        Case 0: 
                         Case 1: spawneditem = "DRPGHealthBonus2"; break;
                         Case 2: spawneditem = "RLArmorBonusPickup"; break;
                         Case 3: spawneditem = "RLClip3"; break;
@@ -731,7 +731,7 @@ Class RLSargeInv : Inventory
         dropper.GiveInventory(shoulderweapon.weaponname .. "PowerMod", shoulderweapon.pmods);
         dropper.GiveInventory(shoulderweapon.weaponname .. "SniperMod", shoulderweapon.smods);
         dropper.GiveInventory(shoulderweapon.weaponname .. "FirestormMod", shoulderweapon.fmods);
-        dropper.GiveInventory(shoulderweapon.weaponname .. "SniperMod", shoulderweapon.nmods);
+        dropper.GiveInventory(shoulderweapon.weaponname .. "NanoMod", shoulderweapon.nmods);
         dropper.GiveInventory(shoulderweapon.weaponname .. "ModLimit", totalmods);
 
         if(totalmods > 0)

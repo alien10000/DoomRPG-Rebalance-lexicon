@@ -5,6 +5,18 @@ Class DRLAX_PuzzleEvents : EventHandler
 
     override void NetworkProcess (ConsoleEvent e) 
     {
+        if(e.name == "checkinv")
+        {
+            //Console.Printf("" .. CountInv(e.args))
+        }
+
+        if(e.name == "debugquest")
+        {
+            let m = DRLAX_QuestManager.GetQuestMan();
+            let gizmo = DRLAX_GizmoHandler.Get();
+            Console.Printf(m.questgizmo .. " - questcount: " .. m.quests.Size() .. " gizmosposition: " .. gizmo.position .. "iteration: " .. gizmo.count);
+        }
+
         if(e.name == "familiarmenu" && !e.isManual && e.player == consoleplayer)
         {
             ThinkerIterator ti = ThinkerIterator.Create("DRLAX_Familiardeployer");
@@ -36,6 +48,22 @@ Class DRLAX_PuzzleEvents : EventHandler
         }
     }
 
+    override void WorldLineActivated (WorldEvent e) 
+    {
+        if(e.ActivatedLine.special == 244)
+        {
+            ThinkerIterator ti = ThinkerIterator.Create("DRLAX_GizmoHandler", Thinker.STAT_STATIC);
+            DRLAX_GizmoHandler gizmo;
+
+            if(gizmo = DRLAX_GizmoHandler(ti.Next()))
+            {
+                gizmo.count = 1;
+                return;
+            }
+
+        }
+    }
+
     override void WorldThingSpawned (WorldEvent e)
     {
         if(!e.Thing)
@@ -48,15 +76,32 @@ Class DRLAX_PuzzleEvents : EventHandler
             let quest = DRLAX_QuestManager.GetQuestMan();
             quest.skullbodies++;
         }
+
+        if(cls == "RLUniqueBossSpawner")
+        {
+            ThinkerIterator ti = ThinkerIterator.Create("DRLAX_StatueSummoningRitual", Thinker.STAT_STATIC);
+            DRLAX_StatueSummoningRitual a;
+
+            if(a = DRLAX_StatueSummoningRitual(ti.Next()))
+            {
+                if(a)
+                {
+                    e.Thing.Destroy();
+                }
+            }
+
+        }
     }
 
     override void WorldLoaded(WorldEvent e)
     {
-        if(Cvar.GetCvar("DRLAX_nopuzzles").GetBool())
+        if(Cvar.GetCvar("DRLAX_nopuzzles").GetBool() || !DRLAX_UnlockFunctions.ValidMap())
         {
             return;
         }
+
         SetupQuests();
+
         if(!e.isSaveGame)
         {
             SetupGizmos();
@@ -65,7 +110,18 @@ Class DRLAX_PuzzleEvents : EventHandler
 
     void SetupQuests()
     {
-        DRLAX_QuestManager.GetQuestMan();
+        let m = DRLAX_QuestManager.GetQuestMan();
+        if(m.hasbattery)
+        {
+            for(int i; i<players.Size(); i++)
+            {
+                if(players[i].mo && players[i].mo.CountInv("DRLAX_BatteryQuestItem") == 0)
+                {
+                    //Console.Printf("U FUK YOU KILLED IT");
+                    m.FinishQuest("DRLAX_BatteryPlatformObject");
+                }
+            }
+        }
     }
 
     void SetupGizmos()
@@ -87,18 +143,8 @@ Class DRLAX_GizmoSpawner : Actor
         TNT1 A 35;
         TNT1 A 0
         {
-            ThinkerIterator ti = ThinkerIterator.Create("DRLAX_GizmoHandler", Thinker.STAT_STATIC);
-            DRLAX_GizmoHandler gizmo;
+            let gizmo = DRLAX_GizmoHandler.Get();
 
-            if(gizmo = DRLAX_GizmoHandler(ti.Next()))
-            {
-                gizmo.Trigger();
-                return;
-            }
-
-            gizmo = new("DRLAX_GizmoHandler");
-
-            gizmo.Setup();
             gizmo.Trigger();
         }
         stop;
@@ -107,6 +153,21 @@ Class DRLAX_GizmoSpawner : Actor
 
 Class DRLAX_GizmoHandler : Thinker
 {
+    static DRLAX_GizmoHandler Get()
+    {
+        ThinkerIterator ti = ThinkerIterator.Create("DRLAX_GizmoHandler", Thinker.STAT_STATIC);
+        DRLAX_GizmoHandler gizmo;
+
+        if(gizmo = DRLAX_GizmoHandler(ti.Next()))
+        {
+            return gizmo;
+        }
+        //console.Printf("new!!!");
+        gizmo = new("DRLAX_GizmoHandler");
+        gizmo.Setup();
+        return gizmo;
+    }
+
     void Setup()
     {
         ChangeStatNum(STAT_STATIC);
@@ -115,53 +176,172 @@ Class DRLAX_GizmoHandler : Thinker
     }
 
     uint position;
-    uint levels;
 
     Array<String> gizmos;
     uint count;
 
+    bool PushDemonStatue(bool forced)
+    {
+        if(forced)
+        {
+            //Console.Printf("forced");
+            gizmos.Push("DRLAX_DemonStatueObject");
+            return true;
+        }
+
+        int guncount;
+        String d = Cvar.GetCvar("DRLAX_demonicaccess").GetString();
+
+        for(int i=0;i<4;i++)
+        {
+            if(d.CharAt(i) == "1")
+            {
+                guncount++;
+            }
+        }
+
+        //Console.Printf("" .. guncount);
+
+        if(guncount == 4)
+        {
+            if(d.CharAt(4) == "X") // has beaten pit lord
+            {
+                //Console.Printf("beaten the boy");
+                //let u = DRLAX_UnlockEvents.Get();
+
+                if(!HasDemonicWep() && random(0,3) == 0) // add extra chance if 100% kills score good
+                {
+                    gizmos.Push("DRLAX_DemonStatueObject");
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            
+            //Console.Printf("4 guns");
+            gizmos.Push("DRLAX_DemonStatueObject");
+            return true;
+        }
+
+        return HasDemonicWep();
+    }
+
+    bool HasDemonicWep()
+    {
+        String demonweps[] = 
+        {
+            "RLDeathsGaze",
+            "RLSoulstormRifle",
+            "RLUnmaker",
+            "RLHellsReign"
+        };
+
+        for(int i=0; i<players.Size(); i++)
+        {
+            for(int d=0; d<demonweps.Size(); d++)
+            {
+                if(players[i].mo && players[i].mo.CountInv(demonweps[d]) > 0)
+                {
+                    gizmos.Push("DRLAX_DemonStatueObject");
+                    //Console.Printf("you have a weapon");
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    bool PushQuestObject()
+    {
+        uint c = 0;
+        for(int i = 0; i<players.Size(); i++)
+        {
+            if(players[i].mo && !(players[i].mo is "DoomRLNomad"))
+            {
+                c++;
+            }
+        }
+
+        if(c == 0)
+        {
+            return false;
+        }
+
+        let man = DRLAX_QuestManager.GetQuestMan();
+        if(man && man.questgizmo != "")
+        {
+            gizmos.Push(man.questgizmo);
+            //Console.Printf("pushing " .. man.questgizmo .. " .. " .. gizmos.Size());
+            return true;
+        }
+
+        return false;
+    }
+
     void Trigger()
     {
+        gizmos.Clear();
+        int levels = DRLAX_UnlockEvents.GetBeatenLevels();
+        //Console.Printf("" .. levels);
+
+        if(DRLAX_UnlockEvents.HasVisitedLevel() || !DRLAX_UnlockFunctions.ValidMap())
+        {
+            //Console.Printf("cant do here again");
+            return;
+        }
+
         count--;
+
+        if(Level.LevelName ~== "map31" || Level.LevelName ~== "map32")
+        {
+            count = 0;
+        }
+
         if(count == 0)
         {
-            Array<String> gizmos;
+            //Array<String> gizmos;
             int amount = 1;
 
-            if(levels>20 && random(0, 3) == 0)
+            if(levels > 20 && random(0, 3) == 0)
             {
                 amount++;
             }
 
-            let man = DRLAX_QuestManager.GetQuestMan();
+            int p = position;
+            int cvarp =  Cvar.GetCvar("DRLAX_DebugGizmos").GetInt();
 
-            if(position != 5 && man.tomelevel > 1)
+            if(cvarp > 0)
             {
-                gizmos.Push("DRLAX_TomeOfSins");
+                Console.Printf("debugging gizmo slot " .. cvarp);
+                p = cvarp;
             }
 
-            Switch(position)
+            Switch(p)
             {
                 Case 0:
                 gizmos.Push("DRLAX_DimensionalBox");
-                gizmos.Push("DRLAX_AppraiserObject");
+                PushQuestObject();
                 break;
 
                 Case 1:
                 gizmos.Push("DRLAX_WeaponRecycler");
-                gizmos.Push("DRLAX_TomeOfSins");
+                gizmos.Push("DRLAX_ModReviser");
+                gizmos.Push("DRLAX_ModExtractor");
                 break;
 
                 Case 2:
-                gizmos.Push("DRLAX_AppraiserObject");
-                gizmos.Push("DRLAX_ModReviser");
+                PushQuestObject();
                 break;
 
                 Case 3:
                 gizmos.Push("DRLAX_WeaponRecycler");
                 gizmos.Push("DRLAX_ModReviser");
+                gizmos.Push("DRLAX_ModExtractor");
                 gizmos.Push("DRLAX_DimensionalBox");
-                gizmos.Push("DRLAX_AppraiserObject");
+                PushQuestObject();
                 break;
 
                 Case 5:
@@ -169,20 +349,20 @@ Class DRLAX_GizmoHandler : Thinker
                 break;
 
                 Case 8:
-                gizmos.Push("DRLAX_AppraiserObject");
+                PushQuestObject();
                 break;
 
-                Case 12:
-                gizmos.Push("DRLAX_DimensionalBox");
+                Case 10:
+                PushDemonStatue((cvarp > 0));
                 break;
 
                 Default:
                 gizmos.Push("DRLAX_WeaponRecycler");
                 gizmos.Push("DRLAX_ModReviser");
+                gizmos.Push("DRLAX_ModExtractor");
                 gizmos.Push("DRLAX_DimensionalBox");
-                gizmos.Push("DRLAX_AppraiserObject");
-                gizmos.Push("DRLAX_TomeOfSins");
-                gizmos.Push("DRLAX_SkullShrineObject");
+                PushQuestObject();
+                PushDemonStatue((cvarp > 0));
                 if(position>16)
                 {  
                     gizmos.Push("DRLAX_Familiardeployer");
@@ -190,28 +370,35 @@ Class DRLAX_GizmoHandler : Thinker
                 break;
             }
 
+            //Console.Printf("" .. Cvar.GetCvar("DRLAX_Debug").GetString());
+
             for(int i; i<amount; i++)
             {
                 if(gizmos.Size() == 0)
                 {
+                    //Console.Printf("empty!");
                     break;
                 }
 
                 int r = random(0, gizmos.Size() - 1);
                 SpawnGizmo(gizmos[r]);
+                
+                if(cvarp > 0)
+                {
+                    Console.Printf("\cf" .. gizmos[r] .. " Spawned.");
+                }
                 gizmos.Delete(r);
                 position++;
             }
 
             count = random(2, 3);
-            levels++;
         }
     }
 
     static void SpawnGizmo(String gizmo)
 	{ 
         //Console.Printf("spawned");
-		CMMSS_Actor_SafeSpawner ss = CMMSS_SafeSpawner.New(gizmo, 1, "", 48, 64, 0, CMMSS_SafeSpawner.SSFLAGS_NOMONSTERS);
+		CMMSS_Actor_SafeSpawner ss = CMMSS_SafeSpawner.New(gizmo, 1, "", 32, 48, 0, CMMSS_SafeSpawner.SSFLAGS_NOMONSTERS);
 
         if(!ss || ss.actorlist.Size() == 0)
         {
@@ -228,7 +415,32 @@ Class DRLAX_GizmoHandler : Thinker
 		{
 			if(actorlist[i].cursector.IsSecret())
 			{
-				ss.actorlist.Push(actorlist[i]);
+                bool hitawall = false;
+                for(int i = 0; i<4; i++)
+                {
+                    FLineTraceData RemoteRay;
+                    bool hit = actorlist[i].LineTrace(
+                    i * 90,
+                    64,
+                    0,
+                    flags: TRF_THRUACTORS|TRF_THRUBLOCK,
+                    offsetz: 40,
+                    data: RemoteRay
+                    );
+
+                    if(RemoteRay.HitType == TRACE_HitWall)
+                    {
+                        //Actor.Spawn("Bigtree", RemoteRay.HitLocation);
+                        //Console.Printf("hit a darn wall");
+                        hitawall = true;
+                        break;
+                    }
+                }
+
+                if(!hitawall)
+                {
+                    ss.actorlist.Push(actorlist[i]);
+                }
 			}
 		}
 
@@ -240,6 +452,7 @@ Class DRLAX_GizmoHandler : Thinker
 
 		ss.speed = 3;
 	}
+
 }
 
 Class DRLAX_GizmoObject : Actor
@@ -250,6 +463,16 @@ Class DRLAX_GizmoObject : Actor
         +NOTELEPORT;
     	+DONTSPLASH;
         +NOTIMEFREEZE;
+    }
+
+    virtual void OpenMsg()
+    {
+        //Console.Printf("something spawned!");
+    }
+
+    override void BeginPlay()
+    {
+        OpenMsg();
     }
 
     CustomInventory FindDroppedWeapon()
@@ -502,6 +725,8 @@ Class DRLAX_WeaponRecycler : DRLAX_GizmoObject
                     SetStateLabel("WeaponsIn");
                 }
                 A_StartSound("weapons/flamethrowerload");
+                A_StartSound("armor/break2", slot:CHAN_6);
+                DRLAX_DebrisFX.Spawn(self, 15);
                 b.Destroy();
             }
         }
@@ -518,7 +743,6 @@ Class DRLAX_WeaponRecycler : DRLAX_GizmoObject
         user.A_Print("\cq- Weapon Fabricator -\n\n\c-Offer 3 weapons of \ctExotic\c- rarity or higher to create a new \cdUnique\c- weapon.\n\n\cf" .. 3 - wepcount .. " weapons remain.", 5);
         return true;
     }
-    
 }
 
 Class DRLAX_LegendaryWeaponPuzzleSpawner : Actor
@@ -564,6 +788,20 @@ Class DRLAX_QuestManager : Thinker
     uint skulllevelsanctuary;
     uint tomelevel;
     uint addamount;
+    uint questscomplete;
+    bool hasbattery;
+
+    String questgizmo;
+
+    Array<String> questpool;
+
+    static const String quests[] =
+    {
+        "DRLAX_AppraiserObject",
+        "DRLAX_TomeOfSinsObject",
+        "DRLAX_SkullShrineObject",
+        "DRLAX_BatteryPlatformObject"
+    };
 
     void PickRandomWeapon()
     {
@@ -690,7 +928,59 @@ Class DRLAX_QuestManager : Thinker
         quest = new("DRLAX_QuestManager");
         quest.tomelevel = 1;
         quest.addamount;
+
+        for(int i; i<DRLAX_QuestManager.quests.Size(); i++)
+        {
+            quest.questpool.Push(DRLAX_QuestManager.quests[i]);
+        }
+
+        quest.GetQuestGizmo();
+
         return quest;
+    }
+
+    String GetQuestGizmo()
+    {
+        //Console.Printf("on a quest");
+        if(questgizmo == "")
+        {
+            if(questpool.Size() == 0)
+            {
+                return quests[random(0, quests.Size()-1)];
+            }
+
+            int r = random(0, questpool.Size()-1);
+            questgizmo = questpool[r];
+
+            if(false && questpool.Size() > 3)
+            {
+            Console.Printf("setting to quest 3");
+            questgizmo = questpool[3];
+            }
+        }
+
+        return questgizmo;
+    }
+
+    static void FinishQuest(String n)
+    {
+        //Console.Printf("quest finished!");
+        Let q = GetQuestMan();
+
+        if(q && q.questgizmo == n)
+        {
+            q.questscomplete++;
+            
+            int f = q.questpool.Find(n);
+
+            if(f != q.questpool.Size())
+            {
+                q.questpool.Delete(f);
+                q.questgizmo = "";
+            }
+
+            q.GetQuestGizmo();
+        }
     }
 }
 
@@ -744,9 +1034,9 @@ Class DRLAX_AppraiserObject : DRLAX_GizmoObject
 
             familiarreward = "";
 
+            DRLAX_QuestManager.FinishQuest(GetClassName());
         }
         GIZM L 1
-
         {
             holdingwep.bTHRUACTORS = false;
             holdingwep.bNOGRAVITY = false;
@@ -932,44 +1222,13 @@ Class DRLAX_ModReviser : DRLAX_GizmoObject
         GIZM HI 4;
         GIZM C 35;
         GIZM C 35 DropModItem();
-        GIZM C 0 
-        {
-            if(iteration == 24)
-            {
-                SetStateLabel("Death");
-            }
-        }
-        Goto Spawn;
+        Goto Death;
         Death:
         GIZM C -1;
         stop;
 	}
 
-    override void PostBeginPlay()
-    {
-        for(int i; i<25-1; i++)
-        {
-            rngtable[i] = random(0, 1000);
-        }
-    }
-
-    uint iteration;
-    int rngtable[25];
-    bool blacklistpacks[8];
-    Array<String> modpacks;
     uint count;
-
-    void AddPacks(String itemname, int amount, int slot)
-    {
-        if(blacklistpacks[slot])
-        {
-            return;
-        }
-        for(int i; i<amount; i++)
-        {
-            modpacks.Push(itemname);
-        }
-    }
 
     Void ReadyForWep()
     {
@@ -980,7 +1239,6 @@ Class DRLAX_ModReviser : DRLAX_GizmoObject
 
             if(b)
             {
-                
                 count++;
                 if(count == 4)
                 {
@@ -994,71 +1252,31 @@ Class DRLAX_ModReviser : DRLAX_GizmoObject
 
     void DropModItem()
     {
-        modpacks.Clear();
-
-        AddPacks("RLBulkModItem", 200, 0);
-        AddPacks("RLPowerModItem", 200, 1);
-        AddPacks("RLAgilityModItem", 200, 2);
-        AddPacks("RLTechnicalModItem", 200, 3);
-                
-        AddPacks("RLNanoModItem", 50, 4);
-        AddPacks("RLFirestormModItem", 50, 5);
-        AddPacks("RLSniperModItem", 50, 6);
         //AddPacks("RLOnyxModItem", 50, 7);
-
-        int i = 0;
-        int u = 0;
-
-        while(u < rngtable[iteration])
-        {
-            i++;
-            u++;
-
-            if(i > modpacks.Size()-1)
-            {
-                i = 0;
-            }
-        }
 
         for(int h; h<CanHack()+1; h++)
         {
-            A_SpawnItemEx(modpacks[i], 0, 0, 32, frandom(-5, 5), 0, 3, random(0, 360));
+            A_SpawnItemEx("DRLAX_UnchargedModItem", 0, 0, 32, frandom(-5, 5), 0, 3, random(0, 360));
         }
-
-        iteration++;
-
-        for(int b; b<blacklistpacks.Size(); b++)
-        {
-            blacklistpacks[b] = false;
-        }
-
-        modpacks.Clear();
-        count = 0;
     }
 
     override bool Used(Actor user)
 	{
         if(count >= 4)
         {
+            user.A_StartSound("hud/error", flags:CHANF_LOCAL);
+            user.A_Print("This device is no longer usable.", 5);
             return false;
         }
 
         String offerstring = "";
 
-        if(blacklistpacks[0]){offerstring = offerstring .. "\chB";}
-        if(blacklistpacks[1]){offerstring = offerstring .. "\cgP";}
-        if(blacklistpacks[2]){offerstring = offerstring .. "\cdA";}
-        if(blacklistpacks[3]){offerstring = offerstring .. "\cfT";}
-        if(blacklistpacks[4]){offerstring = offerstring .. "\cjN";}
-        if(blacklistpacks[5]){offerstring = offerstring .. "\ciF";}
-        if(blacklistpacks[6]){offerstring = offerstring .. "\ctS";}
-        if(blacklistpacks[7]){offerstring = offerstring .. "\cuO";}
-        if(offerstring != "")
+        if(count > 0)
         {
-            offerstring = "\n\nMod Packs already inserted: " .. offerstring;
+            offerstring = "\n\nMod Packs already inserted: " .. count;
         }
 
-        user.A_Print("\cf- Mod Pack Reviser -\n\n\c-Offer 4 Weapon Mod Packs of any type to obtain a new random Mod Pack.\nThe new Mod Pack will not be one of the 4 types already offered." .. offerstring, 5);
+        user.A_Print("\cf- Mod Pack Reviser -\n\n\c-Offer 4 Weapon Mod Packs of any type to obtain an Uncharged Mod Pack.\nThe new Mod Pack will change into a random Exotic Mod Pack on the next level." .. offerstring, 5);
         return true;
     }
 
@@ -1067,26 +1285,25 @@ Class DRLAX_ModReviser : DRLAX_GizmoObject
 		ThinkerIterator ti = ThinkerIterator.Create("Actor");
         Actor b;
 
+        String modnames[] = {
+            "DroppedRLBulkMod",
+            "DroppedRLPowerMod",
+            "DroppedRLAgilityMod",
+            "DroppedRLTechnicalMod",
+            "DroppedRLNanoMod",
+            "DroppedRLFirestormMod",
+            "DroppedRLSniperMod",
+            "DroppedRLOnyxMod"
+        };
+
         while(b = Actor(ti.Next()))
         {
 			if(b && b.GetAge() > 3 && Distance3D(b) < 40)
 			{
-                String modnames[] = {
-                    "DroppedRLBulkMod",
-                    "DroppedRLPowerMod",
-                    "DroppedRLAgilityMod",
-                    "DroppedRLTechnicalMod",
-                    "DroppedRLNanoMod",
-                    "DroppedRLFirestormMod",
-                    "DroppedRLSniperMod",
-                    "DroppedRLOnyxMod"
-                };
-
                 for(int i; i<modnames.Size(); i++)
                 {
-                    if(modnames[i] == b.GetClassName())
+                    if(b.GetClassName() == modnames[i])
                     {
-                        blacklistpacks[i] = true;
                         return b;
                     }
                 }
@@ -1097,327 +1314,7 @@ Class DRLAX_ModReviser : DRLAX_GizmoObject
 	}   
 }
 
-class DRLAX_FamiliarMenu : DRLAX_ZF_GenericMenu 
-{
-    Array<String> familiars;
-    DRLAX_ZF_Label familiardesc;
-    Array<DRLAX_FamiliarButton> fbuttons;
-    int selectno;
 
-    void GetFamiliars()
-    {
-        for(int i; i<allclasses.Size(); i++)
-        {
-            if(allclasses[i] is "DRLAX_FamiliarBase" && allclasses[i].GetClassName() != "DRLAX_FamiliarBase")
-            {
-                String f = allclasses[i].GetClassName();
-                f.Replace("DRLAX_", "");
-                f.Replace("Familiar", "");
-                familiars.push(f);
-            }
-        }
-    }
-
-    override void init(Menu parent) 
-    {
-        FindActivePlayer();
-        selectno = -1;
-        let cmdHandler = new("DRLAX_FamiliarMenuHandler");
-        cmdHandler.theMenu = self;
-        Super.init(parent);
-        GetFamiliars();
-
-        let baseRes = (1920, 1080);
-        setBaseResolution(baseRes);
-        
-        let background = DRLAX_ZF_Image.create(
-            (240, 0),
-            (1920, 1080),
-            image: "RLZPDA2",
-            imageScale: (4.5, 5.4)
-        );
-
-        background.Pack(mainFrame);
-
-        let confirm = DRLAX_ZF_Button.create(
-            (baseRes.x/2 - 165, 858),
-            (192, 128),
-            text: "Confirm",
-            cmdHandler: cmdhandler,
-            command: "confirm",
-            fnt: "PDAFONT",
-            textscale: 6.0,
-            textColor: Font.CR_GREEN
-        );
-
-        if(!IsActivePlayer())
-        {
-            confirm.SetText("Exit");
-        }
-
-        confirm.Pack(mainFrame);
-
-        //if(false)
-
-        let title = DRLAX_ZF_Label.create(
-            (baseRes.x/2 - 650, 42),
-            (1200, 200),
-            text: "Familiar Deployer",
-            fnt: "STAT_MNO",
-            alignment: DRLAX_ZF_Label.AlignType_Center,
-            textScale: 4.5,
-            textColor: Font.CR_GREEN
-        );
-
-        if(!IsActivePlayer())
-        {
-            title.SetText("Achievements");
-        }
-
-        title.pack(mainFrame);
-
-        let description = DRLAX_ZF_Label.create(
-            (350, 650),
-            (1100, 200),
-            text: "Select a familiar.\n\nIt will fight alongside you until the game is over.\n\nOnly \cfone\cd familiar can be deployed from this device.",
-            fnt: "STAT_MNO",
-            alignment: DRLAX_ZF_Label.AlignType_TopCenter,
-            textScale: 3.5,
-            textColor: Font.CR_WHITE
-        );
-
-        description.pack(mainFrame);
-        familiardesc = description;
-
-        for(int i; i<familiars.Size(); i++)
-        {
-            AddButton(i, familiars[i], cmdhandler);
-        }
-    }
-
-    void AddButton(int slot, string familiar, DRLAX_ZF_Handler handler)
-    {
-        let frame = DRLAX_ZF_Frame.create(
-            (390 + ((slot%10) * 100), 220 + ((slot/10) * 100)),
-            (96, 96)
-        );
-
-        let normal = DRLAX_ZF_BoxTextures.createTexturePixels(
-            "graphics/zforms/PDANormal.png",
-            (7, 7),
-            (14, 14),
-            true,
-            true
-        );
-        let hover = DRLAX_ZF_BoxTextures.createTexturePixels(
-            "graphics/zforms/PDAHover.png",
-            (7, 7),
-            (14, 14),
-            true,
-            true
-        );
-        let click = DRLAX_ZF_BoxTextures.createTexturePixels(
-            "graphics/zforms/PDAClick.png",
-            (7, 7),
-            (14, 14),
-            true,
-            true
-        );
-
-        String n = "" .. slot;
-        let button = DRLAX_ZF_Button.create(
-            (0, 0),
-            (96, 96),
-            cmdHandler: handler,
-            command: n
-        );
-
-        String f = familiar;
-        f.ToLower();
-
-        let icon = DRLAX_ZF_Image.create(
-            (0, 0),
-            (96, 96),
-            image: "graphics/familiars/" .. f .. ".png",
-            imageScale: (3.0, 3.0)
-        );
-        icon.setDontBlockMouse(true);
-
-        if(!DRLAX_UnlockFunctions.HasUnlocked(familiar))
-        {
-            icon.SetImage("graphics/familiars/locked.png");
-        }
-
-        let iconback = DRLAX_ZF_Image.create(
-            (0, 0),
-            (96, 96),
-            image: "graphics/zforms/PDAButton.png",
-            imageScale: (3.0, 3.0)
-        );
-        iconback.setDontBlockMouse(true);
-
-        button.pack(frame);
-        icon.pack(frame);
-        iconback.pack(frame);
-
-        frame.pack(mainFrame);
-
-        DRLAX_FamiliarButton fb = new("DRLAX_FamiliarButton");
-        fb.familiar = familiar;
-        fb.iconback = iconback;
-        fb.icon = icon;
-        fb.slot = slot;
-        fb.button = button;
-        fbuttons.Push(fb);
-    }
-
-    override void ticker() 
-    {
-        if(selectno > -1)
-        {
-            for(int i; i<fbuttons.Size(); i++)
-            {
-                if(i == selectno)
-                {
-                    fbuttons[i].iconback.SetImage("graphics/zforms/PDAButtonActive.png");
-                }
-                else
-                {
-                    fbuttons[i].iconback.SetImage("graphics/zforms/PDAButton.png");
-                }
-            }
-        }
-    }
-
-    DRLAX_Familiardeployer gizmo;
-
-    bool active;
-
-    bool IsActivePlayer()
-    {
-        return active;
-    }
-
-    void FindActivePlayer()
-    {
-        ThinkerIterator ti = ThinkerIterator.Create("DRLAX_Familiardeployer");
-
-        while(gizmo = DRLAX_Familiardeployer(ti.Next()))
-        {
-            if(gizmo.actplayer && gizmo.actplayer == players[consoleplayer].mo)
-            {
-                active = true;
-                return;
-            }
-        }
-        active = false;
-        return;
-    }
-}
-
-class DRLAX_FamiliarButton
-{
-    String familiar;
-    DRLAX_ZF_Image iconback;
-    DRLAX_ZF_Image icon;
-    DRLAX_ZF_Button button;
-    uint slot;
-}
-
-class DRLAX_FamiliarMenuHandler : DRLAX_ZF_Handler 
-{
-    DRLAX_FamiliarMenu theMenu;
-
-    override void buttonClickCommand(DRLAX_ZF_Button caller, Name command) 
-    {
-        if(command == "confirm")
-        {
-            //Console.Printf("clicked");
-            if(theMenu.selectno > -1)
-            {
-                EventHandler.SendNetworkEvent("spawnfamiliar:" .. theMenu.fbuttons[themenu.selectno].familiar);
-                //theMenu.gizmo.familiar = theMenu.fbuttons[themenu.selectno].familiar;
-                //theMenu.gizmo.SetStateLabel("Spawning");
-            }
-            theMenu.Close();
-            return;
-        }
-
-        if(!theMenu.IsActivePlayer())
-        {
-            return;
-        }
-
-        if(caller.getText() == "")
-        {
-            String s = command;
-            uint i = s.ToInt();
-
-            if(DRLAX_UnlockFunctions.HasUnlocked(theMenu.fbuttons[i].familiar))
-            {
-                S_Sound ("UI/PDA/Activate", CHAN_VOICE | CHAN_UI, snd_menuvolume, ATTN_NONE);
-                theMenu.selectno = i;
-            }
-        }
-    }
-
-    override void elementHoverChanged(DRLAX_ZF_Element caller, Name command, bool unhovered)
-    {
-        if(!unhovered)
-        {
-            S_Sound ("UI/PDA/Select", CHAN_VOICE | CHAN_UI, snd_menuvolume, ATTN_NONE);
-        }
-
-        if(command == "confirm" && !unhovered && themenu.selectno > -1)
-        {
-            themenu.familiardesc.SetText(GetFamiliarText(themenu.fbuttons[themenu.selectno].familiar));
-            return;
-        }
-
-        for(int i; i<themenu.fbuttons.Size(); i++)
-        {
-            if(themenu.fbuttons[i].button == caller && !unhovered)
-            {
-                //themenu.selectno = themenu.fbuttons[i].slot;
-                
-                themenu.familiardesc.SetText(GetFamiliarText(themenu.fbuttons[i].familiar));
-                break;
-            }
-        }   
-    }
-
-    String GetFamiliarText(String familiar)
-    {
-        String c = familiar;                    
-        c.ToUpper();
-        String s;
-
-        if(DRLAX_UnlockFunctions.HasUnlocked(familiar) && themenu.IsActivePlayer())
-        {
-            s = Stringtable.Localize("$" .. "TXT_" .. c .. "FAMILIAR");
-        }
-        else
-        {
-            s = Stringtable.Localize("$" .. "UNLOCK_" .. c .. "FAMILIAR");
-
-            if(s == "UNLOCK_" .. c .. "FAMILIAR")
-            {
-                s = Stringtable.Localize("$" .. "UNLOCK_MONSTERFAMILIAR");
-            }
-
-            if(!DRLAX_UnlockFunctions.HasUnlocked(familiar))
-            {
-                s = "= LOCKED =\n\n" .. s;
-            }
-            else
-            {
-                s = "=\cf UNLOCKED \c-=\n\n" .. s;
-            }
-        }
-
-        return s;
-    }
-}
 
 Class DRLAX_Familiardeployer : DRLAX_GizmoObject
 {
@@ -1501,26 +1398,22 @@ Class DRLAX_Familiardeployer : DRLAX_GizmoObject
         return true;
     }
 
-    override void Tick()
+    override void OpenMsg()
     {
-        if(GetAge() == 35)
+        String s;
+        Switch(random(0, 2))
         {
-            String s;
-            Switch(random(0, 2))
-            {
-                Case 0:
-                s = "Your PDA notes a useful machine is nearby.";
-                break;
-                Case 1:
-                s = "You feel like someone is trying to reach out to you...";
-                break;
-                Case 2:
-                s = "You thought you heard voices nearby... They seemed friendly.";
-                break;
-            }
-            Console.Printf("\c-" .. s);
+            Case 0:
+            s = "Your PDA notes a useful machine is nearby.";
+            break;
+            Case 1:
+            s = "You feel like someone is trying to reach out to you...";
+            break;
+            Case 2:
+            s = "You thought you heard voices nearby... They seemed friendly.";
+            break;
         }
-        Super.Tick();
+        Console.Printf("\c-" .. s);
     }
 }
 
@@ -1537,7 +1430,7 @@ class DRLAX_Useddeployer : Inventory
 }
 
 
-Class DRLAX_TomeOfSins : DRLAX_GizmoObject
+Class DRLAX_TomeOfSinsObject : DRLAX_GizmoObject
 {
     Default
 	{
@@ -1743,6 +1636,9 @@ Class DRLAX_TomeOfSins : DRLAX_GizmoObject
                     Case 1: prize = "RLPowerModItem"; break;
                     Case 2: prize = "RLAgilityModItem"; break;
                     Case 3: prize = "RLTechnicalModItem"; break;
+                    // Note: unreachable?
+                    Case 4: prize = "RLArmorModItem"; break;
+                    Case 5: prize = "RLOnyxModItem"; break;
                 }
                 break;
                 Case 1:
@@ -2009,7 +1905,7 @@ Class DRLAX_TomeOfSins : DRLAX_GizmoObject
                 tomeactive = false;
                 SetStateLabel("Spawn");
                 A_StartSound("weapons/legendaryspawned", attenuation: ATTN_NONE);
-                Console.Printf("\cfThe Corrupted ones have been deafeated!");
+                Console.Printf("\cfThe Corrupted ones have been defeated!");
                 for(int i; i<corrupts.Size(); i++)
                 {
                     corrupts[i].Destroy();
@@ -2032,10 +1928,10 @@ Class DRLAX_TomeOfSins : DRLAX_GizmoObject
         A_SpawnItemEx("TeleportFog", 48, 0, 0, 0, 0, 0, flags:SXF_NOCHECKPOSITION);
         if(spawned && act)
         {
-           
             DRLAX_FamiliarBall f = DRLAX_FamiliarBall(act);
             if(f)
             {
+                DRLAX_QuestManager.FinishQuest(GetClassName());
                 f.Init(familiar);
                 DRLAX_UnlockThinker.WriteUnlock(familiar);
             }
@@ -2079,7 +1975,7 @@ class DRLAX_TomeCorruptedPlayerAmbience : Inventory
     {
        if(owner && !passive && damage > 0)
         {
-            newdamage = damage * 0.6;
+            newdamage = damage * 0.45;
         }
     }
 
@@ -2112,6 +2008,8 @@ class DRLAX_TomeCorruptedPlayer : Actor
             corrupts.Push("RLCorruptedNomad1");
             corrupts.Push("RLCorruptedSarge1");
             corrupts.Push("RLCorruptedNanoManiac1");
+            corrupts.Push("RLCorruptedTrespasser1");
+            corrupts.Push("RLCorruptedBunker1");
 
             Actor a = Spawn(corrupts[random(0, corrupts.Size() - 1)], pos);
             if(a)
@@ -2147,7 +2045,14 @@ class DRLAX_SkullShrineObject : DRLAX_GizmoObject
         Switch(which)
         {
             Case 0:
-            A_SpawnItemEx("DRLAX_SoulTrap", 0, 0, 32, 8, 0, 1, 0);
+            if(random(0, 1) == 0)
+            {
+                A_SpawnItemEx("DRLAX_SoulTrap", 0, 0, 32, 8, 0, 1, 0);
+            }
+            else
+            {
+                A_SpawnItemEx("DRLAX_CursedDagger", 0, 0, 32, 8, 0, 1, 0);
+            }
             break;
 
             Case 1:
@@ -2163,6 +2068,7 @@ class DRLAX_SkullShrineObject : DRLAX_GizmoObject
                     DRLAX_FamiliarBall f = DRLAX_FamiliarBall(act);
                     if(f)
                     {
+                        DRLAX_QuestManager.FinishQuest(GetClassName());
                         f.Init(familiarreward);
                         DRLAX_UnlockThinker.WriteUnlock(familiarreward);
                     }
@@ -2226,8 +2132,775 @@ class DRLAX_SkullShrineObject : DRLAX_GizmoObject
     override void PostBeginPlay()
     {
         familiarreward = DRLAX_AppraiserObject.GetRandomFamiliar();
+        String skulls[] =
+        {
+            "RLFireSkull",
+            "RLBloodSkull",
+            "RLHatredSkull"
+        };
+
+        A_SpawnItemEx(skulls[random(0, skulls.Size() - 1)],0,0,0,3,0,2, random(0,360));
     }
 }
+
+Class DRLAX_ModExtractor : DRLAX_GizmoObject
+{
+    Default
+	{
+		-SOLID;
+		scale 1.25;
+	}
+
+	states
+	{
+		Spawn:
+		GIZM X 1 ReadyForWep();
+		loop;
+        WeaponsIn:
+        Death:
+        GIZM X 25;
+        GIZM Y 6;
+        GIZM Z 0 DoFX();
+        GIZM ZYXY 5;
+        GIZM Z 0 DoFX();
+        GIZM ZYXY 5;
+        GIZM Z 0 DoFX();
+        GIZM Z 25;
+        GIZM Z -1
+        {
+            A_StartSound("gizmos/modextract");
+            for(int i; i<CanHack()+1; i++)
+            {
+                while(mods.Size() > 0)
+                {
+                    //Console.Printf("dsgdfg");
+                    A_SpawnItemEx(mods[mods.Size() - 1],0,0,32,2,0,2, random(0,360));
+                    mods.Pop();
+                }
+            }
+        }
+        stop;
+	}
+
+    void DoFX()
+    {
+        A_StartSound("armor/break2");
+        DRLAX_DebrisFX.Spawn(self, 6);
+    }
+
+    Array<String> mods;
+
+    Void ReadyForWep()
+    {
+        if(!CheckRange(350, true))
+		{
+            let b = FindDroppedWeapon();
+
+            if(b)
+            {
+                String modnames[] =
+                {
+                    "PowerMod",
+                    "BulkMod",
+                    "AgilityMod",
+                    "TechnicalMod",
+                    "NanoMod",
+                    "FirestormMod",
+                    "SniperMod"
+                };
+
+                //Console.Printf(b.GetClassName() .. "");
+
+                for(int m = 0; m < modnames.Size(); m++)
+                {
+                    String s = b.GetClassName() .. modnames[m];
+                    s.Replace("PickupModded", "");
+
+                    //Console.Printf(s .. "");
+                    for(int i = 0; i < b.CountInv(s); i++)
+                    {
+                        mods.Push("RL" .. modnames[m] .. "Item");
+                    }
+                }
+
+                if(mods.Size() > 0)
+                {
+                    SetStateLabel("WeaponsIn");
+
+                    A_StartSound("weapons/flamethrowerload");
+                    b.Destroy();
+                    bCANNOTPUSH = true;
+                }
+            }
+        }
+    }
+
+    override bool Used(Actor user)
+	{
+        if(bCANNOTPUSH)
+        {
+            user.A_StartSound("hud/error", flags:CHANF_LOCAL);
+            user.A_Print("This device is no longer usable.", 5);
+            return true;
+        }
+        user.A_Print("\cn- Mod Extractor -\n\n\c-Offer a modded weapon to extract any Mod Packs from it and \cgdestroy\c- the weapon.", 5);
+        return true;
+    }
+}
+
+
+Class DRLAX_BatteryPlatformObject : DRLAX_GizmoObject
+{
+    Default
+	{
+		-SOLID;
+		scale 1.1;
+	}
+
+	states
+	{
+		Spawn:
+		GIZN BCDC 6;
+        loop;
+
+        Teleporting:
+        TNT1 A 0 A_StartSound("weapons/gundropbigger");
+        GIZN BCDCBCDCBCDC 6;
+        GIZN B 0
+        {
+            if(tracer)
+            {
+                Spawn("TeleportFog", tracer.pos);
+                tracer.Destroy();
+            }
+        }
+        GIZN BCDCBCDCBCDCBCDC 6;
+        GIZN B 0
+        {
+            sequence++;
+            SpawnPrize();
+        }
+        Goto Spawn;
+	}
+
+    String prize;
+    String familiar;
+    uint sequence;
+
+    override bool Used(Actor user)
+	{
+        if(sequence == 5)
+        {
+            return false;
+        }
+
+        if(sequence == 4)
+        {
+            if(user.CountInv("DRLAX_BatteryQuestItem") == 0)
+            {
+                PDAMessage(user);
+            }
+            else
+            {
+                user.A_TakeInventory("DRLAX_BatteryQuestItem", 1);
+                user.TakeInventory("RLWeaponLimit", 1);
+                sequence++;
+                let a = Spawn("DRLAX_QuestBatteryProp", pos);
+                if(a)
+                {
+                    a.target = self;
+                    tracer = a;
+                }
+
+                SetStateLabel("Teleporting");
+                return true;
+            }
+            return false;
+        }
+
+        if(sequence == 1)
+        {  
+            if(user.CountInv("RLWeaponLimit") >= 6)
+            {
+                user.A_StartSound("hud/error", flags:CHANF_LOCAL);
+                user.A_Print("The battery is too heavy. Dropping a weapon might make it doable...", 5);
+                return true;
+            }
+            else
+            {
+                let i = Inventory(Spawn("DRLAX_BatteryQuestItem", user.pos));
+                if(i)
+                {
+                    i.Touch(user);
+                }
+                sequence++;
+                if(tracer)
+                {
+                    tracer.Destroy();
+                }
+            }
+
+            target = null;
+            return true;
+        }
+
+        PDAMessage(user);
+        target = user;
+        if(sequence == 0)
+        { 
+            sequence++;
+        }
+
+        return true;
+    }
+
+    void PDAMessage(Actor user)
+    {
+        user.A_StartSound("UI/PDA/Online", flags:CHANF_UI|CHANF_LOCAL);
+        if(sequence < 4)
+        {
+            DRLAX_PDAMessageThinker.Create(user, "Teleporter Device", "\c-There's a message printed on the monitor:\n\n\cqIf anyone is still alive and can read this, please help us!\n\nThe battery standing on this teleport unit was supposed to be transported to us, but the teleporter is broken. We can't do anything from our end, and we need that battery to power our life support equipment.\n\nIf you could somehow transport the battery to another working teleport unit and activate it, we'd have a chance at survival.\n\nI know it's a lot to ask, but we're out of options...");
+        }
+
+        if(sequence == 4)
+        {
+            DRLAX_PDAMessageThinker.Create(user, "Teleporter Device", "\cfSystem online.");
+        }
+
+        if(sequence == 6)
+        {
+            DRLAX_PDAMessageThinker.Create(user, "Teleporter Device", "\c-There's a message printed on the monitor:\n\n\cqThank you! I don't know who you are but you've saved us all. You're a god damned hero.\n\nI've sent something back through, I hope it comes in handy."); 
+        }
+    
+    }
+
+    override void PostBeginPlay()
+    {
+        DRLAX_QuestManager q = DRLAX_QuestManager.GetQuestMan();
+        
+        q.hasbattery = true;
+
+        prize = "DRLAX_FamiliarBall";
+        familiar = DRLAX_AppraiserObject.GetRandomFamiliar();
+
+        for(int i; i<players.Size(); i++)
+        {
+            if(players[i].mo && players[i].mo.CountInv("DRLAX_BatteryQuestItem") > 0)
+            {
+                sequence = 4;
+                Console.Printf("Your PDA has located a nearby teleport device that is compatible with the battery!");
+                return;
+            }
+        }
+
+        let a = Spawn("DRLAX_QuestBatteryProp", pos);
+        if(a)
+        {
+            a.target = self;
+            tracer = a;
+        }
+
+    }
+
+    override void Tick()
+    {
+        Super.Tick();
+    }
+
+    void SpawnPrize()
+    {
+        bool spawned;
+        Actor act;
+		[spawned, act] = A_SpawnItemEx(prize, 0, 0, 0, 2, 0, 5, random(0,360), flags:SXF_NOCHECKPOSITION);
+        A_SpawnItemEx("TeleportFog", 0, 0, 4, 0, 0, 0, flags:SXF_NOCHECKPOSITION);
+        if(spawned && act)
+        {
+            DRLAX_FamiliarBall f = DRLAX_FamiliarBall(act);
+            if(f)
+            {
+                DRLAX_QuestManager.FinishQuest(GetClassName());
+                f.Init(familiar);
+                DRLAX_UnlockThinker.WriteUnlock(familiar);
+            }
+        }
+        prize = "";
+    }
+}
+
+Class DRLAX_QuestBatteryProp : Actor
+{
+    Default
+    {
+        +NOGRAVITY;
+        +NOINTERACTION;
+    }
+
+    States
+	{
+		Spawn:
+		GIZN A 1
+        {
+            if(!target)
+            {
+                Destroy();
+                return;
+            }
+            Warp(target, 0, 0, 10, flags:WARPF_NOCHECKPOSITION);
+        }
+		loop;
+	}
+}
+
+Class DRLAX_BatteryQuestItem : DRLAX_BaseInventory
+{
+	Default
+	{
+		Inventory.Icon "LAXITE4";
+		inventory.maxamount 1;
+		Inventory.InterhubAmount 1;
+		inventory.pickupsound "misc/rocketpickup";
+		Inventory.UseSound "";
+		Inventory.PickupMessage "You picked up the huge battery.";
+		//species "Player";
+		DeathSound "weapons/gundropbigger";
+		tag "Heavy Battery";
+	}
+
+	States
+	{
+		Spawn:
+		GIZN A 6;
+		GIZN A 6 bright;
+		loop;
+	}
+
+	override String PickupMessage()
+	{
+		return "Picked up the " .. GetTag();
+	}
+
+	override void UseMessage()
+	{
+		owner.A_Print("A heavy battery. Someone has requested you to take it to a teleport device.\nIts weight takes up once of your weapon slots.\n\nPress \caDrop Item (DRLA)\c- to drop it, or switch weapons to cancel.", 8.0);
+		owner.A_PlaySound("hud/generic");
+	}
+
+	override void UseFunction()
+	{
+		owner.A_Print("This item cannot be used here.");
+        owner.A_StartSound("hud/error", flags:CHANF_LOCAL);
+	}
+
+	override void DropMessage()
+	{
+		owner.A_Print("You dropped the " .. GetTag());
+	}
+
+    override void PressedDrop()
+	{
+        owner.TakeInventory("RLWeaponLimit", 1);
+		DefaultDrop();
+	}
+
+    override void AttachToOwner(Actor other)
+    {
+        other.GiveInventory("RLWeaponLimit", 1);
+        Super.AttachToOwner(other);
+    }
+
+    override bool CanPickup(Actor toucher)
+    {
+        if(velz != 0)
+		{
+			return false;
+		}
+
+        if(toucher && toucher.CountInv("RLWeaponLimit") >= 6)
+        {
+            toucher.A_Print("\cfHeavy Battery\n\nIt's too heavy! Drop a weapon to carry.", 6, "CONFONT");
+            return false;
+        }
+
+        return true;
+    }
+}
+
+class DRLAX_PDAMessageMenu : DRLAX_ZF_GenericMenu 
+{
+    String titles, description;
+
+    override void init(Menu parent) 
+    {
+        let cmdHandler = new("DRLAX_PDAMessageMenuHandler");
+        cmdHandler.theMenu = self;
+        Super.init(parent);
+
+        FindActivePlayer();
+
+        let baseRes = (1920, 1080);
+        setBaseResolution(baseRes);
+        
+        let background = DRLAX_ZF_Image.create(
+            (240, 0),
+            (1920, 1080),
+            image: "RLZPDA2",
+            imageScale: (4.5, 5.4)
+        );
+
+        background.Pack(mainFrame);
+
+        let confirm = DRLAX_ZF_Button.create(
+            (baseRes.x/2 - 165, 858),
+            (192, 128),
+            text: "Exit",
+            cmdHandler: cmdhandler,
+            command: "confirm",
+            fnt: "PDAFONT",
+            textscale: 6.0,
+            textColor: Font.CR_GREEN
+        );
+
+        confirm.SetText("Exit");
+        confirm.Pack(mainFrame);
+
+        //if(false)
+
+        let title = DRLAX_ZF_Label.create(
+            (baseRes.x/2 - 650, 42),
+            (1200, 200),
+            text: titles,
+            fnt: "STAT_MNO",
+            alignment: DRLAX_ZF_Label.AlignType_Center,
+            textScale: 4.5,
+            textColor: Font.CR_GREEN
+        );
+
+        title.pack(mainFrame);
+
+        let description = DRLAX_ZF_Label.create(
+            (348, 210),
+            (1100, 600),
+            text: description,
+            fnt: "STAT_MNO",
+            //alignment: DRLAX_ZF_Label.AlignType_TopCenter,
+            textScale: 3.5,
+            textColor: Font.CR_WHITE
+        );
+
+        description.pack(mainFrame);
+    }
+
+    void FindActivePlayer()
+    {
+        ThinkerIterator ti = ThinkerIterator.Create("DRLAX_PDAMessageThinker");
+        DRLAX_PDAMessageThinker msgt;
+
+        while(msgt = DRLAX_PDAMessageThinker(ti.Next()))
+        {
+            if(msgt.user == players[consoleplayer].mo)
+            {
+                description = msgt.description;
+                titles = msgt.title;
+                return;
+            }
+        }
+        return;
+    }
+
+}
+
+
+class DRLAX_PDAMessageMenuHandler : DRLAX_ZF_Handler 
+{
+    DRLAX_PDAMessageMenu theMenu;
+
+    override void buttonClickCommand(DRLAX_ZF_Button caller, Name command) 
+    {
+        if(command == "confirm")
+        {
+            theMenu.Close();
+            return;
+        }
+    }
+
+    override void elementHoverChanged(DRLAX_ZF_Element caller, Name command, bool unhovered)
+    {
+        if(!unhovered)
+        {
+            S_Sound ("UI/PDA/Select", CHAN_VOICE | CHAN_UI, snd_menuvolume, ATTN_NONE);
+        }
+    }
+}
+
+class DRLAX_PDAMessageThinker : Thinker
+{
+    Actor user;
+    String title, description;
+
+    static void Create(Actor u, String t, String d)
+    {
+        if(!u.player)
+        {
+            return;
+        }
+
+        let msg = new("DRLAX_PDAMessageThinker");
+        msg.title = t;
+        msg.description = d;
+        msg.user = u;
+        
+        if(u.PlayerNumber() == consoleplayer)
+        {
+            Menu.SetMenu("DRLAX_PDAMessageMenu");
+        }
+    }
+
+    uint time;
+
+    override void Tick()
+    {
+        time++;
+        if(time >= 2)
+        {
+            Destroy();
+            return;
+        }
+    }
+}
+
+Class DRLAX_DemonStatueObject : DRLAX_GizmoObject
+{
+    Default
+	{
+		-SOLID;
+		scale 0.95;
+	}
+
+    uint guncount;
+    bool summoning;
+    bool finalwarning;
+
+	states
+	{
+		Spawn:
+		GIZN E 1 ReadyForWep();
+        loop;
+        Reset:
+        GIZN E 1;
+        GIZN E 35 ReadCvar();
+        GIZN E 0
+        {
+            if(guncount == 4)
+            {
+                Trigger();
+            }
+        }
+        Goto Spawn;
+	}
+    
+    Array<Actor> parts;
+
+    override bool Used(Actor user)
+	{
+        if(summoning)
+        {
+            return false;
+        }
+
+        switch(guncount)
+        {
+            Case 4:
+            if(!target)
+            {
+                target = user;
+                user.A_Print("\cf- Doom Altar -\n\n\c-All four arms hold \cgdemonic\c- weapons.\n\n\cgInteracting with this again might be a bad idea...", 8.0);
+            }
+            else
+            {
+                if(!finalwarning)
+                {
+                    finalwarning = true;
+                    user.A_Print("Are you sure about this?\n\n\cgSurely something terrible is going to happen...", 8.0);
+                    return true;
+                }
+                user.A_Print("");
+                Trigger();
+            }
+            break;
+
+            Case 3:
+            user.A_Print("\cf- Doom Altar -\n\n\c-The Demon statue holds the weapons tightly. They cannot be removed.\n\nOne left...", 8.0);
+            break;
+
+            Case 2:
+            user.A_Print("\cf- Doom Altar -\n\n\c-The Demon statue holds the weapons tightly. They cannot be removed.\n\nYou have a bad feeling about this.", 8.0);
+            break;
+
+            Case 1:
+            user.A_Print("\cf- Doom Altar -\n\n\c-The Demon statue grasps the weapon tightly. It cannot be removed.\n\nThe other arms are reaching out for more.", 8.0);
+            break;
+
+            Default:
+            user.A_Print("\cf- Doom Altar -\n\n\c-The \cgDemonic\c- statue has a malicious aura to it...\n\nIt appears to be reaching out to something...", 8.0);
+            break;
+        }
+        return true;
+    }
+
+    Void ReadyForWep()
+    {
+        if(!CheckRange(350, true))
+		{
+            let b = FindDroppedWeapon();
+
+            String demonweps[] = 
+            {
+                "RLDeathsGaze",
+                "RLSoulstormRifle",
+                "RLUnmaker",
+                "RLHellsReign"
+            };
+
+            if(b)
+            {
+                String d = Cvar.GetCvar("DRLAX_demonicaccess").GetString();
+
+                for(int i; i<demonweps.Size(); i++)
+                {
+                    String wep = demonweps[i] .. "Pickup";
+                    String s = b.GetClassName();
+
+                    if(wep ~== s || wep .. "Modded" ~== s)
+                    {
+                        if(d.CharAt(i) == "1")
+                        {
+                            continue;
+                        }
+                        
+                        A_StartSound("gizmos/statuegrab");
+                        if(b.target)
+                        {
+                            target = b.target;
+                        }
+                        b.Destroy();
+                        WriteCvar(i);
+                        SetStateLabel("Reset");
+                        A_StartSound("weapons/demonicnearby", slot:CHAN_7);
+                    }
+                }
+            }
+        }
+    }
+
+    override void PostBeginPlay()
+    {
+        ReadCvar();
+
+        A_SpawnItemEx("RLRandomSkullSpawner", random(32, 48), 0, 0, frandom(1, 4), angle:random(0,360));
+
+        if(guncount > 0 && !hasbeaten)
+        {
+            Console.Printf("Your PDA is picking up large amounts of demonic energy beneath the ground.");
+        }
+    }
+
+    void Trigger()
+    {
+        summoning = true;
+        DRLAX_StatueSummoningRitual s = DRLAX_StatueSummoningRitual(Spawn("DRLAX_StatueSummoningRitual", pos));
+        if(s)
+        {
+            s.statue = self;
+        }
+    }
+
+    void WriteCvar(int which)
+    {
+        String d = Cvar.GetCvar("DRLAX_demonicaccess").GetString();
+        String s;
+
+        for(int i; i<4; i++)
+        {
+            if(i == which)
+            {
+                s = s .. "1";
+                continue;
+            }
+            s = s .. d.CharAt(i);
+        }
+
+        Cvar.GetCvar("DRLAX_demonicaccess").SetString(s);
+    }
+
+    bool hasbeaten;
+
+    void ReadCvar()
+    {
+        guncount = 0;
+
+        for(int i; i<parts.Size(); i++)
+        {
+            parts[i].Destroy();
+        }
+
+        parts.Clear();
+
+        String d = Cvar.GetCvar("DRLAX_demonicaccess").GetString();
+        Actor a;
+
+        for(int i=0;i<4;i++)
+        {
+            if(d.CharAt(i) == "1")
+            {
+                a = Spawn("DRLAX_DemonStatueHeldItem", pos);
+                if(a)
+                {
+                    a.target = self;
+                    a.frame = 5 + i;
+                    guncount++;
+                }
+            }
+        }
+
+        if(d.CharAt(4) == "X")
+        {
+            hasbeaten = true;
+        }
+    }
+}
+
+Class DRLAX_DemonStatueHeldItem : DRLAX_GizmoObject
+{
+    Default
+    {
+        +NOINTERACTION;
+        +NOGRAVITY;
+        height 2;
+        radius 2;
+        scale 0.95;
+    }
+
+    States
+    {
+        Spawn:
+        GIZN "#" -1;
+        stop;
+    }
+
+    override void Tick()
+    {
+        if(!target)
+        {
+            Destroy();
+            return;
+        }
+
+        Warp(target, 0, 0, 0.1, 0, WARPF_NOCHECKPOSITION);
+
+        Super.Tick();
+    }
+}
+
 
 // DOOMRPG COMPATIBILITY
 // --------------------------------------------------

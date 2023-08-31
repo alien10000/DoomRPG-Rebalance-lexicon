@@ -28,17 +28,22 @@ Class RLNomadReroll
 Class RLNomadEvents : EventHandler
 {
 	int danger;
-	int tics;
 
 	override void WorldTick ()
 	{
-		tics++;
-		
 		// if not working, probably due to array size
-		if(tics == 5 && danger > 0)
+		if(Level.Time == 5 && danger > 0)
 		{
+			for(int i; i<players.Size(); i++)
+			{
+				if(players[i].mo && Players[i].mo.GetClassName() == "DoomRLNomadRPG")
+				{
+					//Console.Printf("ur lucky");
+					NomadPassive();
+					break;
+				}
+			}
 			//Console.Printf("" .. danger);
-			NomadPassive();
 		}
 	}
 
@@ -320,18 +325,8 @@ Class RLNomadEvents : EventHandler
 			{
 				Players[i].mo.ACS_NamedExecuteAlways("DRLA_ClearBackpack");
 				//let ammo = players[i].mo.FindInventory("Shell");
-				name invName = 'RLDangerLevel';
-				
-				if(Players[i].mo.CountInv(invName)>0)
-				{
-					danger = Max(danger, Players[i].mo.CountInv(invName));
-				}
-				else
-				{
-					invName = 'RLUniqueBossLevel';
-					danger = Max(danger, Players[i].mo.CountInv(invName));
-				}
-
+				danger = Max(danger, DRLAX_UnlockEvents.GetBeatenLevels());
+				//danger = 20;
 				Players[i].mo.PickWeapon(1, false);
 			}
 		}
@@ -341,6 +336,7 @@ Class RLNomadEvents : EventHandler
 	
 	void NomadPassive()
 	{
+		//Console.Printf("nomad");
 		Array<Actor> MapInv;
 		
 		ThinkerIterator InvIterator = ThinkerIterator.Create("Actor");
@@ -400,7 +396,6 @@ Class RLNomadEvents : EventHandler
 						AddActorChance("RLShotgunPickup", 140, 0);
 						AddActorChance("RLCombatShotgunPickup", 40, 1);
 						AddActorChance("RLAssaultShotgunPickup", 10, 2);
-						AddActorChance("RLPlasmaShotgunPickup", 10, 2);
 						AddActorChance("RLUniqueWeaponSpawner", 1, 3);
 					}
 				
@@ -424,12 +419,11 @@ Class RLNomadEvents : EventHandler
 						AddActorChance("RLUniqueWeaponSpawner", 10, 4);
 					}
 					
-					if(IsRocketLauncher(MapInv[i]))
+					if(IsRocketLauncher(MapInv[i]) && level.LevelNum != 30)
 					{
 						AddActorChance("RLRocketLauncherPickup", 120, 0);
 						AddActorChance("RLNapalmLauncherPickup", 80, 1);
-						AddActorChance("RLMissileLauncherPickup", 100, 1);
-						AddActorChance("RLSuperiorWeaponSpawner", 20, 2);
+						AddActorChance("RLMissileLauncherPickup", 80, 1);
 						AddActorChance("RLUniqueWeaponSpawner", 10, 3);
 					}
 					
@@ -438,6 +432,7 @@ Class RLNomadEvents : EventHandler
 						AddActorChance("RLPlasmaRiflePickup", 70, 0);
 						AddActorChance("RLNuclearPlasmaPistolPickup", 20, 1);
 						AddActorChance("RLNuclearPlasmaRiflePickup", 20, 1);
+						AddActorChance("RLPlasmaShotgunPickup", 10, 2);
 						AddActorChance("RLBlasterPickup", 50, 2);
 						AddActorChance("RLLaserRiflePickup", 40, 2);
 						AddActorChance("RLTristarBlasterPickup", 30, 2);
@@ -569,8 +564,15 @@ Class RLNomadEvents : EventHandler
 					Actor newinv = Actor.Spawn(ritem.item, MapInv[i].pos);
 					if(!dontremove)
 					{
-					MapInv[i].Destroy();
-					MapInv[i] = newinv;
+						MapInv[i].Destroy();
+						MapInv[i] = newinv;
+					}
+					else
+					{
+						if(newinv)
+						{
+							newinv.A_ChangeVelocity(frandom(-7, 7), frandom(-7, 7), 0, CVF_RELATIVE);
+						}
 					}
 				}
 			}
@@ -729,6 +731,14 @@ Class RLNomadEvents : EventHandler
 
 			a.health = Players[i].mo.MaxHealth;
 			Players[i].health = Players[i].mo.MaxHealth;
+			
+			Players[i].cheats &= ~CF_NOTARGET;
+			Players[i].cheats &= ~CF_FRIGHTENING;
+			a.bFly = false;
+			a.bNoGravity = false;
+			a.bINVULNERABLE = false;
+			a.bFRIGHTENING = false;
+			a.bNORADIUSDMG = false;
 		}
 	}	
 }

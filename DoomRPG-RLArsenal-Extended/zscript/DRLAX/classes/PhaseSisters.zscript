@@ -7,7 +7,7 @@ Class RLPhaseSistersEvents : StaticEventHandler
     {
         if(e.Name == "debug")
         {
-            Console.Printf("" .. players[e.player].mo.CountInv("RLArmorInInventory"));
+            //Console.Printf("" .. players[e.player].mo.CountInv("RLArmorInInventory"));
         }
     }
 
@@ -148,6 +148,7 @@ class RLPhaseSistersStartingLoadout : CustomInventory
         //TNT1 A 0 A_SelectWeapon("RLBattleRifle");
         TNT1 A 0 A_GiveInventory("RLPhaseSistersDevice");
 		TNT1 A 0 A_GiveInventory("RLPhaseSistersPassive");
+        TNT1 A 0 A_GiveInventory("DRLAX_ShavedArms", 1);
         TNT1 A 0 A_GiveInventory("RLWeaponLimit", 2);
         TNT1 A 0 A_GiveInventory("RLAmmoChainPerk");
 		stop;
@@ -205,6 +206,7 @@ Class RLPhaseSistersPassive : Inventory
         lastwep = "RLShotgun";
 
         blacklist.Push("RLPhaseSistersPassive");
+        blacklist.Push("DRLAX_ShavedArms");
         blacklist.Push("RLPhasesistersSwapCD");
 
         blacklist.Push("RLDangerLevel");
@@ -304,7 +306,7 @@ Class RLPhaseSistersPassive : Inventory
 
         tempitems.Copy(items);
         items.Clear();
-
+        
 		while(inv = Inventory(i.Next()))
 		{    
 			if(inv.owner != owner)
@@ -409,7 +411,7 @@ Class RLPhaseSistersPassive : Inventory
             owner.player.mo.soundclass = "phase-terri";
             spritename = "REVY";
         }
-
+        
         owner.A_SelectWeapon(newwep, SWF_SELECTPRIORITY);
         owner.A_Print("");
 

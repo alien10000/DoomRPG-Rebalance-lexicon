@@ -804,7 +804,7 @@ OptionMenu "DoomRPGMisc"
     Option "Sound Full Energy Shield", "drpg_shield_sound_full_enable", "OnOff"
     Option "Sound and Effect of Hitting Energy Shield", "drpg_shield_effect_hit_enable", "OnOff"
     StaticText ""
-    Option "Disable DRPG related screen flashes", "drpg_screen_flash_disable", "OnOff"
+    Option "Disable Doom RPG related screen flashes", "drpg_screen_flash_disable", "OnOff"
     StaticText ""
 
     StaticText "Quality loot items, armor, weapons and monster spawns depend on the number of WADs passed."
