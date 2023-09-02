@@ -57,3 +57,12 @@ texture BUNKA1
 	pic BUNKB1 tics 6
 	pic BUNKC1 tics 6
 	pic BUNKD1 tics 6
+
+// --------------------------------------------------
+// ITEMS
+// 
+
+// Radar Device
+texture SNRBB0
+	pic SNRBB0 tics 8
+	pic SNRBC0 tics 8

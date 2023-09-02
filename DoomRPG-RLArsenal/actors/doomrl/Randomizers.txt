@@ -401,6 +401,28 @@ actor DRPGWeaponUniqueSpawner : MapSpot
     }
 }
 
+// Weapon Demonic Randomizer
+actor DRPGWeaponDemonicSpawner : MapSpot
+{
+    States
+    {
+    Spawn:
+        TNT1 A -1 NoDelay ACS_NamedExecuteWithResult("DRPGWeaponDemonicSpawner")
+        Stop
+    }
+}
+
+// Weapon Legendary Randomizer
+actor DRPGWeaponLegendarySpawner : MapSpot
+{
+    States
+    {
+    Spawn:
+        TNT1 A -1 NoDelay ACS_NamedExecuteWithResult("DRPGWeaponLegendarySpawner")
+        Stop
+    }
+}
+
 // Weapon Dropper
 actor DRPGWeaponDropper2 : RandomSpawner Replaces DRPGWeaponDropper
 {

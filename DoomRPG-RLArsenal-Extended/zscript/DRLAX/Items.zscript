@@ -1751,7 +1751,7 @@ class DRLAX_CursedDagger : DRLAX_BaseInventory
 
 	override void Tick()
 	{
-		if(level.Time == 5)
+		if(Level.MapName != "OUTPOST" && Level.MapName != "VR" && Level.MapName != "HUBMAP" && level.Time == 5)
 		{
 			if(owner && owner.health > 10)
 			{
@@ -1759,6 +1759,7 @@ class DRLAX_CursedDagger : DRLAX_BaseInventory
 
 				owner.health = 10;
 				owner.player.health = 10;
+                owner.ACS_NamedExecuteAlways("DRLAX_DRPG_CursedDagger_Effect");
 				owner.A_Pain();
 
 				owner.A_Quake(6, 10, 0, 32, "");
@@ -1774,7 +1775,7 @@ class DRLAX_CursedDagger : DRLAX_BaseInventory
 						"RLUnmakerWorldSpawnPickup",
 						"RLHellsReignWorldSpawnPickup"
 					};
-					CMMSS_Actor_SafeSpawner ss = CMMSS_SafeSpawner.New(demonweps[random(0, demonweps.Size()-1)], 1, "", 32, 32, 0, CMMSS_SafeSpawner.SSFLAGS_NOMONSTERS);
+					CMMSS_Actor_SafeSpawner ss = CMMSS_SafeSpawner.New("DRPGWeaponDemonicSpawner", 1, "", 32, 32, 0, CMMSS_SafeSpawner.SSFLAGS_NOMONSTERS);
 					
 					DetachFromOwner();
 					Destroy();
@@ -2202,7 +2203,7 @@ class DRLAX_LegendaryIdol : DRLAX_BaseInventory
 
 	override void Tick()
 	{
-		if(level.Time == 5)
+		if(Level.MapName != "OUTPOST" && Level.MapName != "VR" && Level.MapName != "HUBMAP" && level.Time == 5)
 		{
 			if(owner && owner.health > 0)
 			{
@@ -2221,7 +2222,7 @@ class DRLAX_LegendaryIdol : DRLAX_BaseInventory
 						"RLDuke2RifleWorldSpawnPickup",
 						"RLLonghornWorldSpawnPickup"
 					};
-					CMMSS_Actor_SafeSpawner ss = CMMSS_SafeSpawner.New(legendaryweps[random(0, legendaryweps.Size()-1)], 1, "", 32, 32, 0, CMMSS_SafeSpawner.SSFLAGS_NOMONSTERS);
+					CMMSS_Actor_SafeSpawner ss = CMMSS_SafeSpawner.New("DRPGWeaponLegendarySpawner", 1, "", 32, 32, 0, CMMSS_SafeSpawner.SSFLAGS_NOMONSTERS);
 					
 					//DetachFromOwner();
 					//Destroy();

@@ -496,6 +496,14 @@ void GenerateCrate(int ID, int Amount)
     str OldItemActor;
     int OldItemCategory;
 
+    // Compatibility Handling - DoomRL Arsenal Extended
+    // Set variables for Trespasser's scanned item
+    ItemInfoPtr ScannedItem;
+    str ScannedItemActor;
+    int ScannedItemCategory;
+    bool TrespasserChance;
+    bool ItemFound;
+
     // Calculate Modifier
     Modifier = (fixed)Crates[ID].Rarity / ((fixed)MAX_DIFFICULTIES - 1.0);
 
@@ -538,9 +546,9 @@ void GenerateCrate(int ID, int Amount)
     bool ArmorLegendaryChance;
 
     // Compatibility Handling - DoomRL Arsenal
-    // Calculate the chances for Common/Assembled/Exotic/Superior/Unique/Demonic/Legendary armor and boots
     if (CompatMode == COMPAT_DRLA)
     {
+        // Calculate the chances for Common/Assembled/Exotic/Superior/Unique/Demonic/Legendary armor and boots
         // For weapon
         WeaponExoticChance = RandomFixed(0.0, 100.0) <= Player.WeaponExoticChance;
         WeaponSuperiorChance = RandomFixed(0.0, 100.0) <= Player.WeaponSuperiorChance;
@@ -555,7 +563,45 @@ void GenerateCrate(int ID, int Amount)
         ArmorUniqueChance = RandomFixed(0.0, 100.0) <= Player.ArmorUniqueChance;
         ArmorDemonicChance = RandomFixed(0.0, 100.0) <= Player.ArmorDemonicChance;
         ArmorLegendaryChance = RandomFixed(0.0, 100.0) <= Player.ArmorLegendaryChance;
+
+        // Compatibility Handling - DoomRL Arsenal Extended
+        if (CompatModeEx == COMPAT_DRLAX)
+        {
+            // Set Trespasser's scanned item
+            if (PlayerClass(PlayerNumber()) == 11) // Trespasser
+            {
+                // Get Trespasser's chance
+                TrespasserChance = true;
+
+                // Set scanned item actor
+                ScannedItemActor = StrParam("%S", ScriptCall("DRLAX_DRPG_Functions", "GetTrespasserScans", PlayerNumber()));
+
+                // Find actor for scanned item
+                while(!ItemFound && TrespasserChance)
+                {
+                    if (FindItem(ScannedItemActor)->Actor != "None")
+                    {
+                        ScannedItem = FindItem(ScannedItemActor);
+                        ScannedItemCategory = ScannedItem->Category;
+                        ItemFound = true;
+                    }
+                    else
+                    {
+                        if (StrMid(ScannedItemActor, StrLen(ScannedItemActor) - 16, 16) == "WorldSpawnPickup") //RLJetpackArmorWorldSpawnPickup RLWidowmakerSMGWorldSpawnPickup
+                            ScannedItemActor = StrParam("%SPickup", StrLeft(ScannedItemActor, StrLen(ScannedItemActor) - 16));
+                        else
+                            ScannedItemActor = StrLeft(ScannedItemActor, StrLen(ScannedItemActor) - 1);
+                    }
+
+                    // If find actor is fail
+                    if (StrLen(ScannedItemActor) <= 0)
+                        TrespasserChance = false;
+                }
+            }
+        }
     }
+
+
 
     for (bool SkipShieldPart = true; i < Amount; i++)
     {
@@ -691,6 +737,18 @@ void GenerateCrate(int ID, int Amount)
 
                 // Special chance check for boots (standard 10% chance from DoomRL Arsenal)
                 if (NewItemCategory == 9 && Random(0, 100) < 90)  NewItemSelected = false;
+            }
+
+            // Compatibility Handling - DoomRL Arsenal Extended
+            // Check Trespasser's scanned item
+            if (NewItemSelected && TrespasserChance && CompatModeEx == COMPAT_DRLAX)
+            {
+                // Check scanned item category and Trespasser's chance
+                if (NewItemCategory == ScannedItemCategory && Random(0, 100) <= 30)
+                {
+                    NewItem = ScannedItem;
+                    TrespasserChance = false;
+                }
             }
 
             // Set a new item for crate, if it has been selected
