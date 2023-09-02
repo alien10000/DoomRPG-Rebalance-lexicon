@@ -443,6 +443,20 @@ NamedScript DECORATE int CheckCapacity()
             "DRLAX_FamiliarBall",
             "DRLAX_RadarDevice",
             "DRLAX_SoulTrap",
+            "DRLAX_SmokeBomb",
+            "DRLAX_NanoTape",
+            "DRLAX_SawArm",
+            "DRLAX_CursedDagger",
+            "DRLAX_DevilMark",
+
+            // DoomRLAX - Weapon Kits
+            "DRLAX_BarrelCombinerKit",
+            "DRLAX_ParticleColliderKit",
+            "DRLAX_MagneticCoilKit",
+            "DRLAX_QuantumEngineKit",
+
+            // DoomRLAX - Legendary Idol
+            "DRLAX_LegendaryIdol",
 
             // DoomRLAX - Trapped Soul Spheres
             "DRLAX_TrappedInvulnerabilitySphere",
@@ -2890,6 +2904,11 @@ NamedScript DECORATE void PhaseSistersShieldPartsLoad()
             }
         }
     }
+}
+
+NamedScript DECORATE void DRLAX_DRPG_CursedDagger_Effect()
+{
+    Player.ActualHealth = 10;
 }
 
 // --------------------------------------------------

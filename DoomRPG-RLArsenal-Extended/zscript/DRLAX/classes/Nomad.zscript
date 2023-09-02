@@ -152,7 +152,9 @@ Class RLNomadEvents : EventHandler
 
 						if(inv.GetClassName() == "RLDangerLevel"){continue;}
 						if(inv.GetClassName() == "RLUniqueBossLevel"){continue;}
-						if(inv.GetClassName() == "RLDemonArtifactItem"){continue;}
+						if(inv.GetClassName() == "DRLAX_FamiliarManager"){continue;}
+						if(inv.GetClassName() == "DRLAX_FamiliarPassive"){continue;}
+						if(inv.GetClassName() == "DRLAX_FamiliarKill"){continue;}
 
 						if(inv.GetClassName() == "PMGameLevel"){continue;}
 
@@ -237,7 +239,18 @@ Class RLNomadEvents : EventHandler
 						if(inv.GetClassName() == "DRLAX_TrappedAGHSphere"){continue;} 					// trapped agh sphere
 						if(inv.GetClassName() == "DRLAX_TrappedFirebluSphere"){continue;} 				// trapped fireblu sphere
 
-						if(inv.GetClassName() == "DRLAX_RadarDevice"){continue;} 						// radar
+						if(inv.GetClassName() == "DRLAX_SmokeBomb"){continue;} 							// smoke bomb
+						if(inv.GetClassName() == "DRLAX_RadarDevice"){continue;} 						// radar device
+						if(inv.GetClassName() == "DRLAX_SawArm"){continue;} 							// auto-saw arm
+						if(inv.GetClassName() == "DRLAX_CursedDagger"){continue;} 						// cursed dagger
+						if(inv.GetClassName() == "DRLAX_DevilMark"){continue;} 							// abyss trophy
+						if(inv.GetClassName() == "DRLAX_LegendaryIdol"){continue;} 						// legendary idol
+
+						if(inv.GetClassName() == "DRLAX_NanoTape"){continue;} 							// nano tape
+						if(inv.GetClassName() == "DRLAX_MagneticCoilKit"){continue;} 					// magnetic coil kit
+						if(inv.GetClassName() == "DRLAX_BarrelCombinerKit"){continue;} 					// barrel combiner kit
+						if(inv.GetClassName() == "DRLAX_ParticleColliderKit"){continue;} 				// particle collider kit
+						if(inv.GetClassName() == "DRLAX_QuantumEngineKit"){continue;} 					// quantum engine kit
 
 						if(inv.GetClassName() == "DRPGShield"){continue;}								// shield
 						if(inv.GetClassName() == "DRPGShieldCharge"){continue;}

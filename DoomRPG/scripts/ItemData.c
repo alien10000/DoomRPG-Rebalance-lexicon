@@ -913,8 +913,12 @@ NamedScript void BuildItemData()
         // Compatibility Handling - DoomRL Arsenal Extended
         if (CompatModeEx == COMPAT_DRLAX)
         {
+            ITEMDATA_DEF("DRLAX_SmokeBomb",         "Smoke Bomb",                           250,  1,  1, "SMKBA0",  9, 14);
             ITEMDATA_DEF("DRLAX_SoulTrap",          "Soul Trap",                           1000,  2,  1, "SNRBD0", 12, 21);
-            ITEMDATA_DEF("DRLAX_RadarDevice",       "Radar",                               1000,  2,  1, "SNRBB0",  9, 18);
+            ITEMDATA_DEF("DRLAX_RadarDevice",       "Radar Device",                        3000,  2,  2, "SNRBB0",  9, 18);
+            ITEMDATA_DEF("DRLAX_SawArm",            "Auto-Saw Arm",                       10000,  5,  6, "SNRBF0", 14, 11);
+        //    ITEMDATA_DEF("DRLAX_CursedDagger",      "\CgCursed Dagger\C-",                25000, -1,  -1, "SNRBG0", 20, 18);
+        //    ITEMDATA_DEF("DRLAX_DevilMark",         "Abyss Trophy",                       50000, -1,  -1, "SNRBH0", 12, 20);
         }
         ITEMDATA_CATEGORY_END;
 
@@ -927,17 +931,28 @@ NamedScript void BuildItemData()
         ITEMDATA_DEF("RLTechnicalModItem",      "Technical Modpack",     25000, 5, 7, "TMODA0",  8, 17);
 
         // Exotic Modpacks
-        ITEMDATA_DEF("RLSniperModItem",         "Sniper Modpack",       50000, 7, 8, "SMODA0",  8, 17);
-        ITEMDATA_DEF("RLFirestormModItem",      "Firestorm Modpack",    50000, 7, 8, "FMODA0",  8, 17);
-        ITEMDATA_DEF("RLNanoModItem",           "Nano Modpack",         50000, 7, 8, "NMODA0",  8, 17);
-        ITEMDATA_DEF("RLOnyxModItem",           "Onyx Modpack",         50000, 7, 8, "OMODA0",  8, 17);
-        ITEMDATA_DEF("RLArmorModItem",          "Armor Modpack",        50000, 7, 8, "AMK1A0", 10, 20);
+        ITEMDATA_DEF("RLSniperModItem",         "Sniper Modpack",        50000, 7, 8, "SMODA0",  8, 17);
+        ITEMDATA_DEF("RLFirestormModItem",      "Firestorm Modpack",     50000, 7, 8, "FMODA0",  8, 17);
+        ITEMDATA_DEF("RLNanoModItem",           "Nano Modpack",          50000, 7, 8, "NMODA0",  8, 17);
+        ITEMDATA_DEF("RLOnyxModItem",           "Onyx Modpack",          50000, 7, 8, "OMODA0",  8, 17);
+        ITEMDATA_DEF("RLArmorModItem",          "Armor Modpack",         50000, 7, 8, "AMK1A0", 10, 20);
 
         // Super rare Modpacks
         //ITEMDATA_DEF("RLArtiModItem",           "Arti Modpack",        100000, 9, 8, "ARTMI0", -7, -5);
 
         // Demon Artifact
-        ITEMDATA_DEF("RLDemonArtifactItem",     "Demon Artifact",     100000, 11, 9, "DMNAA0", 19, 65);
+        ITEMDATA_DEF("RLDemonArtifactItem",     "Demon Artifact",       100000, 11, 9, "DMNAA0", 19, 65);
+
+        // Compatibility Handling - DoomRL Arsenal Extended
+        // Weapon Kits
+        if (CompatModeEx == COMPAT_DRLAX)
+        {
+            ITEMDATA_DEF("DRLAX_NanoTape",             "Nano Tape",               25000,  -1,  3, "SNRBE0",  5, 10);
+            ITEMDATA_DEF("DRLAX_MagneticCoilKit",      "Magnetic Coil Kit",       30000,  -1,  4, "SNRBJ0", 14, 16);
+            ITEMDATA_DEF("DRLAX_BarrelCombinerKit",    "Barrel Combiner Kit",     40000,  -1,  7, "SNRBI0", 14, 16);
+            ITEMDATA_DEF("DRLAX_ParticleColliderKit",  "Particle Collider Kit",   50000,  -1,  7, "SNRBK0", 14, 16);
+            ITEMDATA_DEF("DRLAX_QuantumEngineKit",     "Quantum Engine Kit",      60000,  -1,  7, "SNRBL0", 14, 16);
+        }
 
         // Crates with Parts for craft
         ITEMDATA_DEF("DRPGCraftPartsExotic", "Craft Parts \Ct[Exotic]\C-", 50000, -1, -1, "CREXA", -1, -12);
@@ -1574,7 +1589,6 @@ NamedScript DECORATE void DRPGWeaponUniqueSpawner()
     int Amount;
     int Penalty;
     int Index;
-    int Iterations;
 
     // Calculate Modifier
     if (GetCVar("drpg_loot_type") == 0)
@@ -1608,6 +1622,130 @@ NamedScript DECORATE void DRPGWeaponUniqueSpawner()
         for (int i = 0; i < ItemMax[ItemCategory]; i++)
         {
             if (!ItemSpawned && StrMid(ItemData[ItemCategory][i].Name, StrLen(ItemData[ItemCategory][i].Name) - 9, 6) == "Unique" && ItemData[ItemCategory][i].Rarity >= RarityMin && ItemData[ItemCategory][i].Rarity <= RarityMax)
+            {
+                // Set penalty for an item already spawned
+                if (ItemData[ItemCategory][i].Spawned < 5)
+                    Penalty = ItemData[ItemCategory][i].Spawned;
+                else
+                    Penalty = 5;
+
+                if (Random(0, 100 + (25 * Amount)) <= 50 && Random(0, Penalty * (200 - Penalty * 20)) <= 50)
+                {
+                    // Set weapon index
+                    Index = i;
+
+                    ActorToSpawn = StrParam("%SWorldSpawnPickup", ItemData[ItemCategory][Index].Actor);
+                    ItemSpawned = true;
+                }
+                Amount++;
+            }
+
+            Amount = 0;
+        }
+    }
+
+    if (ItemSpawned)
+        ItemData[ItemCategory][Index].Spawned++;
+
+    SpawnSpotFacingForced(ActorToSpawn, 0, ActivatorTID());
+
+    Thing_Remove(0);
+}
+
+NamedScript DECORATE void DRPGWeaponDemonicSpawner()
+{
+    // Delay while the map is being initialized
+    while (!CurrentLevel->Init) Delay(1);
+
+    str ActorToSpawn;
+    bool ItemSpawned;
+    int ItemCategory;
+    int RarityMin;
+    int RarityMax = 6;
+    int Modifier;
+    int Amount;
+    int Penalty;
+    int Index;
+
+    // Calculate Modifier
+    if (GetCVar("drpg_loot_type") == 0)
+        Modifier = RoundInt(7.5 * MapLevelModifier + 7.5 * (fixed)AveragePlayerLuck() / 100.0);
+    if (GetCVar("drpg_loot_type") == 1)
+        Modifier = RoundInt(15.0 * MapLevelModifier);
+    if (GetCVar("drpg_loot_type") == 2)
+        Modifier = RoundInt(15.0 * (fixed)AveragePlayerLuck() / 100.0);
+    if (GetCVar("drpg_loot_type") == 3)
+        Modifier = Random(0,15);
+    if (Modifier > 15)
+        Modifier = 15;
+
+    // Calculate Rarity Max
+    for (int i = RarityMax; i < 10; i++)
+        if (Random(0, Random(3, 7) + RarityMax - Modifier) <= 0)
+            RarityMax++;
+    if (RarityMax > 1 + RoundInt(10.0 * MapLevelModifier))
+        RarityMax = 1 + RoundInt(10.0 * MapLevelModifier);
+    if (RarityMax < 6) // Make sure the Rarity still at least 6, or else bad things will happen
+        RarityMax = 6;
+    if (RarityMax > 10)
+        RarityMax = 10;
+
+    // Calculate Rarity Min
+    if (RarityMax > 1)
+        RarityMin = Random(RarityMax / 4, RarityMax - 1);
+
+    while (!ItemSpawned)
+    {
+        for (int i = 0; i < ItemMax[ItemCategory]; i++)
+        {
+            if (!ItemSpawned && StrMid(ItemData[ItemCategory][i].Name, StrLen(ItemData[ItemCategory][i].Name) - 10, 7) == "Demonic" && ItemData[ItemCategory][i].Rarity >= RarityMin && ItemData[ItemCategory][i].Rarity <= RarityMax)
+            {
+                // Set penalty for an item already spawned
+                if (ItemData[ItemCategory][i].Spawned < 5)
+                    Penalty = ItemData[ItemCategory][i].Spawned;
+                else
+                    Penalty = 5;
+
+                if (Random(0, 100 + (25 * Amount)) <= 50 && Random(0, Penalty * (200 - Penalty * 20)) <= 50)
+                {
+                    // Set weapon index
+                    Index = i;
+
+                    ActorToSpawn = StrParam("%SWorldSpawnPickup", ItemData[ItemCategory][Index].Actor);
+                    ItemSpawned = true;
+                }
+                Amount++;
+            }
+
+            Amount = 0;
+        }
+    }
+
+    if (ItemSpawned)
+        ItemData[ItemCategory][Index].Spawned++;
+
+    SpawnSpotFacingForced(ActorToSpawn, 0, ActivatorTID());
+
+    Thing_Remove(0);
+}
+
+NamedScript DECORATE void DRPGWeaponLegendarySpawner()
+{
+    // Delay while the map is being initialized
+    while (!CurrentLevel->Init) Delay(1);
+
+    str ActorToSpawn;
+    bool ItemSpawned;
+    int ItemCategory;
+    int Amount;
+    int Penalty;
+    int Index;
+
+    while (!ItemSpawned)
+    {
+        for (int i = 0; i < ItemMax[ItemCategory]; i++)
+        {
+            if (!ItemSpawned && StrMid(ItemData[ItemCategory][i].Name, StrLen(ItemData[ItemCategory][i].Name) - 12, 9) == "Legendary")
             {
                 // Set penalty for an item already spawned
                 if (ItemData[ItemCategory][i].Spawned < 5)
