@@ -3517,6 +3517,113 @@ Class DRLAX_ModReviserRPG : DRLAX_GizmoObject
 	}   
 }
 
+Class DRLAX_ModExtractorRPG : DRLAX_GizmoObject
+{
+    Default
+	{
+		-SOLID;
+		scale 1.25;
+	}
+
+	states
+	{
+		Spawn:
+		GIZM X 1 ReadyForWep();
+		loop;
+        WeaponsIn:
+        Death:
+        GIZM X 25;
+        GIZM Y 6;
+        GIZM Z 0 DoFX();
+        GIZM ZYXY 5;
+        GIZM Z 0 DoFX();
+        GIZM ZYXY 5;
+        GIZM Z 0 DoFX();
+        GIZM Z 25;
+        GIZM Z -1
+        {
+            A_StartSound("gizmos/modextract");
+            for(int i; i<CanHack()+1; i++)
+            {
+                while(mods.Size() > 0)
+                {
+                    //Console.Printf("dsgdfg");
+                    A_SpawnItemEx(mods[mods.Size() - 1],0,0,32,2,0,2, random(-90,90));
+                    mods.Pop();
+                }
+            }
+            Spawn("DRLAX_ModExtractorRPG", pos);
+            Destroy();
+        }
+        stop;
+	}
+
+    void DoFX()
+    {
+        A_StartSound("armor/break2");
+        DRLAX_DebrisFX.Spawn(self, 6);
+    }
+
+    Array<String> mods;
+
+    Void ReadyForWep()
+    {
+        if(!CheckRange(350, true))
+		{
+            let b = FindDroppedWeapon();
+
+            if(b)
+            {
+                String modnames[] =
+                {
+                    "PowerMod",
+                    "BulkMod",
+                    "AgilityMod",
+                    "TechnicalMod",
+                    "NanoMod",
+                    "FirestormMod",
+                    "SniperMod"
+                };
+
+                //Console.Printf(b.GetClassName() .. "");
+
+                for(int m = 0; m < modnames.Size(); m++)
+                {
+                    String s = b.GetClassName() .. modnames[m];
+                    s.Replace("PickupModded", "");
+
+                    //Console.Printf(s .. "");
+                    for(int i = 0; i < b.CountInv(s); i++)
+                    {
+                        mods.Push("RL" .. modnames[m] .. "Item");
+                    }
+                }
+
+                if(mods.Size() > 0)
+                {
+                    SetStateLabel("WeaponsIn");
+
+                    A_StartSound("weapons/flamethrowerload");
+                    b.Destroy();
+                    bCANNOTPUSH = true;
+                }
+            }
+        }
+    }
+
+    override bool Used(Actor user)
+	{
+        if(bCANNOTPUSH)
+        {
+            user.A_StartSound("hud/error", flags:CHANF_LOCAL);
+            user.A_Print("This device is no longer usable.", 5);
+            return true;
+        }
+        user.A_Print("\cn- Mod Extractor (Outpost) -\n\n\c-Offer a modded weapon to extract any Mod Packs from it and \cgdestroy\c- the weapon.", 5);
+        return true;
+    }
+}
+
 class DRLAX_SkullShrineObjectRPG : DRLAX_GizmoObject
 {
     Default

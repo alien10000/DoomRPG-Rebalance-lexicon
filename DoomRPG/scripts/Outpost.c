@@ -116,6 +116,8 @@ NamedScript MapSpecial void EnterOutpost()
         if (AveragePlayerRank() >= 4)
             SpawnSpotForced("DRLAX_WeaponRecyclerRPG", 41, UniqueTID(), 0);
         if (AveragePlayerRank() >= 6)
+            SpawnSpotForced("DRLAX_ModExtractorRPG", 53, UniqueTID(), 0);
+        if (AveragePlayerRank() >= 7)
             SpawnSpotForced("DRLAX_ModReviserRPG", 42, UniqueTID(), 0);
         if (AveragePlayerRank() >= 8)
             SpawnSpotForced("DRLAX_AppraiserObjectRPG", 43, UniqueTID(), 0);
