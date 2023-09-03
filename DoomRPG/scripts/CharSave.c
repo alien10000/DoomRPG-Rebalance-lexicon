@@ -617,6 +617,12 @@ NamedScript MenuEntry void LoadCharacter()
         for (int j = 0; j < ITEM_MAX; j++)
             Player.ItemAutoMode[i][j] = Info.ItemAutoMode[i][j];
 
+    // Map Level Number
+    if (GetActivatorCVar("drpg_load_map_level"))
+        NextLevelNum = Info.NextLevelNum;
+    if (GetActivatorCVar("drpg_load_map_level"))
+        NextPrimaryLevelNum = Info.NextPrimaryLevelNum;
+
     // ----- COMPATIBILITY EXTENSIONS -----
 
     // Compatibility Handling - DoomRL Arsenal
@@ -625,6 +631,12 @@ NamedScript MenuEntry void LoadCharacter()
         for (int i = 0; i < DRLA_MAX_TOKENS; i++)
             if (Info.DRLATokens[i])
                 SetInventory(DRLATokens[i], 1);
+
+    // Compatibility Handling - DoomRL Arsenal
+    // Danger Level
+    if (CompatMonMode == COMPAT_DRLA)
+        if (GetActivatorCVar("drpg_load_rl_danger_level"))
+            SetInventory("RLDangerLevel", Info.DangerLevel);
 
     // Compatibility Handling - DoomRL Arsenal
     // Chances for Assembled/Exotic/Superior/Unique/Demonic/Legendary armor and boots
@@ -881,6 +893,10 @@ NamedScript void PopulateCharData(CharSaveInfo *Info)
         for (int j = 0; j < ITEM_MAX; j++)
             Info->ItemAutoMode[i][j] = Player.ItemAutoMode[i][j];
 
+    // Map Level Number
+    Info->NextLevelNum = NextLevelNum;
+    Info->NextPrimaryLevelNum = NextPrimaryLevelNum;
+
     // ----- COMPATIBILITY EXTENSIONS -----
 
     // Compatibility Handling - DoomRL Arsenal
@@ -889,6 +905,11 @@ NamedScript void PopulateCharData(CharSaveInfo *Info)
         for (int i = 0; i < DRLA_MAX_TOKENS; i++)
             if (CheckInventory(DRLATokens[i]))
                 Info->DRLATokens[i] = true;
+
+    // Compatibility Handling - DoomRL Arsenal
+    // Danger Level
+    if (CompatMonMode == COMPAT_DRLA)
+        Info->DangerLevel = CheckInventory("RLDangerLevel");;
 
     // Compatibility Handling - DoomRL Arsenal
     // Chances for Assembled/Exotic/Superior/Unique/Demonic/Legendary armor and boots
@@ -1063,6 +1084,12 @@ NamedScript void LoadCharDataFromString(CharSaveInfo *Info, char const *String)
             StringPos += 1;
         }
 
+    // Map Level Number
+    Info->NextLevelNum = HexToInteger(String + StringPos, 4);
+    StringPos += 4;
+    Info->NextPrimaryLevelNum = HexToInteger(String + StringPos, 4);
+    StringPos += 4;
+
     // ----- COMPATIBILITY EXTENSIONS -----
 
     // Compatibility Handling - DoomRL Arsenal
@@ -1072,6 +1099,11 @@ NamedScript void LoadCharDataFromString(CharSaveInfo *Info, char const *String)
         Info->DRLATokens[i] = HexToInteger(String + StringPos, 1);
         StringPos += 1;
     }
+
+    // Compatibility Handling - DoomRL Arsenal
+    // Danger Level
+    Info->DangerLevel = HexToInteger(String + StringPos, 4);
+    StringPos += 4;
 
     // Compatibility Handling - DoomRL Arsenal
     // Chances for Assembled/Exotic/Superior/Unique/Demonic/Legendary armor and boots
@@ -1338,6 +1370,18 @@ NamedScript char const *MakeSaveString(CharSaveInfo *Info)
             pos += 1;
         }
 
+    // Map Level Number
+    SaveString[pos + 3] = ToHexChar(Info->NextLevelNum);
+    SaveString[pos + 2] = ToHexChar(Info->NextLevelNum >> 4);
+    SaveString[pos + 1] = ToHexChar(Info->NextLevelNum >> 8);
+    SaveString[pos + 0] = ToHexChar(Info->NextLevelNum >> 12);
+    pos += 4;
+    SaveString[pos + 3] = ToHexChar(Info->NextPrimaryLevelNum);
+    SaveString[pos + 2] = ToHexChar(Info->NextPrimaryLevelNum >> 4);
+    SaveString[pos + 1] = ToHexChar(Info->NextPrimaryLevelNum >> 8);
+    SaveString[pos + 0] = ToHexChar(Info->NextPrimaryLevelNum >> 12);
+    pos += 4;
+
     // ----- COMPATIBILITY EXTENSIONS -----
 
     // Compatibility Handling - DoomRL Arsenal
@@ -1347,6 +1391,14 @@ NamedScript char const *MakeSaveString(CharSaveInfo *Info)
         SaveString[pos + 0] = ToHexChar(Info->DRLATokens[i]);
         pos += 1;
     }
+
+    // Compatibility Handling - DoomRL Arsenal
+    // Danger Level
+    SaveString[pos + 3] = ToHexChar(Info->DangerLevel);
+    SaveString[pos + 2] = ToHexChar(Info->DangerLevel >> 4);
+    SaveString[pos + 1] = ToHexChar(Info->DangerLevel >> 8);
+    SaveString[pos + 0] = ToHexChar(Info->DangerLevel >> 12);
+    pos += 4;
 
     // Compatibility Handling - DoomRL Arsenal
     // Chances for Assembled/Exotic/Superior/Unique/Demonic/Legendary armor and boots

@@ -3387,7 +3387,7 @@ NamedScript MapSpecial void DisassemblingDevice()
                             // Set Default Current Craft Part
                             if (CurrentRank >= 5)
                             {
-                                CurrentTypeDetails4 =  15;
+                                CurrentTypeDetails4 =  10;
                                 CurrentAmountDetails4 = 1;
                             }
                             if (CurrentRank >= 6 )
@@ -3525,7 +3525,7 @@ NamedScript MapSpecial void DisassemblingDevice()
                         if (CurrentRare == 1)
                         {
                             // Set Default Current Type Details
-                            CurrentTypeDetails4 =  16;
+                            CurrentTypeDetails4 =  11;
                             CurrentAmountDetails4 = 1;
 
                             // Calculate Current Cost
@@ -3938,7 +3938,7 @@ NamedScript MapSpecial void DisassemblingDevice()
                         if (CurrentRare == 1)
                         {
                             // Set Default Current Craft Part
-                            CurrentTypeDetails4 =  16;
+                            CurrentTypeDetails4 =  11;
                             CurrentAmountDetails4 = 1;
 
                             // Calculate Current Cost
@@ -4208,7 +4208,7 @@ NamedScript MapSpecial void DisassemblingDevice()
                             if (CurrentRank >= 5)
                             {
                                 // Set Default Current Craft Part
-                                CurrentTypeDetails4 =  15;
+                                CurrentTypeDetails4 =  10;
                                 CurrentAmountDetails4 = 1;
 
                                 // Calculate Amount Details
@@ -4259,7 +4259,7 @@ NamedScript MapSpecial void DisassemblingDevice()
                             CurrentCost = ((Item->Price - Item->Price * Player.ShopDiscount / 100) / 3) / 250 * 250;
 
                             // Calculate Amount Details
-                            CurrentTypeDetails4 =  16;
+                            CurrentTypeDetails4 =  11;
                             CurrentAmountDetails4 = 1;
 
                             CurrentAmountDetails1 = (int)(Curve(Item->Price / 20, CurrentCostMin, CurrentCostMax, 30, 80)) / 5 * 5;

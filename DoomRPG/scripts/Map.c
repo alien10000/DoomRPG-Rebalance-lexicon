@@ -21,8 +21,8 @@ LevelInfo *CurrentLevel;
 LevelInfo *PreviousLevel;
 LevelInfo *TransporterLevel;
 LevelInfo *DefaultOutpost;
-int PreviousLevelNum;
-int PreviousPrimaryLevelNum;
+int NextLevelNum;
+int NextPrimaryLevelNum;
 bool UsedSecretExit;
 bool WaitingForReplacements;
 int AllBonusMaps; // For the OCD Shield
@@ -66,8 +66,8 @@ NamedScript Type_OPEN void MapInit()
         CurrentSkill = GameSkill() - 1;
         UsedSecretExit = false;
         PreviousLevelSecret = false;
-        PreviousLevelNum = StartMapNum - 1;
-        PreviousPrimaryLevelNum = StartMapNum - 1;
+        NextLevelNum = StartMapNum;
+        NextPrimaryLevelNum = StartMapNum;
         ArrayCreate(KnownLevels, "Levels", 32, sizeof(LevelInfo));
         CurrentLevel = NULL;
         PreviousLevel = NULL;
@@ -177,16 +177,7 @@ NamedScript Type_OPEN void MapInit()
 
             if (CurrentLevel->LevelNum == 0)
             {
-                PreviousLevelNum++;
-                if (!UsedSecretExit)
-                    PreviousLevelNum = ++PreviousPrimaryLevelNum;
-
-                if (PreviousLevelNum > 1000)
-                    PreviousLevelNum = 1000;
-                if (PreviousPrimaryLevelNum > 1000)
-                    PreviousPrimaryLevelNum = 1000;
-
-                CurrentLevel->LevelNum = PreviousLevelNum;
+                CurrentLevel->LevelNum = NextLevelNum;
                 CurrentLevel->SecretMap = UsedSecretExit;
             }
 
@@ -582,7 +573,7 @@ Start:
 
             if (Players(i).Level < MAX_LEVEL)
             {
-                XPBonus = ((XPTable[Players(i).Level] / (long)(10 + RoundInt(10.0 * (Player.Level / 100.0)))) + 50l) / 50l * 50l;
+                XPBonus = ((XPTable[Players(i).Level] / (long)(5 + RoundInt(5.0 * (Player.Level / 100.0)))) + 50l) / 50l * 50l;
                 Player.XP += XPBonus;
 
                 HudMessage("Monsters Killed Bonus!\n%ld XP Bonus", XPBonus);
@@ -676,7 +667,7 @@ Start:
 
             if (Players(i).Level < MAX_LEVEL && Players(i).RankLevel < MAX_RANK)
             {
-                XPBonus = ((XPTable[Players(i).Level] / (long)(10 + RoundInt(10.0 * (Player.Level / 100.0)))) + 50l) / 50l * 50l;
+                XPBonus = ((XPTable[Players(i).Level] / (long)(5 + RoundInt(5.0 * (Player.Level / 100.0)))) + 50l) / 50l * 50l;
                 RankBonus = ((RankTable[Players(i).RankLevel] / (long)(20 + RoundInt(20.0 * (Player.RankLevel / 24.0)))) + 250l) / 250l * 250l;
 
                 Players(i).XP += XPBonus;
@@ -707,7 +698,7 @@ Start:
 
             if (Players(i).Level < MAX_LEVEL && Players(i).RankLevel == MAX_RANK)
             {
-                XPBonus = ((XPTable[Players(i).Level] / (long)(10 + RoundInt(10.0 * (Player.Level / 100.0)))) + 50l) / 50l * 50l;
+                XPBonus = ((XPTable[Players(i).Level] / (long)(5 + RoundInt(5.0 * (Player.Level / 100.0)))) + 50l) / 50l * 50l;
 
                 Players(i).XP += XPBonus;
                 GiveActorInventory(Players(i).TID, "DRPGCredits", 1000);
@@ -949,9 +940,15 @@ NumberedScript(MAP_EXIT_SCRIPTNUM) MapSpecial void MapExit(bool Secret, bool Tel
 
     UsedSecretExit = Secret;
     PreviousLevel = CurrentLevel;
-    PreviousLevelNum = CurrentLevel->LevelNum;
-    if (!CurrentLevel->SecretMap)
-        PreviousPrimaryLevelNum = CurrentLevel->LevelNum;
+
+    NextLevelNum++;
+    if (!UsedSecretExit)
+        NextLevelNum = ++NextPrimaryLevelNum;
+
+    if (NextLevelNum > 1000)
+        NextLevelNum = 1000;
+    if (NextPrimaryLevelNum > 1000)
+        NextPrimaryLevelNum = 1000;
 
     // Compatibility Handling - DoomRL Arsenal Extended
     // Nomad - Increased Luck Stat for every Level completed
