@@ -271,13 +271,8 @@ NamedScript Type_ENTER void Init()
 
         // Compatibility Handling - DoomRL Monsters
         if (CompatMonMode == COMPAT_DRLA)
-        {
-            if (GetCVar("drpg_monster_mapweight") > GetCVar("DRLA_startdangerlevel"))
-                GiveInventory("RLDangerLevel", GetCVar("drpg_monster_mapweight") - 1);
-
             if (CurrentLevel->UACBase)
                 TakeInventory("RLDangerLevel", 1);
-        }
 
         // Done first run
         Player.FirstRun = true;

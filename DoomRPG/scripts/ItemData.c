@@ -917,8 +917,8 @@ NamedScript void BuildItemData()
             ITEMDATA_DEF("DRLAX_SoulTrap",          "Soul Trap",                           1000,  2,  1, "SNRBD0", 12, 21);
             ITEMDATA_DEF("DRLAX_RadarDevice",       "Radar Device",                        3000,  2,  2, "SNRBB0",  9, 18);
             ITEMDATA_DEF("DRLAX_SawArm",            "Auto-Saw Arm",                       10000,  5,  6, "SNRBF0", 14, 11);
-        //    ITEMDATA_DEF("DRLAX_CursedDagger",      "\CgCursed Dagger\C-",                25000, -1,  -1, "SNRBG0", 20, 18);
-        //    ITEMDATA_DEF("DRLAX_DevilMark",         "Abyss Trophy",                       50000, -1,  -1, "SNRBH0", 12, 20);
+            //    ITEMDATA_DEF("DRLAX_CursedDagger",      "\CgCursed Dagger\C-",                25000, -1,  -1, "SNRBG0", 20, 18);
+            //    ITEMDATA_DEF("DRLAX_DevilMark",         "Abyss Trophy",                       50000, -1,  -1, "SNRBH0", 12, 20);
         }
         ITEMDATA_CATEGORY_END;
 
@@ -943,6 +943,11 @@ NamedScript void BuildItemData()
         // Demon Artifact
         ITEMDATA_DEF("RLDemonArtifactItem",     "Demon Artifact",       100000, 11, 9, "DMNAA0", 19, 65);
 
+        // Crates with Parts for craft
+        ITEMDATA_DEF("DRPGCraftPartsExotic", "Craft Parts \Ct[Exotic]\C-", 50000, -1, -1, "CREXA", -1, -12);
+        ITEMDATA_DEF("DRPGCraftPartsUnique", "Craft Parts \Cd[Unique]\C-", 50000, -1, -1, "CRUNA", -1, -12);
+        ITEMDATA_CATEGORY_END;
+
         // Compatibility Handling - DoomRL Arsenal Extended
         // Weapon Kits
         if (CompatModeEx == COMPAT_DRLAX)
@@ -953,11 +958,6 @@ NamedScript void BuildItemData()
             ITEMDATA_DEF("DRLAX_ParticleColliderKit",  "Particle Collider Kit",   50000,  -1,  7, "SNRBK0", 14, 16);
             ITEMDATA_DEF("DRLAX_QuantumEngineKit",     "Quantum Engine Kit",      60000,  -1,  7, "SNRBL0", 14, 16);
         }
-
-        // Crates with Parts for craft
-        ITEMDATA_DEF("DRPGCraftPartsExotic", "Craft Parts \Ct[Exotic]\C-", 50000, -1, -1, "CREXA", -1, -12);
-        ITEMDATA_DEF("DRPGCraftPartsUnique", "Craft Parts \Cd[Unique]\C-", 50000, -1, -1, "CRUNA", -1, -12);
-        ITEMDATA_CATEGORY_END;
 
         // Boots
         ITEMDATA_CATEGORY(9, "\CcBoots", CF_NONE);
