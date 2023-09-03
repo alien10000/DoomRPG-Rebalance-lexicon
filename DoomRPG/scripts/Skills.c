@@ -161,12 +161,11 @@ Skill RPGGlobal SkillData[MAX_CATEGORIES][MAX_SKILLS] =
         {
             .Name = "Red Aura",
             .Cost = 125,
-            .MaxLevel = 6,
+            .MaxLevel = 5,
             .Use = UseAura,
             .Description =
             {
                 "+10% Damage",
-                "+15% Damage",
                 "+20% Damage",
                 "+30% Damage",
                 "+40% Damage",
@@ -3579,30 +3578,26 @@ void CheckAuras()
         // Red Aura
         if (Player.Aura.Type[AURA_RED].Active)
         {
-            if (Player.SoulRedCount >= 3 && Player.SoulRedCount < 9 && Player.Aura.Type[AURA_RED].Level < 1)
+            if (Player.SoulRedCount >= 5 && Player.SoulRedCount < 10 && Player.Aura.Type[AURA_RED].Level < 1)
                 Player.Aura.Type[AURA_RED].Level = 1;
-            if (Player.SoulRedCount >= 9 && Player.SoulRedCount < 15 && Player.Aura.Type[AURA_RED].Level < 2)
+            if (Player.SoulRedCount >= 10 && Player.SoulRedCount < 20 && Player.Aura.Type[AURA_RED].Level < 2)
                 Player.Aura.Type[AURA_RED].Level = 2;
-            if (Player.SoulRedCount >= 15 && Player.SoulRedCount < 30 && Player.Aura.Type[AURA_RED].Level < 3)
+            if (Player.SoulRedCount >= 20 && Player.SoulRedCount < 30 && Player.Aura.Type[AURA_RED].Level < 3)
                 Player.Aura.Type[AURA_RED].Level = 3;
-            if (Player.SoulRedCount >= 30 && Player.SoulRedCount < 40 && Player.Aura.Type[AURA_RED].Level < 4)
+            if (Player.SoulRedCount >= 30 && Player.SoulRedCount < 50 && Player.Aura.Type[AURA_RED].Level < 4)
                 Player.Aura.Type[AURA_RED].Level = 4;
-            if (Player.SoulRedCount >= 40 && Player.SoulRedCount < 50 && Player.Aura.Type[AURA_RED].Level < 5)
+            if (Player.SoulRedCount >= 50 && Player.Aura.Type[AURA_RED].Level < 5)
                 Player.Aura.Type[AURA_RED].Level = 5;
-            if (Player.SoulRedCount >= 50 && Player.Aura.Type[AURA_RED].Level < 6)
-                Player.Aura.Type[AURA_RED].Level = 6;
 
             if (Player.Aura.Type[AURA_RED].Level == 1)
                 Player.DamageMult += 0.101;
             if (Player.Aura.Type[AURA_RED].Level == 2)
-                Player.DamageMult += 0.151;
-            if (Player.Aura.Type[AURA_RED].Level == 3)
                 Player.DamageMult += 0.201;
-            if (Player.Aura.Type[AURA_RED].Level == 4)
+            if (Player.Aura.Type[AURA_RED].Level == 3)
                 Player.DamageMult += 0.301;
-            if (Player.Aura.Type[AURA_RED].Level == 5)
+            if (Player.Aura.Type[AURA_RED].Level == 4)
                 Player.DamageMult += 0.401;
-            if (Player.Aura.Type[AURA_RED].Level == 6)
+            if (Player.Aura.Type[AURA_RED].Level == 5)
                 Player.DamageMult += 0.501;
         }
 
