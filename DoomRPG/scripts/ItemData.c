@@ -910,7 +910,9 @@ NamedScript void BuildItemData()
         ITEMDATA_DEF("RLHomingPhaseDevice",          "Homing Phase Device",                 2500,  2,  2, "PHS2I0", -9, -2);
         ITEMDATA_DEF("RLRecallPhaseDevice",          "Recall Phase Device",                 2500,  2,  2, "PHS3I0", -9, -5);
         ITEMDATA_DEF("RLExperimentalPhaseDevice",    "Experimental Phase Device",          30000, 12,  8, "PHS4I0", -9, -4);
+
         // Compatibility Handling - DoomRL Arsenal Extended
+        // Useful things
         if (CompatModeEx == COMPAT_DRLAX)
         {
             ITEMDATA_DEF("DRLAX_SmokeBomb",         "Smoke Bomb",                           250,  1,  1, "SMKBA0",  9, 14);
@@ -946,7 +948,6 @@ NamedScript void BuildItemData()
         // Crates with Parts for craft
         ITEMDATA_DEF("DRPGCraftPartsExotic", "Craft Parts \Ct[Exotic]\C-", 50000, -1, -1, "CREXA", -1, -12);
         ITEMDATA_DEF("DRPGCraftPartsUnique", "Craft Parts \Cd[Unique]\C-", 50000, -1, -1, "CRUNA", -1, -12);
-        ITEMDATA_CATEGORY_END;
 
         // Compatibility Handling - DoomRL Arsenal Extended
         // Weapon Kits
@@ -958,6 +959,7 @@ NamedScript void BuildItemData()
             ITEMDATA_DEF("DRLAX_ParticleColliderKit",  "Particle Collider Kit",   50000,  -1,  7, "SNRBK0", 14, 16);
             ITEMDATA_DEF("DRLAX_QuantumEngineKit",     "Quantum Engine Kit",      60000,  -1,  7, "SNRBL0", 14, 16);
         }
+        ITEMDATA_CATEGORY_END;
 
         // Boots
         ITEMDATA_CATEGORY(9, "\CcBoots", CF_NONE);
