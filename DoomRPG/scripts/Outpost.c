@@ -281,6 +281,9 @@ NamedScript MapSpecial void RegenArea(int ID)
             // For Portia
             if (CheckInventory("RLPhaseSistersSwapToken") == 0)
             {
+                if (Player.Portia.ArmorDurability >= Player.Portia.ArmorDurabilityMax)
+                    return;
+
                 for (int i = 0; i < 6; i++)
                     if (Player.Portia.ArmorName == ArmorExceptions[i])
                         return;
@@ -300,6 +303,9 @@ NamedScript MapSpecial void RegenArea(int ID)
             // For Terri
             if (CheckInventory("RLPhaseSistersSwapToken") == 1)
             {
+                if (Player.Terri.ArmorDurability >= Player.Terri.ArmorDurabilityMax)
+                    return;
+
                 for (int i = 0; i < 6; i++)
                     if (Player.Terri.ArmorName == ArmorExceptions[i])
                         return;
