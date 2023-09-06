@@ -145,6 +145,38 @@ NamedScript MapSpecial void RegenArea(int ID)
 
             AddHealthDirect(HealthCharges, 100);
             TakeInventory("DRPGCredits", HealthCharges);
+
+            // Compatibility Handling - DoomRL Extended
+            // Restore Health for Phase Sisters
+            if (CompatModeEx == COMPAT_DRLAX && PlayerClass(PlayerNumber()) == 9) // Phase Sisters
+            {
+                // For Portia
+                if (CheckInventory("RLPhaseSistersSwapToken") == 0)
+                {
+                    if (CheckInventory("DRPGCredits") > 0 && Player.Portia.ActualHealth < Player.HealthMax)
+                    {
+                        HealthCharges = Player.HealthMax - Player.Portia.ActualHealth;
+                        if (HealthCharges > CheckInventory("DRPGCredits"))
+                            HealthCharges = CheckInventory("DRPGCredits");
+                        Player.Portia.ActualHealth = Player.HealthMax;
+                        TakeInventory("DRPGCredits", HealthCharges);
+                    }
+                }
+
+                // For Terri
+                if (CheckInventory("RLPhaseSistersSwapToken") == 1)
+                {
+                    if (CheckInventory("DRPGCredits") > 0 && Player.Terri.ActualHealth < Player.HealthMax)
+                    {
+                        HealthCharges = Player.HealthMax - Player.Terri.ActualHealth;
+                        if (HealthCharges > CheckInventory("DRPGCredits"))
+                            HealthCharges = CheckInventory("DRPGCredits");
+                        Player.Terri.ActualHealth = Player.HealthMax;
+                        TakeInventory("DRPGCredits", HealthCharges);
+                    }
+                }
+            }
+
             DoMessage = true;
         }
 
@@ -194,15 +226,28 @@ NamedScript MapSpecial void RegenArea(int ID)
         if (CheckInventory("Armor") >= GetArmorInfo(ARMORINFO_SAVEAMOUNT))
             return;
 
+        str ArmorExceptions[6] =
+        {
+            "RLFireShieldArmor",
+            "RLTowerShieldArmor",
+            "RLBallisticShieldArmor",
+            "RLEnergyShieldArmor",
+            "RLPlasmaShieldArmor",
+            "RLRechargeableEnergyShieldArmor"
+        };
+
         if (CompatMode == COMPAT_DRLA)
         {
-            if (CheckInventory("RLFireShieldArmorToken") || CheckInventory("RLTowerShieldArmorToken") || CheckInventory("RLBallisticShieldArmorToken") || CheckInventory("RLEnergyShieldArmorToken") || CheckInventory("RLPlasmaShieldArmorToken") || CheckInventory("RLRechargeableEnergyShieldArmorToken"))
+            for (int i = 0; i < 6; i++)
             {
-                SetFont("BIGFONT");
-                HudMessage("This type of armor can't be repairing");
-                EndHudMessage(HUDMSG_FADEOUT, 1, "Red", 0.5, 0.33, 2.0, 0.5);
-                ActivatorSound("menu/error", 127);
-                return;
+                if (GetArmorInfoString(ARMORINFO_CLASSNAME) == ArmorExceptions[i])
+                {
+                    SetFont("BIGFONT");
+                    HudMessage("This type of armor can't be repairing");
+                    EndHudMessage(HUDMSG_FADEOUT, 1, "Red", 0.5, 0.33, 2.0, 0.5);
+                    ActivatorSound("menu/error", 127);
+                    return;
+                }
             }
         }
 
@@ -228,6 +273,49 @@ NamedScript MapSpecial void RegenArea(int ID)
         EndHudMessage(HUDMSG_FADEOUT, 0, "Green", 0.5, 0.33, 2.0, 0.5);
         FadeRangeFlash(0, 255, 0, 0.5, 0, 255, 0, 0.0, 1.0);
         ActivatorSound("regen/armor", 127);
+
+        // Compatibility Handling - DoomRL Extended
+        // Restore Energy Shield for Phase Sisters
+        if (CompatModeEx == COMPAT_DRLAX && PlayerClass(PlayerNumber()) == 9) // Phase Sisters
+        {
+            // For Portia
+            if (CheckInventory("RLPhaseSistersSwapToken") == 0)
+            {
+                for (int i = 0; i < 6; i++)
+                    if (Player.Portia.ArmorName == ArmorExceptions[i])
+                        return;
+
+                ArmorPercent = Player.Portia.ArmorDurability * 100 / Player.Portia.ArmorDurabilityMax;
+                ArmorFee = (100 - ArmorPercent) / 5 * 5;
+                if (ArmorFee < 5)
+                    ArmorFee = 5;
+
+                if (CheckInventory("DRPGCredits") >= ArmorFee)
+                {
+                    Player.Portia.ArmorDurability = Player.Portia.ArmorDurabilityMax;
+                    TakeInventory("DRPGCredits", ArmorFee);
+                }
+            }
+
+            // For Terri
+            if (CheckInventory("RLPhaseSistersSwapToken") == 1)
+            {
+                for (int i = 0; i < 6; i++)
+                    if (Player.Terri.ArmorName == ArmorExceptions[i])
+                        return;
+
+                ArmorPercent = Player.Terri.ArmorDurability * 100 / Player.Terri.ArmorDurabilityMax;
+                ArmorFee = (100 - ArmorPercent) / 5 * 5;
+                if (ArmorFee < 5)
+                    ArmorFee = 5;
+
+                if (CheckInventory("DRPGCredits") >= ArmorFee)
+                {
+                    Player.Terri.ArmorDurability = Player.Terri.ArmorDurabilityMax;
+                    TakeInventory("DRPGCredits", ArmorFee);
+                }
+            }
+        }
     }
 
     // EP (and Shields)
@@ -252,6 +340,49 @@ NamedScript MapSpecial void RegenArea(int ID)
             Player.Shield.Charge += ShieldGive;
 
             TakeInventory("DRPGCredits", ShieldCharges);
+
+            // Compatibility Handling - DoomRL Extended
+            // Restore Energy Shield for Phase Sisters
+            if (CompatModeEx == COMPAT_DRLAX && PlayerClass(PlayerNumber()) == 9) // Phase Sisters
+            {
+                // For Portia
+                if (CheckInventory("RLPhaseSistersSwapToken") == 0)
+                {
+                    if (CheckInventory("DRPGCredits") > 0 && Player.Portia.Shield.Charge < Player.Portia.Shield.Capacity)
+                    {
+                        ShieldCharges = (Player.Portia.Shield.Capacity - Player.Portia.Shield.Charge) / 5;
+                        if (Player.Portia.Shield.Charge % 5 > 0)
+                            ShieldCharges++;
+                        if (CheckInventory("DRPGCredits") < ShieldCharges)
+                            ShieldCharges = CheckInventory("DRPGCredits");
+                        ShieldGive = ShieldCharges * 5;
+
+                        if (Player.Portia.Shield.Charge + ShieldGive > Player.Portia.Shield.Capacity)
+                            ShieldGive = Player.Portia.Shield.Capacity - Player.Portia.Shield.Charge;
+                        Player.Portia.Shield.Charge += ShieldGive;
+                        TakeInventory("DRPGCredits", ShieldCharges);
+                    }
+                }
+
+                // For Terri
+                if (CheckInventory("RLPhaseSistersSwapToken") == 1)
+                {
+                    if (CheckInventory("DRPGCredits") > 0 && Player.Terri.Shield.Charge < Player.Terri.Shield.Capacity)
+                    {
+                        ShieldCharges = (Player.Terri.Shield.Capacity - Player.Terri.Shield.Charge) / 5;
+                        if (Player.Terri.Shield.Charge % 5 > 0)
+                            ShieldCharges++;
+                        if (CheckInventory("DRPGCredits") < ShieldCharges)
+                            ShieldCharges = CheckInventory("DRPGCredits");
+                        ShieldGive = ShieldCharges * 5;
+
+                        if (Player.Terri.Shield.Charge + ShieldGive > Player.Terri.Shield.Capacity)
+                            ShieldGive = Player.Terri.Shield.Capacity - Player.Terri.Shield.Charge;
+                        Player.Terri.Shield.Charge += ShieldGive;
+                        TakeInventory("DRPGCredits", ShieldCharges);
+                    }
+                }
+            }
 
             SetFont("BIGFONT");
             HudMessage("Shield restored");
@@ -302,6 +433,47 @@ NamedScript MapSpecial void RegenArea(int ID)
             Player.EP += EPGive;
 
             TakeInventory("DRPGCredits", EPCharges);
+
+            // Compatibility Handling - DoomRL Extended
+            // Restore EP for Phase Sisters
+            if (CompatModeEx == COMPAT_DRLAX && PlayerClass(PlayerNumber()) == 9) // Phase Sisters
+            {
+                // For Portia
+                if (CheckInventory("RLPhaseSistersSwapToken") == 0)
+                {
+                    if (CheckInventory("DRPGCredits") > 0 && Player.Portia.EP < Player.EPMax)
+                    {
+                        EPCharges = (Player.EPMax - Player.Portia.EP) / 5;
+                        if (Player.Portia.EP % 5 > 0)
+                            EPCharges++;
+                        if (CheckInventory("DRPGCredits") < EPCharges)
+                            EPCharges = CheckInventory("DRPGCredits");
+                        EPGive = EPCharges * 5;
+                        if (Player.Portia.EP + EPGive > Player.EPMax)
+                            EPGive = Player.EPMax - Player.Portia.EP;
+                        Player.Portia.EP += EPGive;
+                        TakeInventory("DRPGCredits", EPCharges);
+                    }
+                }
+
+                // For Terri
+                if (CheckInventory("RLPhaseSistersSwapToken") == 1)
+                {
+                    if (CheckInventory("DRPGCredits") > 0 && Player.Portia.EP < Player.EPMax)
+                    {
+                        EPCharges = (Player.EPMax - Player.Terri.EP) / 5;
+                        if (Player.Terri.EP % 5 > 0)
+                            EPCharges++;
+                        if (CheckInventory("DRPGCredits") < EPCharges)
+                            EPCharges = CheckInventory("DRPGCredits");
+                        EPGive = EPCharges * 5;
+                        if (Player.Terri.EP + EPGive > Player.EPMax)
+                            EPGive = Player.EPMax - Player.Terri.EP;
+                        Player.Terri.EP += EPGive;
+                        TakeInventory("DRPGCredits", EPCharges);
+                    }
+                }
+            }
 
             SetFont("BIGFONT");
             HudMessage("EP restored");

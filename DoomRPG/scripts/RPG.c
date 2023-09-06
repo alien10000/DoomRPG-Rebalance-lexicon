@@ -269,6 +269,19 @@ NamedScript Type_ENTER void Init()
             Player.WeaponLegendaryChance = 0.2;
         }
 
+        // Compatibility Handling - DoomRL Extended
+        if (CompatModeEx == COMPAT_DRLAX)
+        {
+            // Default Health/EP for Phase Sisters
+            if (PlayerClass(PlayerNumber()) == 9) // Phase Sisters
+            {
+                Player.Portia.ActualHealth = 50 + ((Player.Level + 1) / 2) * 5 + Player.VitalityTotal * 5;
+                Player.Portia.EP = 50 + ((Player.Level + 1) / 2) * 5 + Player.EnergyTotal * 5;
+                Player.Terri.ActualHealth = 50 + ((Player.Level + 1) / 2) * 5 + Player.VitalityTotal * 5;
+                Player.Terri.EP = 50 + ((Player.Level + 1) / 2) * 5 + Player.EnergyTotal * 5;
+            }
+        }
+
         // Compatibility Handling - DoomRL Monsters
         if (CompatMonMode == COMPAT_DRLA)
             if (CurrentLevel->UACBase)
@@ -475,22 +488,52 @@ NamedScript void PlayerHealth()
     int BeforeHealth;
     int AfterHealth;
 
-    while (true)
+    // Compatibility Handling - DoomRL Extended
+    // Check Health for Phase Sisters
+    if (CompatModeEx == COMPAT_DRLAX && PlayerClass(PlayerNumber()) == 9) // Phase Sisters
     {
-        BeforeHealth = GetActorProperty(0, APROP_Health);
+        bool BeforeSwap;
+        bool AfterSwap;
 
-        // If the player's dead, terminate
-        if (BeforeHealth <= 0) break;
+        while (true)
+        {
+            BeforeSwap = CheckInventory("RLPhaseSistersSwapToken");
+            BeforeHealth = GetActorProperty(0, APROP_Health);
 
-        Delay(1);
+            // If the player's dead, terminate
+            if (BeforeHealth <= 0) break;
 
-        AfterHealth = GetActorProperty(0, APROP_Health);
+            Delay(1);
 
-        if (AfterHealth > BeforeHealth)
-            Player.ActualHealth += AfterHealth - BeforeHealth;
+            AfterSwap = CheckInventory("RLPhaseSistersSwapToken");
+            AfterHealth = GetActorProperty(0, APROP_Health);
 
-        // Update health
-        SetActorProperty(0, APROP_Health, Player.ActualHealth);
+            if (AfterHealth > BeforeHealth && AfterSwap == BeforeSwap)
+                Player.ActualHealth += AfterHealth - BeforeHealth;
+
+            // Update health
+            SetActorProperty(0, APROP_Health, Player.ActualHealth);
+        }
+    }
+    else
+    {
+        while (true)
+        {
+            BeforeHealth = GetActorProperty(0, APROP_Health);
+
+            // If the player's dead, terminate
+            if (BeforeHealth <= 0) break;
+
+            Delay(1);
+
+            AfterHealth = GetActorProperty(0, APROP_Health);
+
+            if (AfterHealth > BeforeHealth)
+                Player.ActualHealth += AfterHealth - BeforeHealth;
+
+            // Update health
+            SetActorProperty(0, APROP_Health, Player.ActualHealth);
+        }
     }
 }
 
@@ -2210,6 +2253,14 @@ NamedScript void Loadout_GiveDRLAEquipment()
     int MaxWeaponCount = GetActivatorCVar("drpg_start_drla_weapon_amount");
     int ModPackCount = 0;
     int ModPackMax = GetActivatorCVar("drpg_start_drla_modpacks");
+
+    // Compatibility Handling - DoomRL Extended
+    if (CompatModeEx == COMPAT_DRLAX)
+    {
+        // Set Weapon Count for Phase Sisters
+        if (PlayerClass(PlayerNumber()) == 9) // Phase Sisters
+            if (MaxWeaponCount > 3) MaxWeaponCount = 3;
+    }
 
     // Weapons
     if (GetActivatorCVar("drpg_start_drla_weapon_type") > 0)

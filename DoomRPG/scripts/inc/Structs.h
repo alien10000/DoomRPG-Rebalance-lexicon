@@ -853,56 +853,82 @@ struct PlayerData_S
     // Portia
     struct
     {
-        // Current Parts
-        struct ShieldPart_S const *Body;
-        struct ShieldPart_S const *Battery;
-        struct ShieldPart_S const *Capacitor;
-        struct ShieldAccessory_S const *Accessory;
+        // Portia's Health/EP
+        int ActualHealth;
+        int EP;
 
-        // Flags
-        bool Active;
-        bool Full;
+        // Portia's Armor
+        str ArmorName;
+        int ArmorDurability;
+        int ArmorDurabilityMax;
 
-        // Stats
-        int Charge;
-        int Capacity;
-        int Interval;
-        int ChargeRate;
-        fixed DelayRate;
-        int Timer;
+        // Portia's Energy Shield
+        struct
+        {
+            // Current Parts
+            struct ShieldPart_S const *Body;
+            struct ShieldPart_S const *Battery;
+            struct ShieldPart_S const *Capacitor;
+            struct ShieldAccessory_S const *Accessory;
 
-        // Accessories
-        int AccessoryBattery;
-        int AccessoryTimer;
-        struct Position_S AccessoryPosition;
-    } PortiaShield;
+            // Flags
+            bool Active;
+            bool Full;
+
+            // Stats
+            int Charge;
+            int Capacity;
+            int Interval;
+            int ChargeRate;
+            fixed DelayRate;
+            int Timer;
+
+            // Accessories
+            int AccessoryBattery;
+            int AccessoryTimer;
+            struct Position_S AccessoryPosition;
+        } Shield;
+    } Portia;
 
     // Terri
     struct
     {
-        // Current Parts
-        struct ShieldPart_S const *Body;
-        struct ShieldPart_S const *Battery;
-        struct ShieldPart_S const *Capacitor;
-        struct ShieldAccessory_S const *Accessory;
+        // Terri's Health/EP
+        int ActualHealth;
+        int EP;
 
-        // Flags
-        bool Active;
-        bool Full;
+        // Terri's Armor
+        str ArmorName;
+        int ArmorDurability;
+        int ArmorDurabilityMax;
 
-        // Stats
-        int Charge;
-        int Capacity;
-        int Interval;
-        int ChargeRate;
-        fixed DelayRate;
-        int Timer;
+        // Terri's Energy Shield
+        struct
+        {
+            // Current Parts
+            struct ShieldPart_S const *Body;
+            struct ShieldPart_S const *Battery;
+            struct ShieldPart_S const *Capacitor;
+            struct ShieldAccessory_S const *Accessory;
 
-        // Accessories
-        int AccessoryBattery;
-        int AccessoryTimer;
-        struct Position_S AccessoryPosition;
-    } TerriShield;
+            // Flags
+            bool Active;
+            bool Full;
+
+            // Stats
+            int Charge;
+            int Capacity;
+            int Interval;
+            int ChargeRate;
+            fixed DelayRate;
+            int Timer;
+
+            // Accessories
+            int AccessoryBattery;
+            int AccessoryTimer;
+            struct Position_S AccessoryPosition;
+        } Shield;
+    } Terri;
 
     // Associated Drops
     struct DynamicArray_S DropTID;

@@ -302,7 +302,7 @@ Class RLPhaseSistersPassive : Inventory
         Class<Weapon> newwep = lastwep;
         lastwep = owner.player.ReadyWeapon.GetClass();
 
-        owner.ACS_ScriptCall("PhaseSistersShieldPartsSave");
+        owner.ACS_ScriptCall("PhaseSistersDataSave");
 
         tempitems.Copy(items);
         items.Clear();
@@ -421,7 +421,7 @@ Class RLPhaseSistersPassive : Inventory
 
         lasthealth = newhealth;
 
-        owner.ACS_ScriptCall("PhaseSistersShieldPartsLoad");
+        owner.ACS_ScriptCall("PhaseSistersDataLoad");
 
         SetLimits();
     }

@@ -312,6 +312,16 @@ void CheckLevel()
             {
                 HealThing(MAX_HEALTH);
                 Player.EP = Player.EPMax;
+
+                // Compatibility Handling - DoomRL Extended
+                // Restore Health/EP for Phase Sisters
+                if (CompatModeEx == COMPAT_DRLAX && PlayerClass(PlayerNumber()) == 9) // Phase Sisters
+                {
+                    Player.Portia.ActualHealth = Player.HealthMax;
+                    Player.Portia.EP = Player.EPMax;
+                    Player.Terri.ActualHealth = Player.HealthMax;
+                    Player.Terri.EP = Player.EPMax;
+                }
             }
 
             FadeRangeFlash(255, 255, 255, 0.5, 255, 255, 255, 0, 2.0);
