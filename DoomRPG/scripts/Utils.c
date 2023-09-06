@@ -2734,119 +2734,154 @@ void NanomaniacTransport()
     }
 }
 
-NamedScript DECORATE void PhaseSistersShieldPartsSave()
+NamedScript DECORATE void PhaseSistersDataSave()
 {
-    // Save Energy Shield for Portia
+    // Save data for Portia
     if (CheckInventory("RLPhaseSistersSwapToken") == 1)
     {
+        // Save Health/EP for Portia
+        Player.Portia.ActualHealth = Player.ActualHealth;
+        Player.Portia.EP = Player.EP;
+
+        // Save Armor for Portia
+        Player.Portia.ArmorName = GetArmorInfoString(ARMORINFO_CLASSNAME);
+        Player.Portia.ArmorDurability = CheckInventory("BasicArmor");
+        Player.Portia.ArmorDurabilityMax = GetArmorInfo(ARMORINFO_SAVEAMOUNT);
+
+        // Save Energy Shield for Portia
         // Current Parts
-        Player.PortiaShield.Body = Player.Shield.Body;
-        Player.PortiaShield.Battery = Player.Shield.Battery;
-        Player.PortiaShield.Capacitor = Player.Shield.Capacitor;
-        Player.PortiaShield.Accessory = Player.Shield.Accessory;
+        Player.Portia.Shield.Body = Player.Shield.Body;
+        Player.Portia.Shield.Battery = Player.Shield.Battery;
+        Player.Portia.Shield.Capacitor = Player.Shield.Capacitor;
+        Player.Portia.Shield.Accessory = Player.Shield.Accessory;
 
         // Flags
-        Player.PortiaShield.Active = Player.Shield.Active;
-        Player.PortiaShield.Full = Player.Shield.Full;
+        Player.Portia.Shield.Active = Player.Shield.Active;
+        Player.Portia.Shield.Full = Player.Shield.Full;
 
         // Stats
-        Player.PortiaShield.Charge = Player.Shield.Charge;
-        Player.PortiaShield.Capacity = Player.Shield.Capacity;
-        Player.PortiaShield.Interval = Player.Shield.Interval;
-        Player.PortiaShield.ChargeRate = Player.Shield.ChargeRate;
-        Player.PortiaShield.DelayRate = Player.Shield.DelayRate;
-        Player.PortiaShield.Timer = Player.Shield.Timer;
+        Player.Portia.Shield.Charge = Player.Shield.Charge;
+        Player.Portia.Shield.Capacity = Player.Shield.Capacity;
+        Player.Portia.Shield.Interval = Player.Shield.Interval;
+        Player.Portia.Shield.ChargeRate = Player.Shield.ChargeRate;
+        Player.Portia.Shield.DelayRate = Player.Shield.DelayRate;
+        Player.Portia.Shield.Timer = Player.Shield.Timer;
 
         // Accessories
-        Player.PortiaShield.AccessoryBattery = Player.Shield.AccessoryBattery;
-        Player.PortiaShield.AccessoryTimer = Player.Shield.AccessoryTimer;
+        Player.Portia.Shield.AccessoryBattery = Player.Shield.AccessoryBattery;
+        Player.Portia.Shield.AccessoryTimer = Player.Shield.AccessoryTimer;
 
         // Accessories Position
-        Player.PortiaShield.AccessoryPosition.X = Player.Shield.AccessoryPosition.X;
-        Player.PortiaShield.AccessoryPosition.Y = Player.Shield.AccessoryPosition.Y;
-        Player.PortiaShield.AccessoryPosition.Z = Player.Shield.AccessoryPosition.Z;
-        Player.PortiaShield.AccessoryPosition.Angle = Player.Shield.AccessoryPosition.Angle;
-        Player.PortiaShield.AccessoryPosition.Pitch = Player.Shield.AccessoryPosition.Pitch;
+        Player.Portia.Shield.AccessoryPosition.X = Player.Shield.AccessoryPosition.X;
+        Player.Portia.Shield.AccessoryPosition.Y = Player.Shield.AccessoryPosition.Y;
+        Player.Portia.Shield.AccessoryPosition.Z = Player.Shield.AccessoryPosition.Z;
+        Player.Portia.Shield.AccessoryPosition.Angle = Player.Shield.AccessoryPosition.Angle;
+        Player.Portia.Shield.AccessoryPosition.Pitch = Player.Shield.AccessoryPosition.Pitch;
 
         // Deactivate Shield
-        if (Player.TerriShield.Active == false)
+        if (Player.Terri.Shield.Active == false)
             DeactivateShield();
     }
 
-    // Save Energy Shield for Terri
+    // Save data for Terri
     if (CheckInventory("RLPhaseSistersSwapToken") == 0)
     {
+        // Save Health/EP for Terri
+        Player.Terri.ActualHealth = Player.ActualHealth;
+        Player.Terri.EP = Player.EP;
+
+        // Save Armor for Terri
+        Player.Terri.ArmorName = GetArmorInfoString(ARMORINFO_CLASSNAME);
+        Player.Terri.ArmorDurability = CheckInventory("BasicArmor");
+        Player.Terri.ArmorDurabilityMax = GetArmorInfo(ARMORINFO_SAVEAMOUNT);
+
+        // Save Energy Shield for Terri
         // Current Parts
-        Player.TerriShield.Body = Player.Shield.Body;
-        Player.TerriShield.Battery = Player.Shield.Battery;
-        Player.TerriShield.Capacitor = Player.Shield.Capacitor;
-        Player.TerriShield.Accessory = Player.Shield.Accessory;
+        Player.Terri.Shield.Body = Player.Shield.Body;
+        Player.Terri.Shield.Battery = Player.Shield.Battery;
+        Player.Terri.Shield.Capacitor = Player.Shield.Capacitor;
+        Player.Terri.Shield.Accessory = Player.Shield.Accessory;
 
         // Flags
-        Player.TerriShield.Active = Player.Shield.Active;
-        Player.TerriShield.Full = Player.Shield.Full;
+        Player.Terri.Shield.Active = Player.Shield.Active;
+        Player.Terri.Shield.Full = Player.Shield.Full;
 
         // Stats
-        Player.TerriShield.Charge = Player.Shield.Charge;
-        Player.TerriShield.Capacity = Player.Shield.Capacity;
-        Player.TerriShield.Interval = Player.Shield.Interval;
-        Player.TerriShield.ChargeRate = Player.Shield.ChargeRate;
-        Player.TerriShield.DelayRate = Player.Shield.DelayRate;
-        Player.TerriShield.Timer = Player.Shield.Timer;
+        Player.Terri.Shield.Charge = Player.Shield.Charge;
+        Player.Terri.Shield.Capacity = Player.Shield.Capacity;
+        Player.Terri.Shield.Interval = Player.Shield.Interval;
+        Player.Terri.Shield.ChargeRate = Player.Shield.ChargeRate;
+        Player.Terri.Shield.DelayRate = Player.Shield.DelayRate;
+        Player.Terri.Shield.Timer = Player.Shield.Timer;
 
         // Accessories
-        Player.TerriShield.AccessoryBattery = Player.Shield.AccessoryBattery;
-        Player.TerriShield.AccessoryTimer = Player.Shield.AccessoryTimer;
+        Player.Terri.Shield.AccessoryBattery = Player.Shield.AccessoryBattery;
+        Player.Terri.Shield.AccessoryTimer = Player.Shield.AccessoryTimer;
 
         // Accessories Position
-        Player.TerriShield.AccessoryPosition.X = Player.Shield.AccessoryPosition.X;
-        Player.TerriShield.AccessoryPosition.Y = Player.Shield.AccessoryPosition.Y;
-        Player.TerriShield.AccessoryPosition.Z = Player.Shield.AccessoryPosition.Z;
-        Player.TerriShield.AccessoryPosition.Angle = Player.Shield.AccessoryPosition.Angle;
-        Player.TerriShield.AccessoryPosition.Pitch = Player.Shield.AccessoryPosition.Pitch;
+        Player.Terri.Shield.AccessoryPosition.X = Player.Shield.AccessoryPosition.X;
+        Player.Terri.Shield.AccessoryPosition.Y = Player.Shield.AccessoryPosition.Y;
+        Player.Terri.Shield.AccessoryPosition.Z = Player.Shield.AccessoryPosition.Z;
+        Player.Terri.Shield.AccessoryPosition.Angle = Player.Shield.AccessoryPosition.Angle;
+        Player.Terri.Shield.AccessoryPosition.Pitch = Player.Shield.AccessoryPosition.Pitch;
 
         // Deactivate Shield
-        if (Player.PortiaShield.Active == false)
+        if (Player.Portia.Shield.Active == false)
             DeactivateShield();
     }
 }
 
-NamedScript DECORATE void PhaseSistersShieldPartsLoad()
+NamedScript DECORATE void PhaseSistersDataLoad()
 {
-    // Load Energy Shield for Portia
+    // Load data for Portia
     if (CheckInventory("RLPhaseSistersSwapToken") == 1)
     {
+        // Load Health/EP for Portia
+        Player.ActualHealth = Player.Portia.ActualHealth;
+        Player.PrevHealth = Player.Portia.ActualHealth;
+        SetActorProperty(0, APROP_Health, Player.Portia.ActualHealth);
+        Player.EP = Player.Portia.EP;
+
+        // Load Armor for Portia
+        if (Player.Portia.ArmorDurability > 0)
+        {
+            TakeInventory("BasicArmor", 99999);
+            GiveInventory(Player.Portia.ArmorName, 1);
+            SetInventory("BasicArmor", Player.Portia.ArmorDurability);
+        }
+
+        // Load Energy Shield for Portia
         // Current Parts
-        Player.Shield.Body = Player.PortiaShield.Body;
-        Player.Shield.Battery = Player.PortiaShield.Battery;
-        Player.Shield.Capacitor = Player.PortiaShield.Capacitor;
-        Player.Shield.Accessory = Player.PortiaShield.Accessory;
+        Player.Shield.Body = Player.Portia.Shield.Body;
+        Player.Shield.Battery = Player.Portia.Shield.Battery;
+        Player.Shield.Capacitor = Player.Portia.Shield.Capacitor;
+        Player.Shield.Accessory = Player.Portia.Shield.Accessory;
 
         // Flags
-        Player.Shield.Active = Player.PortiaShield.Active;
-        Player.Shield.Full = Player.PortiaShield.Full;
+        Player.Shield.Active = Player.Portia.Shield.Active;
+        Player.Shield.Full = Player.Portia.Shield.Full;
 
         // Stats
-        Player.Shield.Charge = Player.PortiaShield.Charge;
-        Player.Shield.Capacity = Player.PortiaShield.Capacity;
-        Player.Shield.Interval = Player.PortiaShield.Interval;
-        Player.Shield.ChargeRate = Player.PortiaShield.ChargeRate;
-        Player.Shield.DelayRate = Player.PortiaShield.DelayRate;
-        Player.Shield.Timer = Player.PortiaShield.Timer;
+        Player.Shield.Charge = Player.Portia.Shield.Charge;
+        Player.Shield.Capacity = Player.Portia.Shield.Capacity;
+        Player.Shield.Interval = Player.Portia.Shield.Interval;
+        Player.Shield.ChargeRate = Player.Portia.Shield.ChargeRate;
+        Player.Shield.DelayRate = Player.Portia.Shield.DelayRate;
+        Player.Shield.Timer = Player.Portia.Shield.Timer;
 
         // Accessories
-        Player.Shield.AccessoryBattery = Player.PortiaShield.AccessoryBattery;
-        Player.Shield.AccessoryTimer = Player.PortiaShield.AccessoryTimer;
+        Player.Shield.AccessoryBattery = Player.Portia.Shield.AccessoryBattery;
+        Player.Shield.AccessoryTimer = Player.Portia.Shield.AccessoryTimer;
 
         // Accessories Position
-        Player.Shield.AccessoryPosition.X = Player.PortiaShield.AccessoryPosition.X;
-        Player.Shield.AccessoryPosition.Y = Player.PortiaShield.AccessoryPosition.Y;
-        Player.Shield.AccessoryPosition.Z = Player.PortiaShield.AccessoryPosition.Z;
-        Player.Shield.AccessoryPosition.Angle = Player.PortiaShield.AccessoryPosition.Angle;
-        Player.Shield.AccessoryPosition.Pitch = Player.PortiaShield.AccessoryPosition.Pitch;
+        Player.Shield.AccessoryPosition.X = Player.Portia.Shield.AccessoryPosition.X;
+        Player.Shield.AccessoryPosition.Y = Player.Portia.Shield.AccessoryPosition.Y;
+        Player.Shield.AccessoryPosition.Z = Player.Portia.Shield.AccessoryPosition.Z;
+        Player.Shield.AccessoryPosition.Angle = Player.Portia.Shield.AccessoryPosition.Angle;
+        Player.Shield.AccessoryPosition.Pitch = Player.Portia.Shield.AccessoryPosition.Pitch;
 
         // Activate Shield
-        if (Player.PortiaShield.Active)
+        if (Player.Portia.Shield.Active)
         {
             ActivateShield();
 
@@ -2859,40 +2894,55 @@ NamedScript DECORATE void PhaseSistersShieldPartsLoad()
         }
     }
 
-    // Load Energy Shield for Terri
+    // Load data for Terri
     if (CheckInventory("RLPhaseSistersSwapToken") == 0)
     {
+        // Load Health/EP for Terri
+        Player.ActualHealth = Player.Terri.ActualHealth;
+        Player.PrevHealth = Player.Terri.ActualHealth;
+        SetActorProperty(0, APROP_Health, Player.Terri.ActualHealth);
+        Player.EP = Player.Terri.EP;
+
+        // Load Armor for Terri
+        if (Player.Terri.ArmorDurability > 0)
+        {
+            TakeInventory("BasicArmor", 99999);
+            GiveInventory(Player.Terri.ArmorName, 1);
+            SetInventory("BasicArmor", Player.Terri.ArmorDurability);
+        }
+
+        // Load Energy Shield for Terri
         // Current Parts
-        Player.Shield.Body = Player.TerriShield.Body;
-        Player.Shield.Battery = Player.TerriShield.Battery;
-        Player.Shield.Capacitor = Player.TerriShield.Capacitor;
-        Player.Shield.Accessory = Player.TerriShield.Accessory;
+        Player.Shield.Body = Player.Terri.Shield.Body;
+        Player.Shield.Battery = Player.Terri.Shield.Battery;
+        Player.Shield.Capacitor = Player.Terri.Shield.Capacitor;
+        Player.Shield.Accessory = Player.Terri.Shield.Accessory;
 
         // Flags
-        Player.Shield.Active = Player.TerriShield.Active;
-        Player.Shield.Full = Player.TerriShield.Full;
+        Player.Shield.Active = Player.Terri.Shield.Active;
+        Player.Shield.Full = Player.Terri.Shield.Full;
 
         // Stats
-        Player.Shield.Charge = Player.TerriShield.Charge;
-        Player.Shield.Capacity = Player.TerriShield.Capacity;
-        Player.Shield.Interval = Player.TerriShield.Interval;
-        Player.Shield.ChargeRate = Player.TerriShield.ChargeRate;
-        Player.Shield.DelayRate = Player.TerriShield.DelayRate;
-        Player.Shield.Timer = Player.TerriShield.Timer;
+        Player.Shield.Charge = Player.Terri.Shield.Charge;
+        Player.Shield.Capacity = Player.Terri.Shield.Capacity;
+        Player.Shield.Interval = Player.Terri.Shield.Interval;
+        Player.Shield.ChargeRate = Player.Terri.Shield.ChargeRate;
+        Player.Shield.DelayRate = Player.Terri.Shield.DelayRate;
+        Player.Shield.Timer = Player.Terri.Shield.Timer;
 
         // Accessories
-        Player.Shield.AccessoryBattery = Player.TerriShield.AccessoryBattery;
-        Player.Shield.AccessoryTimer = Player.TerriShield.AccessoryTimer;
+        Player.Shield.AccessoryBattery = Player.Terri.Shield.AccessoryBattery;
+        Player.Shield.AccessoryTimer = Player.Terri.Shield.AccessoryTimer;
 
         // Accessories Position
-        Player.Shield.AccessoryPosition.X = Player.TerriShield.AccessoryPosition.X;
-        Player.Shield.AccessoryPosition.Y = Player.TerriShield.AccessoryPosition.Y;
-        Player.Shield.AccessoryPosition.Z = Player.TerriShield.AccessoryPosition.Z;
-        Player.Shield.AccessoryPosition.Angle = Player.TerriShield.AccessoryPosition.Angle;
-        Player.Shield.AccessoryPosition.Pitch = Player.TerriShield.AccessoryPosition.Pitch;
+        Player.Shield.AccessoryPosition.X = Player.Terri.Shield.AccessoryPosition.X;
+        Player.Shield.AccessoryPosition.Y = Player.Terri.Shield.AccessoryPosition.Y;
+        Player.Shield.AccessoryPosition.Z = Player.Terri.Shield.AccessoryPosition.Z;
+        Player.Shield.AccessoryPosition.Angle = Player.Terri.Shield.AccessoryPosition.Angle;
+        Player.Shield.AccessoryPosition.Pitch = Player.Terri.Shield.AccessoryPosition.Pitch;
 
         // Activate Shield
-        if (Player.TerriShield.Active)
+        if (Player.Terri.Shield.Active)
         {
             ActivateShield();
 
@@ -2906,9 +2956,11 @@ NamedScript DECORATE void PhaseSistersShieldPartsLoad()
     }
 }
 
-NamedScript DECORATE void DRLAX_DRPG_CursedDagger_Effect()
+NamedScript DECORATE void SetPlayerActualHealth(int ActualHealth)
 {
-    Player.ActualHealth = 10;
+    Player.ActualHealth = ActualHealth;
+    Player.PrevHealth = Player.ActualHealth;
+    SetActorProperty(0, APROP_Health, Player.ActualHealth);
 }
 
 // --------------------------------------------------

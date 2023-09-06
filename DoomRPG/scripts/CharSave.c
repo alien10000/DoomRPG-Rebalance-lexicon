@@ -307,12 +307,53 @@ NamedScript MenuEntry void SaveCharacter()
 
     // Bulk Deposit
     DepositInventory();
-    while (Depositing)
+
+    // Compatibility Handling - DoomRL Extended
+    // Deposit Items for Phase Sisters
+    if (CompatModeEx == COMPAT_DRLAX && PlayerClass(PlayerNumber()) == 9) // Phase Sisters
     {
-        SetFont("BIGFONT");
-        HudMessage("\CkDepositing Items: \Cd%d \C-/ \Cd%d", DepositItems, DepositTotal);
-        EndHudMessage(HUDMSG_FADEOUT, DEPOSIT_ID, "White", 0.5, 0.5, 0.05, 0.5);
+        while (Depositing)
+        {
+            SetFont("BIGFONT");
+            if (CheckInventory("RLPhaseSistersSwapToken") == 1)
+                HudMessage("\CtPortia:\C- \CkDepositing Items: \Cd%d \C-/ \Cd%d", DepositItems, DepositTotal);
+            else
+                HudMessage("\CvTerri:\C- \CkDepositing Items: \Cd%d \C-/ \Cd%d", DepositItems, DepositTotal);
+            EndHudMessage(HUDMSG_FADEOUT, DEPOSIT_ID, "White", 0.5, 0.5, 0.05, 0.5);
+            Delay(1);
+        }
+
+        // Swap Sisters
+        SetInventory("RLPhaseSistersHomingTrigger", 1);
+
         Delay(1);
+
+        // Disable Shield
+        DeactivateShield();
+
+        // Bulk Deposit
+        DepositInventory();
+
+        while (Depositing)
+        {
+            SetFont("BIGFONT");
+            if (CheckInventory("RLPhaseSistersSwapToken") == 1)
+                HudMessage("\CtPortia:\C- \CkDepositing Items: \Cd%d \C-/ \Cd%d", DepositItems, DepositTotal);
+            else
+                HudMessage("\CvTerri:\C- \CkDepositing Items: \Cd%d \C-/ \Cd%d", DepositItems, DepositTotal);
+            EndHudMessage(HUDMSG_FADEOUT, DEPOSIT_ID, "White", 0.5, 0.5, 0.05, 0.5);
+            Delay(1);
+        }
+    }
+    else
+    {
+        while (Depositing)
+        {
+            SetFont("BIGFONT");
+            HudMessage("\CkDepositing Items: \Cd%d \C-/ \Cd%d", DepositItems, DepositTotal);
+            EndHudMessage(HUDMSG_FADEOUT, DEPOSIT_ID, "White", 0.5, 0.5, 0.05, 0.5);
+            Delay(1);
+        }
     }
 
     SetFont("BIGFONT");

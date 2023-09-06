@@ -1759,7 +1759,7 @@ class DRLAX_CursedDagger : DRLAX_BaseInventory
 
 				owner.health = 10;
 				owner.player.health = 10;
-                owner.ACS_NamedExecuteAlways("DRLAX_DRPG_CursedDagger_Effect");
+                owner.ACS_NamedExecuteAlways("SetPlayerActualHealth", 0, 10);
 				owner.A_Pain();
 
 				owner.A_Quake(6, 10, 0, 32, "");

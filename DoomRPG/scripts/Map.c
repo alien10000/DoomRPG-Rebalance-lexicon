@@ -608,6 +608,16 @@ Start:
             HealThing(MAX_HEALTH);
             Players(i).EP = Players(i).EPMax;
 
+            // Compatibility Handling - DoomRL Extended
+            // Restore Health/EP for Phase Sisters
+            if (CompatModeEx == COMPAT_DRLAX && PlayerClass(PlayerNumber()) == 9) // Phase Sisters
+            {
+                Player.Portia.ActualHealth = Player.HealthMax;
+                Player.Portia.EP = Player.EPMax;
+                Player.Terri.ActualHealth = Player.HealthMax;
+                Player.Terri.EP = Player.EPMax;
+            }
+
             HudMessage("Items Found Bonus!\nFull HP/EP Restore");
             EndHudMessage(HUDMSG_FADEOUT, 0, "LightBlue", 1.5, 0.6, 3.0, 3.0);
         }
@@ -664,6 +674,16 @@ Start:
 
             HealThing(MAX_HEALTH);
             Players(i).EP = Players(i).EPMax;
+
+            // Compatibility Handling - DoomRL Extended
+            // Restore Health/EP for Phase Sisters
+            if (CompatModeEx == COMPAT_DRLAX && PlayerClass(PlayerNumber()) == 9) // Phase Sisters
+            {
+                Player.Portia.ActualHealth = Player.HealthMax;
+                Player.Portia.EP = Player.EPMax;
+                Player.Terri.ActualHealth = Player.HealthMax;
+                Player.Terri.EP = Player.EPMax;
+            }
 
             if (Players(i).Level < MAX_LEVEL && Players(i).RankLevel < MAX_RANK)
             {
