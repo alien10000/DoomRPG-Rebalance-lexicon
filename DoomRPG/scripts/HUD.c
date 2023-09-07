@@ -1946,9 +1946,12 @@ Start:
 
     if (Player.GUI.Open || Player.InMenu || Player.InShop || Player.InMinigame || Player.OutpostMenu)
     {
+        SetActivatorCVar("drpg_drla_hud_on", false);
         Delay(1);
         goto Start;
     }
+    else
+        SetActivatorCVar("drpg_drla_hud_on", true);
 
     // Offset = 0.0;
 

@@ -55,7 +55,7 @@ Class RLSargeEvents : StaticEventHandler
 
     override void RenderOverlay (RenderEvent event)
     {
-        if(automapactive)
+        if(automapactive || !Cvar.GetCvar("drpg_drla_hud_on", players[consoleplayer]).GetBool())
         {
             return;
         }
