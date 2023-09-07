@@ -659,9 +659,9 @@ NamedScript MenuEntry void LoadCharacter()
             Player.ItemAutoMode[i][j] = Info.ItemAutoMode[i][j];
 
     // Map Level Number
-    if (GetActivatorCVar("drpg_load_map_level"))
+    if (GetActivatorCVar("drpg_char_load_maplevel"))
         NextLevelNum = Info.NextLevelNum;
-    if (GetActivatorCVar("drpg_load_map_level"))
+    if (GetActivatorCVar("drpg_char_load_maplevel"))
         NextPrimaryLevelNum = Info.NextPrimaryLevelNum;
 
     // ----- COMPATIBILITY EXTENSIONS -----
@@ -676,7 +676,7 @@ NamedScript MenuEntry void LoadCharacter()
     // Compatibility Handling - DoomRL Arsenal
     // Danger Level
     if (CompatMonMode == COMPAT_DRLA)
-        if (GetActivatorCVar("drpg_load_rl_danger_level"))
+        if (GetActivatorCVar("drpg_char_load_rl_dangerlevel"))
             SetInventory("RLDangerLevel", Info.DangerLevel);
 
     // Compatibility Handling - DoomRL Arsenal

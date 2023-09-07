@@ -46,7 +46,7 @@ Class RLBunkerEvents : StaticEventHandler
 
     override void RenderOverlay (RenderEvent event)
     {
-        if(automapactive)
+        if(automapactive || !Cvar.GetCvar("drpg_drla_hud_on", players[consoleplayer]).GetBool())
         {
             return;
         }
@@ -74,7 +74,7 @@ Class RLBunkerEvents : StaticEventHandler
 
 			int X = CVar.GetCVar("drpg_drla_x", players[consoleplayer]).GetInt();
 			int Y = CVar.GetCVar("drpg_drla_y", players[consoleplayer]).GetInt();   
-			int XOff = - 140, YOff = - 10;	
+			int XOff = - 140, YOff = - 33;	
 
             if(Screen.GetAspectRatio() < 1.3)
             {
@@ -84,22 +84,22 @@ Class RLBunkerEvents : StaticEventHandler
             else if(Screen.GetAspectRatio() < 1.4)
             {
                 XOff = - 248;
-                YOff = - 10;
+                YOff = - 33;
             }
             else if(Screen.GetAspectRatio() < 1.7)
             {
                 XOff = - 183;
-                YOff = - 10;
+                YOff = - 33;
             }
             else if(Screen.GetAspectRatio() < 1.8)
             {
                 XOff = - 140;
-                YOff = - 10;
+                YOff = - 33;
             }			
             else if(Screen.GetAspectRatio() > 2.3)
             {
                 XOff = + 2;
-                YOff = - 10;
+                YOff = - 33;
             }
 
             let window_aspect    = 1.0 * Screen.GetWidth() / Screen.GetHeight();

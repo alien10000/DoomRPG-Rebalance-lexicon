@@ -852,7 +852,7 @@ OptionMenu "DoomRPGCharacter"
     StaticText ""
 
     StaticText "Options", 1
-    Option "Load Map Level", "drpg_load_map_level", "OnOff"
+    Option "Load Map Level", "drpg_char_load_maplevel", "OnOff"
     StaticText ""
 }
 
