@@ -74,7 +74,7 @@ Class RLBunkerEvents : StaticEventHandler
 
 			int X = CVar.GetCVar("drpg_drla_x", players[consoleplayer]).GetInt();
 			int Y = CVar.GetCVar("drpg_drla_y", players[consoleplayer]).GetInt();   
-			int XOff = - 140, YOff = - 33;	
+			int XOff = - 140, YOff = - 23;	
 
             if(Screen.GetAspectRatio() < 1.3)
             {
@@ -84,22 +84,22 @@ Class RLBunkerEvents : StaticEventHandler
             else if(Screen.GetAspectRatio() < 1.4)
             {
                 XOff = - 248;
-                YOff = - 33;
+                YOff = - 23;
             }
             else if(Screen.GetAspectRatio() < 1.7)
             {
                 XOff = - 183;
-                YOff = - 33;
+                YOff = - 23;
             }
             else if(Screen.GetAspectRatio() < 1.8)
             {
                 XOff = - 140;
-                YOff = - 33;
+                YOff = - 23;
             }			
             else if(Screen.GetAspectRatio() > 2.3)
             {
                 XOff = + 2;
-                YOff = - 33;
+                YOff = - 23;
             }
 
             let window_aspect    = 1.0 * Screen.GetWidth() / Screen.GetHeight();
