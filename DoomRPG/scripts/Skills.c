@@ -3053,6 +3053,36 @@ NamedScript DECORATE void RemoveAura(bool SaveSkillCostMult)
 
     if (!SaveSkillCostMult)
         Player.SkillCostMult = 0;
+
+    // Compatibility Handling - DoomRL Extended
+    if (CompatModeEx == COMPAT_DRLAX)
+    {
+        if (PlayerClass(PlayerNumber()) == 9) // Phase Sisters
+        {
+            // Remove Aura for Portia
+            for (int i = 0; i < AURA_MAX; i++)
+            {
+                Player.Portia.Aura.Type[i].Active = 0;
+                Player.Portia.Aura.Type[i].Level = 0;
+            }
+            Player.Portia.Aura.Time = 0;
+
+            // Remove Aura for Terri
+            for (int i = 0; i < AURA_MAX; i++)
+            {
+                Player.Terri.Aura.Type[i].Active = 0;
+                Player.Terri.Aura.Type[i].Level = 0;
+            }
+            Player.Terri.Aura.Time = 0;
+
+            // Remove Skill Cost for Portia/Terri
+            if (!SaveSkillCostMult)
+            {
+                Player.Portia.SkillCostMult = 0;
+                Player.Terri.SkillCostMult = 0;
+            }
+        }
+    }
 }
 
 NamedScript DECORATE void ClearStatusEffects()
