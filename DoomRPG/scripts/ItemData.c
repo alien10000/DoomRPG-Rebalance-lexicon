@@ -903,9 +903,9 @@ NamedScript void BuildItemData()
         ITEMDATA_DEF("DRPGLife",                     "\CdExtra Life\C-",                   20000, -1, -1, "L1UPA0",  0,  4);
         ITEMDATA_DEF("RLTrackingMap2",               "Tracking Map",                       20000,  5,  4, "MMAPA0", 14, 23);
         ITEMDATA_DEF("RLBlueprintComputer",          "Blueprint Computer",                 12500,  5,  2, "BLUPA0", 14, 23);
-        ITEMDATA_DEF("RLHatredSkull",                "Hatred Skull",                        5000,  6,  6, "ISKLA0", 10, 18);
-        ITEMDATA_DEF("RLBloodSkull",                 "Blood Skull",                         3000,  6,  4, "ISKLC0", 10, 18);
-        ITEMDATA_DEF("RLFireSkull",                  "Fire Skull",                          4000,  6,  5, "ISKLE0", 10, 18);
+        ITEMDATA_DEF("RLHatredSkull",                "Hatred Skull",                        5000, -1,  6, "ISKLA0", 10, 18);
+        ITEMDATA_DEF("RLBloodSkull",                 "Blood Skull",                         3000, -1,  4, "ISKLC0", 10, 18);
+        ITEMDATA_DEF("RLFireSkull",                  "Fire Skull",                          4000, -1,  5, "ISKLE0", 10, 18);
         ITEMDATA_DEF("RLPhaseDevice",                "Phase Device",                        1000,  1,  1, "PHS1I0", -9, -2);
         ITEMDATA_DEF("RLHomingPhaseDevice",          "Homing Phase Device",                 2500,  2,  2, "PHS2I0", -9, -2);
         ITEMDATA_DEF("RLRecallPhaseDevice",          "Recall Phase Device",                 2500,  2,  2, "PHS3I0", -9, -5);

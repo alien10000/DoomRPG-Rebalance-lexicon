@@ -862,6 +862,10 @@ struct PlayerData_S
         int ArmorDurability;
         int ArmorDurabilityMax;
 
+        // Portia's Aura
+        struct AuraInfo_S Aura;
+        int SkillCostMult;
+
         // Portia's Energy Shield
         struct
         {
@@ -901,6 +905,10 @@ struct PlayerData_S
         str ArmorName;
         int ArmorDurability;
         int ArmorDurabilityMax;
+
+        // Terri's Aura
+        struct AuraInfo_S Aura;
+        int SkillCostMult;
 
         // Terri's Energy Shield
         struct

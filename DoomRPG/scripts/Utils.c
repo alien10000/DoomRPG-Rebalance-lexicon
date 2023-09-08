@@ -2748,6 +2748,15 @@ NamedScript DECORATE void PhaseSistersDataSave()
         Player.Portia.ArmorDurability = CheckInventory("BasicArmor");
         Player.Portia.ArmorDurabilityMax = GetArmorInfo(ARMORINFO_SAVEAMOUNT);
 
+        // Save Aura for Portia
+        for (int i = 0; i < AURA_MAX; i++)
+        {
+            Player.Portia.Aura.Type[i].Active = Player.Aura.Type[i].Active;
+            Player.Portia.Aura.Type[i].Level = Player.Aura.Type[i].Level;
+        }
+        Player.Portia.Aura.Time = Player.Aura.Time;
+        Player.Portia.SkillCostMult = Player.SkillCostMult;
+
         // Save Energy Shield for Portia
         // Current Parts
         Player.Portia.Shield.Body = Player.Shield.Body;
@@ -2794,6 +2803,15 @@ NamedScript DECORATE void PhaseSistersDataSave()
         Player.Terri.ArmorName = GetArmorInfoString(ARMORINFO_CLASSNAME);
         Player.Terri.ArmorDurability = CheckInventory("BasicArmor");
         Player.Terri.ArmorDurabilityMax = GetArmorInfo(ARMORINFO_SAVEAMOUNT);
+
+        // Save Aura for Terri
+        for (int i = 0; i < AURA_MAX; i++)
+        {
+            Player.Terri.Aura.Type[i].Active = Player.Aura.Type[i].Active;
+            Player.Terri.Aura.Type[i].Level = Player.Aura.Type[i].Level;
+        }
+        Player.Terri.Aura.Time = Player.Aura.Time;
+        Player.Terri.SkillCostMult = Player.SkillCostMult;
 
         // Save Energy Shield for Terri
         // Current Parts
@@ -2849,6 +2867,15 @@ NamedScript DECORATE void PhaseSistersDataLoad()
             GiveInventory(Player.Portia.ArmorName, 1);
             SetInventory("BasicArmor", Player.Portia.ArmorDurability);
         }
+
+        // Load Aura for Portia
+        for (int i = 0; i < AURA_MAX; i++)
+        {
+            Player.Aura.Type[i].Active = Player.Portia.Aura.Type[i].Active;
+            Player.Aura.Type[i].Level = Player.Portia.Aura.Type[i].Level;
+        }
+        Player.Aura.Time = Player.Portia.Aura.Time;
+        Player.SkillCostMult = Player.Portia.SkillCostMult;
 
         // Load Energy Shield for Portia
         // Current Parts
@@ -2910,6 +2937,15 @@ NamedScript DECORATE void PhaseSistersDataLoad()
             GiveInventory(Player.Terri.ArmorName, 1);
             SetInventory("BasicArmor", Player.Terri.ArmorDurability);
         }
+
+        // Load Aura for Terri
+        for (int i = 0; i < AURA_MAX; i++)
+        {
+            Player.Aura.Type[i].Active = Player.Terri.Aura.Type[i].Active;
+            Player.Aura.Type[i].Level = Player.Terri.Aura.Type[i].Level;
+        }
+        Player.Aura.Time = Player.Terri.Aura.Time;
+        Player.SkillCostMult = Player.Terri.SkillCostMult;
 
         // Load Energy Shield for Terri
         // Current Parts
