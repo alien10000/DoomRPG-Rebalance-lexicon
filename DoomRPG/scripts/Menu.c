@@ -248,7 +248,7 @@ void DrawMainMenu()
     EndHudMessage(HUDMSG_PLAIN, 0, "Grey",          180.1, 175.0, 0.05);
     HudMessage("- STIM ITEMS -");
     EndHudMessage(HUDMSG_PLAIN, 0, "Grey",          0.1, 290.0, 0.05);
-    HudMessage("- TOXICITY -");
+    HudMessage("- TOXICITY/SET STIM -");
     EndHudMessage(HUDMSG_PLAIN, 0, "Grey",          180.1, 290.0, 0.05);
 
     // Draw Menu
