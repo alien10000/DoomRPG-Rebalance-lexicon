@@ -349,7 +349,7 @@ ACTOR GargRPG : Garg replaces Garg
 // Scythe 2
 
 // Afrit
-ACTOR AfritRPG : Afrit replaces Afrit
+ACTOR AfritRPG : Afrit replaces Afrit 20209
 {
     Tag "Afrit"
 
@@ -363,7 +363,7 @@ ACTOR AfritRPG : Afrit replaces Afrit
 		Goto Super::See
 	}
 }
-ACTOR EvilMarineRPG : EvilMarine replaces EvilMarine
+ACTOR EvilMarineRPG : EvilMarine replaces EvilMarine 20208
 {
     Tag "Evil Marine"
 
