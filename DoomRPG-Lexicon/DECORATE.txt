@@ -1228,3 +1228,85 @@ actor SLTreeRPG : SLTree replaces SLTree 20407
 
 actor SLPalmRPG : SLPalm replaces SLPalm 20408
 {}
+
+
+//--------------------------------------------------
+// sunder
+// made from the dehack file of said wad
+// may have mixed up the sounds 
+
+//hiveMother
+Actor HiveMother
+{
+	Health 2000
+	Speed 18
+	Radius 60
+	Height 110
+	PainChance 10
+	Mass 5000
+	-SPAWNCEILING
+	-NOGRAVITY
+	SeeSound "DSSSSIT"
+	ActiveSound "DSSSDTH"
+	PainSound "DSKEENPN"
+	DeathSound "DSKEENDT"
+	States
+	{
+	Spawn:
+		HIVE AB 10 A_Look
+		goto Spawn
+	See:
+		HIVE ABCDEF 3 A_Chase
+		goto See
+	Pain:
+		HIVE N 3 A_FaceTarget
+		HIVE O 3 A_Pain
+		HIVE PQ 3 A_FaceTarget
+		HIVE R 1 Bright A_CyberAttack
+		HIVE S 3 Bright A_FaceTarget
+		HIVE R 1 Bright A_CyberAttack
+		HIVE S 3 Bright A_FaceTarget
+		HIVE R 1 Bright A_CyberAttack
+		HIVE S 3 Bright A_FaceTarget
+		HIVE TUVWX 3 A_FaceTarget
+	State_768:
+		HIVE ABCDEF 1 A_Chase
+		goto State_768
+	Missile:
+		HIVE GH 4 A_FaceTarget
+		HIVE I 1 Bright A_FatAttack1
+		HIVE J 1 Bright A_FatAttack2
+		HIVE I 1 Bright A_FatAttack3
+		HIVE J 1 Bright A_FatAttack1
+		HIVE I 1 Bright A_FatAttack2
+		HIVE J 1 Bright A_FatAttack3
+		HIVE I 3 Bright A_FatAttack1
+		HIVE KLM 4 A_FaceTarget
+		HIVE ABCDEF 3 A_Chase
+		goto See
+	Death:
+		SMT2 A 10 
+		SMT2 B 5 A_Scream
+		SMT2 C 5 
+		SMT2 D 5 A_Fall
+		SMT2 EFGHIJ 5 
+		SMT2 K -1 
+		stop
+	}
+}
+
+
+ACTOR HiveMotherRPG : HiveMother replaces HiveMother 20310
+{
+    Tag "HiveMother"
+
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay ACS_NamedExecuteAlways("MonsterInit", 0, MF_BOSS)
+		Goto Super::Spawn
+	See:
+		TNT1 A 0 ACS_NamedExecuteAlways("MonsterInit", 0, MF_BOSS)
+		Goto Super::See
+	}
+}
