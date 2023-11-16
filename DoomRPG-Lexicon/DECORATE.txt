@@ -1234,6 +1234,7 @@ actor SLPalmRPG : SLPalm replaces SLPalm 20408
 // sunder
 // made from the dehack file of said wad
 // may have mixed up the sounds 
+//also gazebo mesed with the tp fog for map 20 and i am not fimliar with its gimick
 
 //hiveMother
 Actor HiveMother
@@ -1285,12 +1286,12 @@ Actor HiveMother
 		HIVE ABCDEF 3 A_Chase
 		goto See
 	Death:
-		SMT2 A 10 
-		SMT2 B 5 A_Scream
-		SMT2 C 5 
-		SMT2 D 5 A_Fall
-		SMT2 EFGHIJ 5 
-		SMT2 K -1 
+		DIVE A 10 
+		DIVE B 5 A_Scream
+		DIVE C 5 
+		DIVE D 5 A_Fall
+		DIVE EFGHIJ 5 
+		DIVE K -1 
 		stop
 	}
 }
@@ -1308,5 +1309,36 @@ ACTOR HiveMotherRPG : HiveMother replaces HiveMother 20310
 	See:
 		TNT1 A 0 ACS_NamedExecuteAlways("MonsterInit", 0, MF_BOSS)
 		Goto Super::See
+	}
+}
+
+ACTOR SND4 20311
+{
+	tag "sunder tree short"
+  Radius 16
+  Height 40
+  ProjectilePassHeight -16
+  +SOLID
+	States
+	{
+	Spawn:
+		SND4 A -1
+		stop
+	}
+}
+
+
+ACTOR SND3 20312
+ {
+	tag "sunder tree tall"
+  Radius 16
+  Height 52
+  ProjectilePassHeight -16
+  +SOLID
+	States
+	{
+	Spawn:
+		SND3 A -1
+		stop
 	}
 }

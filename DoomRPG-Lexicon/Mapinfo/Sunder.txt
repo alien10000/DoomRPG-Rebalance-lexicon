@@ -164,7 +164,8 @@ map SND15 "Babylon's Chimera"
 	exitpic = "SNDRINT"
 	enterpic = "SNDRINT"
     SuckTime = 1337
-	}	
+	}
+	
 map SND16 "Whispers of the Gnarled King"
 	{
 	next = "SND17"
@@ -175,7 +176,8 @@ map SND16 "Whispers of the Gnarled King"
 	exitpic = "SNDRINT"
 	enterpic = "SNDRINT"
     SuckTime = 1337
-	}	
+	}
+	
 map SND17 "Archives of the Technomancer"
 {
 	next = "SND18"
@@ -187,6 +189,7 @@ map SND17 "Archives of the Technomancer"
 	enterpic = "SNDRINT"
     SuckTime = 1337
 }
+
 map SND18 "The Singing Void"
 {
 	next = "SND19"
@@ -198,6 +201,7 @@ map SND18 "The Singing Void"
 	enterpic = "SNDRINT"
     SuckTime = 1337
 }
+
 map SND19 "City at the Mouth of Ire"
 {
 	next = "SND19"
@@ -209,33 +213,43 @@ map SND19 "City at the Mouth of Ire"
 	enterpic = "SNDRINT"
     SuckTime = 1337
 }
-map SND20 "Beneath the Waves of Styx"
-titlepatch CWILV19
-next MAP21
-secretnext MAP21
-sky1 SKY2 0
-cluster 2
-music D_MESSAG
 
-map SND21 "The Leviathan's Arteries"
-titlepatch CWILV20
-next MAP22
-secretnext MAP22
-sky1 SKY2 0
-cluster 2
-music D_COUNT2
+map SND20 "Beneath the Waves of Styx"
+{
+	next = "SND21"
+	secretnext = "SND21"
+	sky1 = "SNDSKY2"
+	music = "D_SNDR20"
+	intermusic = "D_SNDINT"
+	exitpic = "SNDRINT"
+	enterpic = "SNDRINT"
+    SuckTime = 1337
+}
+// map is not finsed yet but is in sunder's code
+/*map SND21 "The Leviathan's Arteries"
+{
+	next = "VR"
+	secretnext = "VR"
+	sky1 = "SNDSKY2"
+	music = "D_SNDR21"
+	intermusic = "D_SNDINT"
+	exitpic = "SNDRINT"
+	enterpic = "SNDRINT"
+	SuckTime = 1337
+}*/
 
 map SND31 "House of Corrosion"
 	{
 	next = "SND16"
 	secretnext = "SND32"
-	sky1 = "GRSKY1"
+	sky1 = "GSNDSKY1"
 	music = "D_SNDR31"
 	intermusic = "D_SNDINT"
 	exitpic = "SNDRINT"
 	enterpic = "SNDRINT"
     SuckTime = 1337
-	}	
+	}
+	
 map SND32 "The Harlots Garden"
 	{
 	next = "SND16"

@@ -1,0 +1,97 @@
+type = "Doom Builder Map Settings Configuration";
+gameconfig = "GZDoom_DoomDoom.cfg";
+strictpatches = 0;
+
+maps
+{
+	
+	MAP19
+	{
+		defaultwalltexture = "METGRAT2";
+		overridemiddletexture = false;
+		defaultceiltexture = "F_SKY1";
+		overrideceiltexture = false;
+		custombrightness = 196;
+		
+		resources
+		{
+			
+			resource0
+			{
+				type = 2;
+				location = "C:\\Users\\Bradon\\Documents\\gzdoom-4-8-2-Windows-64bit\\mods\\DRPGSEL-1316\\DoomRPG SE Rebalance\\DoomRPG-mods\\Lexicon-beta-build-137.pk3";
+				option1 = 0;
+				option2 = 0;
+				notfortesting = 0;
+				requiredarchives = "";
+			}
+			
+			resource1
+			{
+				type = 1;
+				location = "C:\\Users\\Bradon\\DoomRPG-Rebalance-lexicon\\DoomRPG-Lexicon";
+				option1 = 0;
+				option2 = 0;
+				notfortesting = 0;
+				requiredarchives = "";
+			}
+		}
+		viewpositiony = -7582.053f;
+		viewpositionx = -3769.763f;
+		
+		testprecommand
+		{
+			autocloseonsuccess = true;
+			exitcodeiserror = true;
+			stderriserror = true;
+		}
+		customceilheight = 128;
+		customfloorheight = 0;
+		
+		grid
+		{
+			backoffsetx = 0;
+			backsource = 0;
+			gridoriginy = 0;
+			backscaley = 100;
+			gridrotate = 0;
+			backscalex = 100;
+			gridoriginx = 0;
+			gridsize = 32;
+			background = "";
+			backoffsety = 0;
+		}
+		viewscale = 0.1139066f;
+		
+		reloadresourceprecommand
+		{
+			autocloseonsuccess = true;
+			exitcodeiserror = true;
+			stderriserror = true;
+		}
+		defaulttoptexture = "METGRAT2";
+		overridebottomtexture = false;
+		defaultbottomtexture = "METGRAT2";
+		defaultfloortexture = "OBRCKB31";
+		overrideceilheight = false;
+		overridebrightness = false;
+		
+		testpostcommand
+		{
+			autocloseonsuccess = true;
+			exitcodeiserror = true;
+			stderriserror = true;
+		}
+		overridefloorheight = false;
+		overridetoptexture = false;
+		uselongtexturenames = false;
+		overridefloortexture = false;
+		
+		reloadresourcepostcommand
+		{
+			autocloseonsuccess = true;
+			exitcodeiserror = true;
+			stderriserror = true;
+		}
+	}
+}
