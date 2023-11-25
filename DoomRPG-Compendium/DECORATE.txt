@@ -1,1 +1,182 @@
 actor DRPGCompendiumActive {}
+
+// --------------------------------------------------
+// All Hell is Breaking Lose
+
+//Demon on Fire
+ACTOR AllHellDemonRPG : AllHellDemon replaces AllHellDemon
+{
+    Tag "Demon on Fire"
+
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay ACS_NamedExecuteAlways("MonsterInit", 0)
+		Goto Super::Spawn
+	See:
+		TNT1 A 0 ACS_NamedExecuteAlways("MonsterInit", 0)
+		Goto Super::See
+	}
+}
+
+//Two-Headed Chaingunner
+ACTOR AllHellTwoFaceRPG : AllHellTwoFace replaces AllHellTwoFace
+{
+    Tag "Two-Headed Chaingunner"
+
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay ACS_NamedExecuteAlways("MonsterInit", 0)
+		Goto Super::Spawn
+	See:
+		TNT1 A 0 ACS_NamedExecuteAlways("MonsterInit", 0)
+		Goto Super::See
+	}
+}
+
+//Mounted Arachnotron
+ACTOR AllHellArachnotronRPG : AllHellArachnotron replaces AllHellArachnotron
+{
+    Tag "Mounted Arachnotron"
+
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay ACS_NamedExecuteAlways("MonsterInit", 0)
+		Goto Super::Spawn
+	See:
+		TNT1 A 0 ACS_NamedExecuteAlways("MonsterInit", 0)
+		Goto Super::See
+	}
+}
+
+//Flying Baron
+ACTOR AllHellFlyingBaronRPG : AllHellFlyingBaron replaces AllHellFlyingBaron
+{
+    Tag "Flying Baron"
+
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay ACS_NamedExecuteAlways("MonsterInit", 0)
+		Goto Super::Spawn
+	See:
+		TNT1 A 0 ACS_NamedExecuteAlways("MonsterInit", 0)
+		Goto Super::See
+	}
+}
+
+//evil marine
+ACTOR AllHellEvilMarineRPG : AllHellEvilMarine replaces AllHellEvilMarine
+{
+    Tag "evil marine"
+
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay ACS_NamedExecuteAlways("MonsterInit", 0)
+		Goto Super::Spawn
+	See:
+		TNT1 A 0 ACS_NamedExecuteAlways("MonsterInit", 0)
+		Goto Super::See
+	}
+}
+
+//helicopter
+ACTOR AllHellHelicopterRPG : AllHellHelicopter replaces AllHellHelicopter
+{
+    Tag "helicopter"
+
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay ACS_NamedExecuteAlways("MonsterInit", 0, MF_BOSS)
+		Goto Super::Spawn
+	See:
+		TNT1 A 0 ACS_NamedExecuteAlways("MonsterInit", 0, MF_BOSS)
+		Goto Super::See
+	}
+}
+
+//evil marine
+ACTOR AllHellEvilMarineHeliRPG : AllHellEvilMarineHeli replaces AllHellEvilMarineHeli
+{
+    Tag "evil marine"
+
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay ACS_NamedExecuteAlways("MonsterInit", 0)
+		Goto Super::Spawn
+	See:
+		TNT1 A 0 ACS_NamedExecuteAlways("MonsterInit", 0)
+		Goto Super::See
+	}
+}
+
+//Winged Demon
+ACTOR AllHellWingedDemon1RPG : AllHellWingedDemon1 replaces AllHellWingedDemon1
+{
+    Tag "Winged Demon"
+
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay ACS_NamedExecuteAlways("MonsterInit", 0)
+		Goto Super::Spawn
+	See:
+		TNT1 A 0 ACS_NamedExecuteAlways("MonsterInit", 0)
+		Goto Super::See
+	}
+}
+
+//Green Winged Demon
+ACTOR AllHellWingedDemon2RPG : AllHellWingedDemon2 replaces AllHellWingedDemon2
+{
+    Tag "Green Winged Demon"
+
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay ACS_NamedExecuteAlways("MonsterInit", 0, MF_BOSS)
+		Goto Super::Spawn
+	See:
+		TNT1 A 0 ACS_NamedExecuteAlways("MonsterInit", 0, MF_BOSS)
+		Goto Super::See
+	}
+}
+
+//Gray Winged Demon
+ACTOR AllHellWingedDemon3RPG : AllHellWingedDemon3 replaces AllHellWingedDemon3
+{
+    Tag "Gray Winged Demon"
+
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay ACS_NamedExecuteAlways("MonsterInit", 0, MF_BOSS)
+		Goto Super::Spawn
+	See:
+		TNT1 A 0 ACS_NamedExecuteAlways("MonsterInit", 0, MF_BOSS)
+		Goto Super::See
+	}
+}
+
+//Huge Cyberdemon
+ACTOR AllHellHugeCyberRPG : AllHellHugeCyber replaces AllHellHugeCyber
+{
+    Tag "Huge Cyberdemon"
+
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay ACS_NamedExecuteAlways("MonsterInit", 0, MF_BOSS)
+		Goto Super::Spawn
+	See:
+		TNT1 A 0 ACS_NamedExecuteAlways("MonsterInit", 0, MF_BOSS)
+		Goto Super::See
+	}
+}
+
+
