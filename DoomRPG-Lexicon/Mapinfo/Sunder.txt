@@ -168,8 +168,8 @@ map SND15 "Babylon's Chimera"
 	
 map SND16 "Whispers of the Gnarled King"
 	{
-	next = "SND17"
-	secretnext = "SND17"
+	next = "OUTPOST"
+	secretnext = "OUTPOST"
 	sky1 = "SNDSKY2"
 	music = "D_SNDR16"
 	intermusic = "D_SNDINT"
@@ -228,8 +228,8 @@ map SND20 "Beneath the Waves of Styx"
 // map is not finsed yet but is in sunder's code
 /*map SND21 "The Leviathan's Arteries"
 {
-	next = "VR"
-	secretnext = "VR"
+	next = "OUTPOST"
+	secretnext = "OUTPOST"
 	sky1 = "SNDSKY2"
 	music = "D_SNDR21"
 	intermusic = "D_SNDINT"
