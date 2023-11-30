@@ -1236,7 +1236,7 @@ actor SLPalmRPG : SLPalm replaces SLPalm 20408
 // may have mixed up the sounds 
 //also gazebo mesed with the tp fog for map 20 and i am not fimliar with its gimick
 
-//hiveMother
+/*HiveMother
 Actor HiveMother
 {
 	Health 2000
@@ -1311,7 +1311,9 @@ ACTOR HiveMotherRPG : HiveMother replaces HiveMother 20310
 		Goto Super::See
 	}
 }
+*/
 
+//sunder tree short
 ACTOR SND4 20311
 {
 	tag "sunder tree short"
@@ -1327,9 +1329,9 @@ ACTOR SND4 20311
 	}
 }
 
-
+//sunder tree tall
 ACTOR SND3 20312
- {
+{
 	tag "sunder tree tall"
   Radius 16
   Height 52
