@@ -63,7 +63,7 @@ New Augmentation System
 
 New Shield System
 ===
-To be rewritten into a more randomized parts system which is easier to handle and maintain, details later
+To be rewritten into a more randomized parts system which is easier to handle and maintain, details later//[alien] is this considered done
 
 Sprinting/Dodging System
 ===
@@ -73,3 +73,19 @@ Rewrites/Reorganization
 ===
 - GUI System, Finish the GUI library and move all menu and related things to using it
 - Arena System to support separate arena maps and their own self-contained scripting// [alien] is this considered done
+
+Lexicon and Compendium
+===
+- integrate all meaningful dehacked enemies into doomrpg's stat system
+  - going down is missing its dehacked stuff
+  - further refinement of sunder hive mother and other elements
+- add missing maps to:
+  - back to saturn x ep1
+  - sunder
+  - the original 1994 maps that where turned up from the 1994 tu
+- better support for non lexicon, compendium, or wadsmosh wads
+- wads that need support even if the above can not be found
+  - doom 404
+  - back to saturn x ep2
+  - tnt: revolution
+  - plutonia  2
